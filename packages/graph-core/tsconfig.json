@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    // ★ "DOM"이 없다. document / window / localStorage 사용이 컴파일 에러가 된다.
+    //   정책이 아니라 타입 시스템으로 순수성을 강제한다 (D-033).
+    "lib": ["ES2022"],
+    "types": [],
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": false,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "verbatimModuleSyntax": true,
+
+    // Node 24의 네이티브 타입 스트리핑으로 빌드 없이 실행하기 위한 3종 세트.
+    // enum / namespace / parameter property를 금지한다.
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true
+  },
+  "include": ["src/**/*.ts"]
+}

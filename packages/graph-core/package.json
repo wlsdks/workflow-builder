@@ -1,0 +1,21 @@
+{
+  "name": "@workflow/graph-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "graph = derive(tree) ⊕ overrides — 순수 그래프 파생 엔진. React·DB·DOM 의존 없음.",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.ts\"",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json",
+    "lint": "eslint src test"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.8.0"
+  },
+  "//dependencies": "★ 런타임 의존성은 영원히 비어 있어야 한다. 무언가를 넣고 싶어지면 그것은 이 패키지에 들어갈 코드가 아니다."
+}
