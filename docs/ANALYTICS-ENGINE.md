@@ -2717,7 +2717,7 @@ export const doneCounterEvents = pgTable('done_counter_events', {
 P1으로 나가는 이벤트는 값이 없다:
 
 ```ts
-// packages/graph-core/src/analytics/schema.ts 에 추가되는 zod .strict() 스키마
+// packages/analytics-schema/src/events.ts 에 추가되는 zod .strict() 스키마 (D-119)
 export const DoneCounterEvents = {
   done_counter_started:   z.object({ candidate_rank: z.number().int().min(1).max(5) }).strict(),
   done_counter_tapped:    z.object({ day_index: z.number().int(), source: z.enum(['tap','dm','backfill','zero']) }).strict(),
