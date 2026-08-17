@@ -46,8 +46,11 @@ n8n·Zapier 같은 자동화 도구를 열기 전에 필요한 것 — 비개발
 | | |
 |---|---|
 | [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | 기술 — 데이터 모델, 에디터 선택, 레이아웃 안정성, 성능, 인증 |
+| [SCHEMA.md](./docs/SCHEMA.md) | DB 스키마·접근 통제 전문 — 전 테이블 Drizzle, 인덱스 전략, **RLS 정책과 우회 경로 16종 차단**, k-익명 집계 뷰(억제 로직이 뷰 하나), 감사 append-only, 봉투 암호화, 마이그레이션·파티셔닝, **일부러 만들지 않은 테이블·컬럼·인덱스 목록** |
 | [GRAPH-CORE.md](./docs/GRAPH-CORE.md) | `derive()` / `validate()` 완전 명세 — 결정적 ID, **애매 케이스 16건 확정 규칙**, 사이클·병렬 계산식, 증분 범위표, n8n 익스포트, 역투영. 구현은 [`packages/graph-core`](./packages/graph-core), 골든 픽스처 36건 |
+| [ANALYTICS-ENGINE.md](./docs/ANALYTICS-ENGINE.md) | 분석 엔진 — 파이프라인 L0~L6, 단계 특징 추출(`T_touch`·`F`·`N_people`·`SaveRate` 추론), **Feasibility 6요소 산출 규칙**, LeadTime·Risk 가치, **ECRS 제거 후보 검출기 12종**, 프로세스 그룹핑과 `process_key`, 신뢰도 승격 경로, **n8n 내보내기 전문 + 실행 명세**, 불확실성 표기와 사후 검증 |
 | [PARSING.md](./docs/PARSING.md) | 붙여넣기 파싱 알고리즘 — 소스 유형 감지, 한국어 연결어미 절 분할, 타입 분류, **무손실 보장**, 골든 픽스처 6개 |
+| [EDITOR.md](./docs/EDITOR.md) | 아웃라인 에디터 구현 명세 — BlockNote 커스텀 스키마, 어댑터 레이어, **한국어 IME 구현 수준 명세 + CDP 회귀 테스트 전문**, 키보드 분기표, 분기 컨테이너, 데코레이션 플러그인 4종, BlockNote 0.x 탈출 계획 |
 | [ASSEMBLY.md](./docs/ASSEMBLY.md) | 조직 프로세스 조립 — 접합 소켓, 한국어 유사도 매칭, **불일치 리포트 9종**, 바이럴 루프, 커버리지별 산출물 |
 | [HANDOVER.md](./docs/HANDOVER.md) | 인수인계 문서 생성기 — 생성 규칙, **결핍을 질문으로 뒤집기**, 묶음 문서 앞 8쪽, 트리거 10종 |
 | [STATES.md](./docs/STATES.md) | 상태 카탈로그 — 자동 저장·오프라인 전 상태, 스피너 없는 로딩 전략, 에러 바운더리 |

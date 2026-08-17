@@ -161,7 +161,11 @@ branch #9E6511   분기 액센트 (4.86:1) — #A56A12는 4.50으로 임계에 �
 | `n-300 #D2CEC6` | 고스트 노드 등 장식 보더만 |
 | `n-500 #7C7770` | 흰 배경(`#FFFFFF`) 위에서만 허용. 따뜻한 배경 위에서는 `n-550` |
 
-**CI 강제**: Stylelint 규칙으로 `n-400`·`n-200`이 `color` / `border-color` 속성에 등장하면 빌드 실패.
+**CI 강제** — ⚠️ **게이트가 공허해지지 않게 할 것.**
+
+이 문서는 토큰을 `n-400`으로 부르지만 Tailwind는 `paper-400`으로 컴파일한다. `n-400`을 찾는 규칙은 **0건을 찾고 항상 초록이 된다.**
+
+→ 게이트는 **소스에 실제로 존재하는 문자열**(`text-paper-400`, `border-paper-200/300`)을 대상으로 하고, **규칙이 실제로 뭔가를 잡는지 검증하는 테스트를 함께 넣는다.** 구현은 [COMPONENTS.md §17](./COMPONENTS.md).
 
 **포커스 링은 이중 링으로 고정** — 잉크 버튼(어두움) 위에서도 3:1을 보장해야 한다.
 ```css
@@ -342,7 +346,7 @@ stroke    1.5px n-400   hover/selected 2px n-700   (절대 3px 이상 금지)
 'elk.layered.crossingMinimization.strategy': 'LAYER_SWEEP',
 'elk.layered.considerModelOrder.strategy': 'NODES_AND_EDGES',   // ★ 필수
 'elk.layered.crossingMinimization.forceNodeModelOrder': 'true',
-'elk.layered.crossingMinimization.semiInteractive': 'true',      // ★ 이전 좌표를 시드로
+'elk.layered.crossingMinimization.semiInteractive': 'true',      // forceNodeModelOrder가 지배하므로 사실상 무효 — LAYOUT.md §5 참조
 'elk.edgeRouting': 'ORTHOGONAL',
 'elk.layered.mergeEdges': 'true',
 'elk.spacing.nodeNode': 40,

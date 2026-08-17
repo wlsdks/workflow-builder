@@ -219,7 +219,14 @@ const elk = new ELK({
 
 Next.js 15 Turbopack에서 이 `new URL(..., import.meta.url)` 형태가 동작한다. `'use client'` 모듈에서만 import하고 `dynamic(..., { ssr: false })`로 감싼다.
 
-`semiInteractive: true`일 때 각 노드에 이전 결과의 `x`/`y`를 넣어주면 ELK가 그 순서를 힌트로 쓴다 — 앵커링의 1차 방어선.
+> **⚠️ 초안의 오류 정정**
+> 이 자리에 원래 *"`semiInteractive: true`일 때 이전 좌표를 시드로 넣으면 앵커링의 1차 방어선이 된다"*고 적혀 있었다. **틀렸다.**
+>
+> `forceNodeModelOrder: true`가 층 내 노드 순서를 **모델 순서로 강제**하므로, `semiInteractive`의 좌표 힌트는 교차 최소화 단계에서 **아무것도 바꿀 수 없다.** 두 옵션은 함께 켤 때 후자가 전자를 지배한다.
+> 즉 좌표 시드는 **출력에 영향을 주지 않는다** — 넣어도 안 넣어도 같은 결과가 나온다.
+>
+> **앵커링은 ELK 옵션이 아니라 ELK 결과를 받은 뒤의 뷰포트 역보정으로만 달성된다.** 구현은 [LAYOUT.md](./LAYOUT.md) §3.
+> `elk.position`을 노드에 넣는 것을 **테스트로 금지**한다 — 효과가 없으면서 "뭔가 하고 있다"는 착각을 만들기 때문이다.
 
 **dagre / d3-hierarchy를 쓰지 않는 이유**: dagre는 포트·계층 서브그래프·모델 순서 존중이 약하고, d3-hierarchy는 순수 트리 전용이라 자동 합류가 만드는 DAG를 못 그린다.
 

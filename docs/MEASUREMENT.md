@@ -209,9 +209,77 @@ GRANT SELECT ON agg_process TO admin_reader;
 1. **임의 기간 파라미터를 API에서 제거.** `period_key`는 `last30 / last90 / last365 / YYYY-MM`만 존재한다.
    자유 date range가 있으면 **하루씩 밀어가며 소집단을 차분(differencing)으로 복원**할 수 있다.
    **이게 5인 차단을 무력화하는 가장 흔한 공격이고, 대부분의 구현이 여기서 뚫린다.**
-2. **동시 필터 최대 2개**, 필터 적용 후 `HAVING` 재평가
+2. **동시 필터 최대 2개.** 카운터로 세지 말고 **뷰의 차원 슬롯을 `dim_a`/`dim_b` 둘로 고정**한다 — 3번째 필터가 물리적으로 불가능해진다
 3. **드릴다운 API 부재.** `agg_process`에서 `doc_id`/`owner_id`로 내려가는 엔드포인트를 만들지 않는다
-4. **CI 속성 기반 퍼즈 테스트** — 임의 필터·기간 조합 10만 건을 생성해 응답에 `contributor_n < 5`인 셀이 **단 1건도 없음**을 검증. 실패 시 배포 차단
+4. **CI 속성 기반 퍼즈 테스트** — 임의 필터·기간 조합 10만 건. 단 §아래 검증 대상 주의
+5. **시계열 일관 억제** (§아래)
+6. **억제를 먼저, 라운딩을 나중에** (§아래)
+
+### ⚠️ 초안의 구멍 2건 — 둘 다 "방어하는 척하는" 유형
+
+#### (a) 중첩 프리셋 차분 공격 — 내가 경고한 공격에 내가 뚫렸다
+
+위 1번은 **자유 date range만** 막았다. 그런데 프리셋끼리 빼면 임의 구간이 복원된다.
+
+```
+last365 − last90 = 275일 구간
+last90  − last30 =  60일 구간
+2026-08 − 2026-07 = 월 단위 임의 조합
+```
+
+한 기간에서 억제된 셀이 다른 기간에서 노출되면, **뺄셈 한 번으로 억제가 풀린다.**
+
+**수정 — 시계열 일관 억제**: 어느 하나의 기간에서든 억제 대상이면 **전 기간에서 억제**한다.
+
+```sql
+-- 억제 판정을 기간별로 하지 않고, 셀 단위로 한 번만 한다
+WITH ever_suppressed AS (
+  SELECT process_key, dept_id
+  FROM agg_cells_raw
+  GROUP BY process_key, dept_id
+  HAVING min(contributor_n) < 5          -- ★ 한 기간이라도 5 미만이면
+)
+SELECT c.* FROM agg_cells_raw c
+LEFT JOIN ever_suppressed s USING (process_key, dept_id)
+WHERE s.process_key IS NULL;
+```
+
+이러면 표시 가능한 셀이 줄지만, **줄어드는 것이 정답이다.**
+
+#### (b) 라운딩이 억제를 되돌린다
+
+`round(contributor_n / 5.0) * 5`를 실행해 보면:
+
+| 실제 기여자 | 표시값 |
+|---|---|
+| 3명 | **5** |
+| 4명 | **5** |
+| 5명 | 5 |
+| 6명 | 5 |
+
+**3명·4명 셀이 "5"로 표시된다.** 그리고 퍼즈 테스트가 **라운딩된 값**을 검사하면 `5 >= 5`이므로 **통과**시킨다 — 규칙이 스스로를 눈감게 만드는 구조다.
+
+**수정 2가지**
+1. **순서 고정**: `WHERE contributor_n >= 5`로 **억제를 먼저**, 라운딩은 통과한 셀에만. 라운딩은 잔차 추론 방어이지 억제 수단이 아니다
+2. **퍼즈 테스트는 억제 전 원재료(`agg_cells_raw.contributor_n`)와 대조한다.** 응답의 라운딩된 값이 아니라
+
+```ts
+// ✗ 틀린 검증 — 라운딩된 값을 보면 4명 셀을 통과시킨다
+expect(cell.contributor_n_rounded).toBeGreaterThanOrEqual(5)
+
+// ○ 옳은 검증 — 응답에 나온 셀이 원재료에서 실제로 5명 이상이었는지
+const truth = await rawTruthFor(cell.process_key, cell.dept_id, cell.period_key)
+expect(truth.contributor_n).toBeGreaterThanOrEqual(5)
+```
+
+> **이건 `n-400` 린트 게이트와 같은 실패 유형이다.** 규칙이 존재하고, 초록이고, 아무것도 안 막는다.
+> **게이트를 만들 때는 "이 게이트가 실제로 뭔가를 잡는가"를 검증하는 테스트를 함께 넣는다.**
+
+#### (c) k 판정의 "기여자"를 `owner_id`로 통일
+
+TRUST.md는 `assignee_id`, MEASUREMENT/ASSEMBLY 초안은 `owner_id`를 썼다. → **`owner_id`로 통일한다.**
+
+**근거**: 담당자는 **지목당했을 뿐 동의하지 않은 사람**일 수 있다. 그 사람을 k에 세면 **k를 가짜로 채우게 된다** — 5명이 관여하는 것처럼 보이지만 실제로 문서를 쓴 사람은 2명일 수 있다.
 
 관리자 쿼리는 전량 감사 로그에 남기고, **감사 로그 요약을 인사팀에 월간 공개**한다(누가 무엇을 봤는지가 아니라, **관리자 뷰가 개인을 조회할 수 없었음을 증명**).
 

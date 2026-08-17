@@ -35,7 +35,7 @@
 | hover | `bg #302E2A` | `bg n-50` / `border n-300` | `bg n-100` | `bg #9E2C24` |
 | active | `bg #111110`, 그림자 제거 | `bg n-100` | `bg n-200` | `bg #8A2620` |
 | focus-visible | 소프트 링(잉크는 `.28`, 나머지 `.14`) | 동일 + `border brand-500` | 동일 | `rgb(180 52 43/.20)` |
-| disabled | `bg n-100 / text n-400 / border n-200`, 그림자 제거, `cursor: not-allowed` | 동일 | `text n-400`, 배경 없음 | 동일 |
+| disabled | `bg n-100 / text paper-400 / border n-200`, 그림자 제거, `cursor: not-allowed` | 동일 | `text paper-400`, 배경 없음 | 동일 |
 | loading | 라벨을 `loadingText`로 교체, `aria-busy="true"`, 폭 고정, `cursor: progress`. **스피너 없음** |
 
 `active`에서 그림자를 빼는 것이 "눌림"의 전부다. `translateY`를 쓰지 않는다.
@@ -51,7 +51,7 @@ const button = cva(
   "inline-flex items-center justify-center gap-1.5 rounded-sm border font-semibold " +
     "whitespace-nowrap select-none transition-[background-color,border-color,box-shadow,color] " +
     "duration-fast ease-out outline-none disabled:cursor-not-allowed " +
-    "disabled:bg-paper-100 disabled:text-paper-400 disabled:border-paper-200 disabled:shadow-none",
+    "disabled:bg-paper-100 disabled:text-paper-550 disabled:border-paper-450 disabled:shadow-none",
   {
     variants: {
       variant: {
@@ -61,7 +61,7 @@ const button = cva(
           "focus-visible:shadow-focus-ink",
         secondary:
           "bg-paper-0 text-paper-900 border-paper-200 shadow-edge-flat " +
-          "hover:bg-paper-50 hover:border-paper-300 active:bg-paper-100 active:shadow-none " +
+          "hover:bg-paper-50 hover:border-paper-450 active:bg-paper-100 active:shadow-none " +
           "focus-visible:border-brand-500 focus-visible:shadow-focus",
         ghost:
           "bg-transparent text-paper-700 border-transparent shadow-none " +
@@ -140,20 +140,20 @@ export function Button({
 
 ### 치수
 
-- Input `md`: h 36px / padding 0 12px / radius 6px / border 1px `n-300` / bg `n-0` / 15px·1.4·400·-0.005em
+- Input `md`: h 36px / padding 0 12px / radius 6px / border 1px `paper-300` / bg `n-0` / 15px·1.4·400·-0.005em
 - Input `lg`(온보딩): h 44px / padding 0 14px / 16px·1.4
 - Textarea: min-h 88px / padding 10px 12px / line-height **1.65** / `field-sizing: content`(미지원 시 auto-grow 훅)
-- placeholder `n-400`. **라벨을 인쇄하지 않는다**(원칙 1) — 시각 라벨이 필요 없으면 `aria-label`로만 붙인다.
+- placeholder `paper-400`. **라벨을 인쇄하지 않는다**(원칙 1) — 시각 라벨이 필요 없으면 `aria-label`로만 붙인다.
 
 ### 상태
 
 | 상태 | 변화 |
 |---|---|
 | default | `border n-300`, 그림자 없음 |
-| hover | `border n-400` |
+| hover | `border paper-400` |
 | focus | `border brand-500` + `box-shadow: 0 0 0 3px rgb(42 115 88/.14)`, caret `brand-600` |
 | error | `border danger` + `0 0 0 3px rgb(180 52 43/.14)`, 하단 13px `danger` 메시지, `aria-invalid` |
-| disabled | `bg n-50 / text n-400 / border n-200`, placeholder 숨김 |
+| disabled | `bg n-50 / text paper-400 / border n-200`, placeholder 숨김 |
 | **composing (IME)** | 포커스 링 유지, **에러 스타일·검증 메시지 전부 억제**, 자동 서식·자동완성 팝오버 억제, 상위 다이어그램 재배치 트리거 차단 |
 
 한국어 조합 중 상태는 장식이 아니라 **버그 방지 장치**다. `onChange`만 보면 "ㄱ", "가", "각"이 모두 확정 입력으로 처리돼 (1) 글자마다 에러가 깜빡이고 (2) ELK 재배치가 프레임마다 돈다.
@@ -175,12 +175,12 @@ export function useComposition() {
 
 ```tsx
 const inputBase =
-  "w-full rounded-sm border border-paper-300 bg-paper-0 text-paper-900 " +
-  "placeholder:text-paper-400 caret-brand-600 outline-none " +
+  "w-full rounded-sm border border-paper-450 bg-paper-0 text-paper-900 " +
+  "placeholder:text-paper-550 caret-brand-600 outline-none " +
   "transition-[border-color,box-shadow] duration-fast ease-out " +
-  "hover:border-paper-400 " +
+  "hover:border-paper-450 " +
   "focus:border-brand-500 focus:shadow-focus " +
-  "disabled:bg-paper-50 disabled:text-paper-400 disabled:border-paper-200 disabled:placeholder:text-transparent " +
+  "disabled:bg-paper-50 disabled:text-paper-550 disabled:border-paper-450 disabled:placeholder:text-transparent " +
   "aria-[invalid=true]:border-danger aria-[invalid=true]:shadow-focus-danger " +
   // 조합 중에는 에러 표현을 되돌린다
   "data-[composing]:!border-brand-500 data-[composing]:!shadow-focus";
@@ -215,15 +215,15 @@ export interface InputProps extends Omit<React.ComponentPropsWithoutRef<"input">
 
 | 종류 | 높이 | radius | 배경 / 보더 | 폰트 |
 |---|---|---|---|---|
-| 도구 칩 `tool` | 20px | 6px | `n-100` / 없음 | 11 / 500 / `n-700` + 12px 라인 아이콘 |
-| 부서 칩 `dept` | 24px | full | `n-100` / 1px `n-200` | 13 / 500 / `n-700` |
-| 시간 칩 `duration` | 24px | 6px | `n-0` / 1px `n-200` | 13 / 500 / `n-700` + DurationBar |
-| 선택 칩 `selectable` | 32px | full | `n-0` / 1px `n-200` | 13 / 500 |
+| 도구 칩 `tool` | 20px | 6px | `paper-100` / 없음 | 11 / 500 / `paper-700` + 12px 라인 아이콘 |
+| 부서 칩 `dept` | 24px | full | `paper-100` / 1px `paper-200` | 13 / 500 / `paper-700` |
+| 시간 칩 `duration` | 24px | 6px | `n-0` / 1px `paper-200` | 13 / 500 / `paper-700` + DurationBar |
+| 선택 칩 `selectable` | 32px | full | `n-0` / 1px `paper-200` | 13 / 500 |
 
 패딩: 도구 `0 7px`, 부서·시간 `0 9px`, 선택 `0 12px`. 아이콘 gap 4px. 제거 버튼은 우측 `-2px` 오프셋, 히트 20×20.
 
 ### 상태
-- `selectable` default → hover `bg n-50 border n-300` → **selected** `bg brand-50 / border brand-500 / text brand-700` + 12px `check` → focus-visible 소프트 링 → disabled `bg n-50 text n-400`.
+- `selectable` default → hover `bg n-50 border n-300` → **selected** `bg brand-50 / border brand-500 / text brand-700` + 12px `check` → focus-visible 소프트 링 → disabled `bg n-50 text paper-400`.
 - `removable`: x 아이콘 hover 시 `bg n-200` 원형, 칩 자체 색은 안 변한다.
 - 도구 칩은 상태가 없다(비인터랙티브). 4개 초과는 `+2` 칩으로 접고 나머지는 팝오버.
 
@@ -248,7 +248,7 @@ const chip = cva("inline-flex items-center gap-1 font-medium select-none align-m
       selectable:
         "h-8 rounded-full px-3 bg-paper-0 border border-paper-200 text-paper-700 text-label cursor-pointer " +
         "transition-[background-color,border-color,color,box-shadow] duration-fast ease-out " +
-        "hover:bg-paper-50 hover:border-paper-300 outline-none focus-visible:shadow-focus " +
+        "hover:bg-paper-50 hover:border-paper-450 outline-none focus-visible:shadow-focus " +
         "aria-pressed:bg-brand-50 aria-pressed:border-brand-500 aria-pressed:text-brand-700",
     },
   },
@@ -273,14 +273,14 @@ const chip = cva("inline-flex items-center gap-1 font-medium select-none align-m
 
 | 종류 | padding | radius | 배경 | 보더 | 그림자 |
 |---|---|---|---|---|---|
-| `document` 문서 카드 | 16px | 12px | `n-0` | 1px `n-200` | **없음** + `--edge-flat` |
+| `document` 문서 카드 | 16px | 12px | `n-0` | 1px `paper-200` | **없음** + `--edge-flat` |
 | `summary` 요약 카드 | 20px | 12px | `brand-50` | 1px `brand-100` | 없음 |
-| `stack` 메타 카드 | 24px | 14px | `n-0` | 1px `n-200` | `--shadow-float` (실제로 떠 있음) |
+| `stack` 메타 카드 | 24px | 14px | `n-0` | 1px `paper-200` | `--shadow-float` (실제로 떠 있음) |
 
-`stack`은 폭 420px 고정(온보딩 카드 스택). 카드 안 제목 18/1.45/600, 본문 15/1.65/400, 캡션 12/1.5/500 `n-500`.
+`stack`은 폭 420px 고정(온보딩 카드 스택). 카드 안 제목 18/1.45/600, 본문 15/1.65/400, 캡션 12/1.5/500 `paper-500`.
 
 ### 상태
-default → hover(`document`만) `border n-300` + `bg n-25` → focus-visible 소프트 링 → **selected** `border brand-500` + `box-shadow: 0 0 0 3px rgb(42 115 88/.12)` → disabled `opacity` 대신 `text n-400` + `bg n-50`.
+default → hover(`document`만) `border n-300` + `bg n-25` → focus-visible 소프트 링 → **selected** `border brand-500` + `box-shadow: 0 0 0 3px rgb(42 115 88/.12)` → disabled `opacity` 대신 `text paper-400` + `bg n-50`.
 
 `summary`·`stack`은 hover 상태를 갖지 않는다(클릭 대상이 아니다).
 
@@ -302,7 +302,7 @@ const card = cva("relative", {
     },
     interactive: {
       true: "cursor-pointer outline-none transition-[background-color,border-color,box-shadow] " +
-            "duration-fast ease-out hover:border-paper-300 hover:bg-paper-25 " +
+            "duration-fast ease-out hover:border-paper-450 hover:bg-paper-25 " +
             "focus-visible:border-brand-500 focus-visible:shadow-focus " +
             "aria-selected:border-brand-500 aria-selected:shadow-ring-select",
     },
@@ -341,8 +341,8 @@ const card = cva("relative", {
 | 상태 | 컨트롤 | 배경 |
 |---|---|---|
 | default | `opacity 0`, `pointer-events:none` | 투명 |
-| hover | `opacity 1` (140ms) | `n-25` |
-| **cursor(활성)** | **`opacity 1` 상시** — 커서가 있는 줄은 컨트롤이 사라지지 않는다 | `n-25` |
+| hover | `opacity 1` (140ms) | `paper-25` |
+| **cursor(활성)** | **`opacity 1` 상시** — 커서가 있는 줄은 컨트롤이 사라지지 않는다 | `paper-25` |
 | focus-visible(핸들·버튼) | 소프트 링 | — |
 | dragging | 원본 `opacity .4`, 고스트에 `--shadow-drag`, 삽입 지점 2px `brand-500` 라인 | — |
 | composing | 컨트롤 유지, **재배치 트리거 억제** | — |
@@ -386,10 +386,10 @@ export interface OutlineBlockProps {
     "group-focus-within/blk:opacity-100 group-focus-within/blk:pointer-events-auto",
     "group-data-[active]/blk:opacity-100 group-data-[active]/blk:pointer-events-auto"
   )}>
-    <button aria-label="순서 바꾸기" className="h-5 w-4 cursor-grab text-paper-400 hover:text-paper-700 active:cursor-grabbing">
+    <button aria-label="순서 바꾸기" className="h-5 w-4 cursor-grab text-paper-550 hover:text-paper-700 active:cursor-grabbing">
       <GripVertical size={16} strokeWidth={1.75} aria-hidden />
     </button>
-    <button aria-label="아래에 단계 추가" className="grid h-5 w-5 place-items-center rounded-xs text-paper-400 hover:bg-paper-200 hover:text-paper-700">
+    <button aria-label="아래에 단계 추가" className="grid h-5 w-5 place-items-center rounded-xs text-paper-550 hover:bg-paper-200 hover:text-paper-700">
       <Plus size={16} strokeWidth={1.75} aria-hidden />
     </button>
   </span>
@@ -428,7 +428,7 @@ export interface OutlineBlockProps {
 ### 치수
 ```
 좌측 컬러바   4px, 전체 높이, radius 좌측만 md
-배경          #FCF8F1  (branch #A56A12 6% over n-0)
+배경          #FCF8F1  (branch #9E6511 6% over n-0)
 보더          1px n-200 (좌측 제외)
 radius        12px
 패딩          12px 14px 12px 18px
@@ -441,7 +441,7 @@ radius        12px
 문구 고정: 첫 행 `만약 [____]라면`, 이후 `아니면 [____]라면`, 마지막 행 뒤 `[+ 경우 추가]` `[갈래 끝내기]`. 하단 2택은 `이어짐` / `여기서 끝`.
 
 ### 상태
-default → hover(컬러바 `#8F5B0F`) → focus-within(보더 `brand-500` + 소프트 링) → **incomplete**(빈 조건이 있으면 해당 인풋만 `border n-400 dashed`, 에러 아님 — 미완성은 잘못이 아니다) → collapsed(케이스 요약 1줄 + `+2 갈래`).
+default → hover(컬러바 `#8F5B0F`) → focus-within(보더 `brand-500` + 소프트 링) → **incomplete**(빈 조건이 있으면 해당 인풋만 `border paper-400 dashed`, 에러 아님 — 미완성은 잘못이 아니다) → collapsed(케이스 요약 1줄 + `+2 갈래`).
 
 ### 코드 / 시그니처
 ```tsx
@@ -509,21 +509,21 @@ radius    12px   보더 1.5px n-200 (캔버스), 1px (내보내기)
 
 | 타입 | 액센트 바 | 보더 | 실루엣 | 아이콘 |
 |---|---|---|---|---|
-| `task` | 없음 | 1.5px `n-200` | 평범 | `square-check` |
-| `branch` | 3px `#A56A12` | 1.5px `n-200` | 하단 중앙 노치 16×7 (`clip-path`) | `git-branch` |
-| `hold` | 3px `#6E4666` | **1.5px dashed `n-300`** | 대시 | `clock` |
+| `task` | 없음 | 1.5px `paper-200` | 평범 | `square-check` |
+| `branch` | 3px `#9E6511` | 1.5px `paper-200` | 하단 중앙 노치 16×7 (`clip-path`) | `git-branch` |
+| `hold` | 3px `#6E4666` | **1.5px dashed `paper-300`** | 대시 | `clock` |
 
 ### 상태
 | 상태 | 변화 |
 |---|---|
 | default | 위 규격 |
-| hover | `border n-400`, 300ms 후 240px 팝오버 |
+| hover | `border paper-400`, 300ms 후 240px 팝오버 |
 | selected | `border 2px brand-500` + `box-shadow: 0 0 0 4px rgb(42 115 88/.12)` (보더 두께 변화는 `inset box-shadow`로 흡수해 **크기 불변**) |
 | focus-visible | selected와 동일 링 + `outline` 없음 |
 | dragging | `--shadow-drag`, `opacity .95`, `cursor: grabbing` |
 | dimmed(렌즈) | `opacity .45` + `grayscale(1)`, 200ms `--ease-flow` |
 | flagged(짜증 렌즈) | `bg #FBF7F9` + `border 1.5px #6E4666` |
-| ghost(다음 단계 유도) | `1.5px dashed n-300`, 배경 투명, 중앙 13px `n-400` |
+| ghost(다음 단계 유도) | `1.5px dashed n-300`, 배경 투명, 중앙 13px `paper-400` |
 
 **보더 두께를 실제로 바꾸면 안 된다.** `border: 1.5px` 고정 + `box-shadow: inset 0 0 0 2px var(--brand-500)`로 선택을 그린다. 1px 차이가 ELK 좌표에 반영되면 선택할 때마다 그래프가 떨린다.
 
@@ -553,11 +553,11 @@ export interface WorkflowNodeProps {
     "relative box-border h-[76px] w-[260px] rounded-md border-[1.5px] border-paper-200 bg-paper-0",
     "pl-[19px] pr-4 pt-3.5 pb-0 shadow-node outline-none",
     "transition-[box-shadow,border-color,opacity,filter] duration-base ease-flow",
-    "hover:border-paper-400",
+    "hover:border-paper-450",
     selected && "shadow-node-selected",
     dimmed && "opacity-45 grayscale",
     dragging && "shadow-drag opacity-95",
-    type === "hold" && "border-dashed border-paper-300"
+    type === "hold" && "border-dashed border-paper-450"
   )}
   role="button" tabIndex={-1}
   aria-label={`${typeLabel[type]}: ${title}`} aria-pressed={selected}
@@ -670,7 +670,7 @@ export function DurationBar({ level, showLabel, size = "sm" }: DurationBarProps)
 ```
 
 ### 상태
-default / dimmed(`opacity .45`) / unset(**렌더하지 않음** — 빈 막대 4개는 결핍으로 읽힌다) / over-threshold(level 4일 때만 노드 보더 `1.5px #A56A12`, 막대 색은 그대로).
+default / dimmed(`opacity .45`) / unset(**렌더하지 않음** — 빈 막대 4개는 결핍으로 읽힌다) / over-threshold(level 4일 때만 노드 보더 `1.5px #9E6511`, 막대 색은 그대로).
 
 ### 안티패턴
 - 막대를 색으로 구분(1=초록, 4=빨강). 원칙 3 위반.
@@ -792,13 +792,13 @@ export interface InspectorProps {
 입력      h 44px, padding 0 14px, 15px, 하단 1px n-200, 좌측 16px search 아이콘
 리스트    max-h 320px, padding 6px
 아이템    h 36px, padding 0 10px, radius 6px, gap 8px, icon 16px, 라벨 15/400
-힌트      우측 12/500 n-400 (예: "Enter")
+힌트      우측 12/500 paper-400 (예: "Enter")
 그룹헤더  h 26px, 12/500 n-500, padding 0 10px
 빈 상태   h 72px, 13 n-500 "찾는 게 없나요? 그냥 문장으로 적어도 됩니다"
 ```
 
 ### 상태
-- 아이템: default / **highlighted** `bg n-100`(브랜드색 아님 — 목록에서 초록이 반복되면 소음) / disabled `text n-400` / danger 항목은 `text danger`, hover 시 `bg #FBF1F0`.
+- 아이템: default / **highlighted** `bg n-100`(브랜드색 아님 — 목록에서 초록이 반복되면 소음) / disabled `text paper-400` / danger 항목은 `text danger`, hover 시 `bg #FBF1F0`.
 - 팔레트: opening(`opacity 0→1`, 140ms, 스케일·오버슈트 없음) / filtering(결과 0건이어도 닫히지 않음) / composing(**조합 중 Enter는 실행이 아니라 확정** — `isComposing` 체크 필수).
 
 ```tsx
@@ -1065,12 +1065,19 @@ export default {
       colors: {
         ink:      { DEFAULT: "#1C1B19", 600: "#302E2A", 900: "#111110" },
         brand:    { 50: "#EEF6F1", 100: "#DDEDE5", 500: "#2A7358", 600: "#1F5C46", 700: "#16452F" },
+        // ★ 대비 감사(DESIGN §4) 반영본. 아래 주석의 등급을 지우지 말 것 —
+        //   린트 규칙(§2)이 이 표를 근거로 삼는다.
         paper:    { 0: "#FFFFFF", 25: "#FCFBF9", 50: "#F7F6F3", 100: "#F0EEEA",
-                    200: "#E4E1DB", 300: "#D2CEC6", 400: "#A8A39A", 500: "#7C7770",
-                    700: "#45423D", 900: "#1C1B19" },
+                    200: "#E4E1DB",   // 1.26:1 — 면 구분 전용. border-*에 쓰지 말 것
+                    300: "#D2CEC6",   // 1.53:1 — 장식 보더(고스트 노드)만
+                    400: "#A8A39A",   // 2.43:1 — ✗ 텍스트 금지. 도트 그리드 등 순수 장식만
+                    450: "#948F87",   // 3.11:1 — ✓ 인풋·버튼·컨트롤 경계선 전용
+                    500: "#7C7770",   // 4.29:1 on paper-25 — 흰 배경(paper-0) 위에서만
+                    550: "#6F6A62",   // 5.19:1 — ✓ 보조 텍스트·캡션·placeholder
+                    700: "#45423D", 900: "#1C1B19" },  // 17.21:1
         danger:   { DEFAULT: "#B4342B", 600: "#9E2C24", 700: "#8A2620", tint: "#FBF1F0" },
-        branch:   { DEFAULT: "#A56A12", tint: "#FCF8F1" },
-        hold:     { DEFAULT: "#6E4666", tint: "#FBF7F9" },
+        branch:   { DEFAULT: "#9E6511", tint: "#FCF8F1" },  // 4.86:1 (구 #9E6511는 4.50:1로 임계 탈락)
+        hold:     { DEFAULT: "#6E4666", tint: "#FBF7F9" },  // 7.69:1
       },
       borderRadius: { xs: "4px", sm: "6px", md: "12px", lg: "14px", full: "999px" },
       height:    { "ctl-sm": "32px", "ctl-md": "36px", "ctl-lg": "44px" },
@@ -1121,6 +1128,41 @@ export default {
 
 **의도적으로 제외한 것**: `colors.blue|indigo|violet` 등 기본 팔레트 전체(`theme.extend`가 아니라 `theme.colors`를 덮어써 파랑을 아예 컴파일 불가로 만드는 옵션도 검토 — P1에서 `eslint` 규칙으로 대체), `boxShadow.sm|DEFAULT|lg`, `borderRadius.DEFAULT`, `animate-*` 기본 키프레임.
 
+### ⚠️ 린트 규칙이 공허해지지 않게 하는 법
+
+초안의 게이트는 **`n-400`을 찾도록** 적혀 있었다. 그런데 실제 클래스는 `paper-400`으로 컴파일된다 —
+**규칙이 0건을 찾고 항상 초록이 된다.** 방어하는 척하면서 아무것도 안 막는, 가장 위험한 실패 유형이다.
+
+> 게이트는 **소스에 실제로 존재하는 문자열**을 대상으로 해야 한다. 문서의 개념 이름이 아니라.
+
+```js
+// eslint.config.js — Tailwind 클래스 문자열을 AST 레벨에서 검사
+const FORBIDDEN = [
+  // [패턴, 사유]
+  [/\btext-paper-(200|300|400)\b/,     'paper-200/300/400은 텍스트 대비 미달. text는 paper-550 이상'],
+  [/\bplaceholder:text-paper-(400)\b/, 'placeholder는 주 안내문이다. paper-550 사용'],
+  [/\bborder-paper-(200|300)\b(?!.*decorative)/, '인터랙티브 경계선은 3:1 필요. paper-450 사용'],
+  [/\b(bg|text|border)-(blue|indigo|violet|sky|cyan)-/, '파랑은 팔레트에 없다 (D-020)'],
+  [/\banimate-(spin|pulse|bounce)\b/, '스피너·shimmer 금지 (STATES §8)'],
+  [/\bshadow-(sm|md|lg|xl)\b/,        '기본 그림자 금지. --edge-* 또는 --shadow-float'],
+  [/\brounded(-|$)(?!xs|sm|md|lg|full)/, 'radius는 5단계만 (xs/sm/md/lg/full)'],
+  [/\bring-offset-/,                   'ring-offset 이중 링 폐기. 이중 링은 box-shadow로'],
+];
+```
+
+**검증 테스트를 함께 넣는다** — 규칙이 실제로 뭔가를 잡는지 확인하는 테스트가 없으면 같은 사고가 반복된다.
+
+```ts
+// eslint.rules.test.ts
+it('금지 패턴이 실제 소스에서 최소 1건은 잡혀야 한다 (게이트 생존 확인)', () => {
+  // 의도적 위반 픽스처를 두고, 규칙이 그걸 잡는지 검증한다.
+  // 픽스처에서 0건이 나오면 규칙이 죽은 것이다.
+  expect(lintFixture('text-paper-400')).toHaveLength(1)
+  expect(lintFixture('bg-blue-500')).toHaveLength(1)
+  expect(lintFixture('animate-spin')).toHaveLength(1)
+})
+```
+
 ---
 
 ## 18. `app/globals.css`
@@ -1147,9 +1189,9 @@ export default {
     --brand-700:#16452F; --brand-600:#1F5C46; --brand-500:#2A7358; --brand-100:#DDEDE5; --brand-50:#EEF6F1;
     /* neutral */
     --n-0:#FFFFFF; --n-25:#FCFBF9; --n-50:#F7F6F3; --n-100:#F0EEEA; --n-200:#E4E1DB;
-    --n-300:#D2CEC6; --n-400:#A8A39A; --n-500:#7C7770; --n-700:#45423D; --n-900:#1C1B19;
+    --n-300:#D2CEC6; --paper-400:#A8A39A; --n-500:#7C7770; --n-700:#45423D; --n-900:#1C1B19;
     /* semantic */
-    --danger:#B4342B; --branch:#A56A12; --hold:#6E4666;
+    --danger:#B4342B; --branch:#9E6511; --hold:#6E4666;
     /* 시맨틱 별칭 — 컴포넌트는 가능하면 이 이름을 쓴다(다크모드는 여기만 교체) */
     --surface-app:    var(--n-25);
     --surface-canvas: var(--n-50);
@@ -1158,7 +1200,7 @@ export default {
     --border-strong:  var(--n-300);
     --text-primary:   var(--n-900);
     --text-secondary: var(--n-500);
-    --text-placeholder: var(--n-400);
+    --text-placeholder: var(--paper-400);
     /* motion */
     --dur-instant: 80ms; --dur-fast: 140ms; --dur-base: 200ms; --dur-slow: 320ms; --dur-stagger: 40ms;
     --ease-out: cubic-bezier(.16, 1, .3, 1);
@@ -1253,7 +1295,7 @@ export default {
 | 24px | 1.5 | 빈 상태 일러스트 대체 |
 
 12px에서 1.75는 안티에일리어싱에 먹혀 사라진다 → **12px만 2**. `absoluteStrokeWidth`는 쓰지 않는다(크기별로 명시 지정이 더 예측 가능하다).
-색은 기본 `n-500`, 텍스트와 나란히 놓이면 `currentColor`, 타입 액센트만 해당 hue.
+색은 기본 `paper-500`, 텍스트와 나란히 놓이면 `currentColor`, 타입 액센트만 해당 hue.
 
 ### 25개와 매핑
 
