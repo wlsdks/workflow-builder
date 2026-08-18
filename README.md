@@ -10,7 +10,7 @@ n8n·Zapier를 열기 전에 필요한 것 — 비개발자가 자기 업무 흐
 
 ## 어디부터 읽을까
 
-문서가 25개 37,000줄이다. **다 읽지 마라.** 온 이유에 맞는 경로만 따라가면 된다.
+문서가 26개 37,000줄이다. **다 읽지 마라.** 온 이유에 맞는 경로만 따라가면 된다.
 
 ### 처음이라면 — 10분
 
@@ -107,8 +107,8 @@ n8n·Zapier를 열기 전에 필요한 것 — 비개발자가 자기 업무 흐
 | | |
 |---|---|
 | [ROADMAP.md](./docs/ROADMAP.md) | 일정 재추정, **스파이크 6건**, 배포 차단 46종, 첫 주 시간표 |
-| [SEED-CONTENT.md](./docs/SEED-CONTENT.md) | 시드 워크플로 14개, **접합 지도 20건**, 칩 42개, 자동화·제거 후보 |
-| [TOOLS.md](./docs/TOOLS.md) | 도구 카탈로그 48종(동의어·자동화 연결성), 예외 프롬프트 뱅크 |
+| [SEED-CONTENT.md](./docs/SEED-CONTENT.md) | 시드 워크플로 14개, **접합 지도**, 칩 42개, 자동화·제거 후보 |
+| [TOOLS.md](./docs/TOOLS.md) | 도구 카탈로그(동의어·자동화 연결성), 예외 프롬프트 뱅크 |
 | [MEASUREMENT.md](./docs/MEASUREMENT.md) | 이벤트 택소노미, k-익명성 SQL, 퍼널 3종, **파일럿 A/B** |
 | [ANALYTICS-ENGINE.md](./docs/ANALYTICS-ENGINE.md) | 특징 추출, Feasibility 6요소, **ECRS 12종**, n8n export |
 
@@ -118,15 +118,26 @@ n8n·Zapier를 열기 전에 필요한 것 — 비개발자가 자기 업무 흐
 
 ## 코드
 
-```
-packages/graph-core/     graph = derive(tree) ⊕ overrides
-                         런타임 의존성 0 · React·DB·DOM 의존 없음 (타입 시스템으로 강제)
-                         골든 픽스처 36 + 불변식 12 + 스모크 9 = 57건 통과
-```
+**[packages/](./packages)** — 순수 함수 패키지 8개, 테스트 784건. 데이터가 흐르는 순서와 왜 이렇게 나눴는지는 [패키지 지도](./packages/README.md)에 있다.
+
+| | 하는 일 | deps | 테스트 |
+|---|---|---|---|
+| [`graph-core`](./packages/graph-core) | 트리 → 그래프 파생, op 리듀서 | **0** | 378 |
+| [`layout-core`](./packages/layout-core) | 파생 그래프 → 좌표. 앵커링·사이클 라우팅 | graph-core | 107 |
+| [`seed`](./packages/seed) | 시드 흐름 14 · 도구 78 · 칩 42 · 접합 19 | **0** | 86 |
+| [`scoring`](./packages/scoring) | Value·Feasibility · ECRS 12종 | **0** | 68 |
+| [`paste-parse`](./packages/paste-parse) | 붙여넣기 파싱. 한국어 절 분할 | **0** | 59 |
+| [`doc-gen`](./packages/doc-gen) | 인수인계 문서 생성 | **0** | 48 |
+| [`sync-protocol`](./packages/sync-protocol) | op 와이어 스키마 | zod | 19 |
+| [`analytics-schema`](./packages/analytics-schema) | 이벤트 스키마 | zod | 19 |
+
+앱 계층(`apps/web`)은 아직 없다. 위는 **그 아래에 깔릴 계산 계층**이다.
 
 ```bash
-cd packages/graph-core
-npm i && npm test && npm run typecheck
+npm install
+npm test                 # 784건
+npm run typecheck        # 순수성이 타입으로 증명된다
+node scripts/gates.mjs   # 배포 차단 게이트 17종
 ```
 
 ---
@@ -153,7 +164,17 @@ npm i && npm test && npm run typecheck
 
 ## 상태
 
-기획 완료 · 구현 착수 전. `graph-core`만 선행 구현.
+**기획 완료 · 계산 계층 구현 완료 · 앱 계층 착수 전.**
+
+| | |
+|---|---|
+| 문서 | 26개 · 37,372줄 |
+| 코드 | 8패키지 · 32,160줄 · 테스트 784건 |
+| 결정 | 79건 채택 · 23건 기각 |
+| 없는 것 | **`apps/web` 전체.** 사용자가 실제로 쓸 수 있는 화면은 아직 없다 |
+
+지금 돌아가는 것은 계산 계층뿐이다 — 트리를 그래프로 파생하고, 붙여넣은 글을 단계로 쪼개고,
+좌표를 계산하고, 인수인계 문서를 만들고, 자동화 후보를 점수화한다. 전부 함수 호출로만 확인된다.
 
 **20개 관점의 독립 전문가 검토**를 종합했다 — PM · 조직 도입 · UX 리서치 · BPM/프로세스 마이닝 · 시장 분석 · 기술 아키텍처 · 비주얼 디자인 · 정보 시각화 · UX 라이팅 · 화면 설계 · 컴포넌트 · 시드 콘텐츠 · 접근성 · 애널리틱스 · 파싱 · 그래프 알고리즘 · 문서 생성 · 엔티티 레졸루션 · 보안 거버넌스 · 제품 정책 · 실행 계획.
 
