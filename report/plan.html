@@ -1,0 +1,909 @@
+<title>내 일이 뭔지 아무도 모른다</title>
+<style>
+  :root {
+    --ink:        #1C1B19;
+    --ink-2:      #45423D;
+    --sub:        #6F6A62;
+    --faint:      #948F87;
+    --rule:       #E4E1DB;
+    --rule-firm:  #D2CEC6;
+    --paper:      #FCFBF9;
+    --paper-2:    #F7F6F3;
+    --paper-3:    #F0EEEA;
+    --brand:      #1F5C46;
+    --brand-soft: #EEF6F1;
+    --brand-100:  #DDEDE5;
+    --warn:       #9E6511;
+    --hold:       #6E4666;
+    --danger:     #B4342B;
+
+    --sans: Pretendard, "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+            "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+    --serif: "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink:#EDEAE4; --ink-2:#CFC9BF; --sub:#A29A8D; --faint:#7A7367;
+      --rule:#322E27; --rule-firm:#454036;
+      --paper:#141310; --paper-2:#1C1A16; --paper-3:#232019;
+      --brand:#6BB795; --brand-soft:#1B2E26; --brand-100:#24382E;
+      --warn:#D19B4C; --hold:#B893B2; --danger:#E08076;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink:#EDEAE4; --ink-2:#CFC9BF; --sub:#A29A8D; --faint:#7A7367;
+    --rule:#322E27; --rule-firm:#454036;
+    --paper:#141310; --paper-2:#1C1A16; --paper-3:#232019;
+    --brand:#6BB795; --brand-soft:#1B2E26; --brand-100:#24382E;
+    --warn:#D19B4C; --hold:#B893B2; --danger:#E08076;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.78;
+    letter-spacing: -0.004em;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    -webkit-font-smoothing: antialiased;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .page { max-width: 760px; margin: 0 auto; padding: 0 32px 120px; }
+
+  /* ─── 표지 ─────────────────────────────────────────── */
+  .cover {
+    padding: 100px 0 56px; border-bottom: 2px solid var(--ink); margin-bottom: 8px;
+    display: flex; flex-direction: column;
+  }
+  .cover .meta {
+    font-size: 12.5px; font-weight: 600; letter-spacing: .01em;
+    color: var(--brand); margin: 0 0 28px;
+  }
+  .cover h1 {
+    font-size: 40px; line-height: 1.22; letter-spacing: -0.03em; font-weight: 700;
+    margin: 0 0 22px; text-wrap: balance;
+  }
+  .cover .thesis {
+    font-size: 19px; line-height: 1.68; color: var(--ink-2); margin: 0 0 32px;
+    max-width: 30em; font-weight: 500;
+  }
+  .cover .facts {
+    display: flex; flex-wrap: wrap; gap: 0 36px;
+    font-size: 13px; color: var(--sub); padding-top: 8px; margin-top: auto;
+  }
+  .cover .facts b { color: var(--ink); font-weight: 600; }
+
+  /* ─── 목차 ─────────────────────────────────────────── */
+  .toc { margin: 48px 0 0; padding: 0; }
+  .toc h2 {
+    font-size: 13px; letter-spacing: .04em; color: var(--faint); font-weight: 600;
+    margin: 0 0 4px; border: 0; padding: 0 0 12px;
+    border-bottom: 1px solid var(--rule-firm); text-transform: none;
+  }
+  .toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
+  .toc li {
+    counter-increment: toc; display: grid;
+    grid-template-columns: 26px 1fr auto; align-items: baseline;
+    column-gap: 4px; padding: 13px 0; border-bottom: 1px solid var(--rule);
+  }
+  .toc li::before {
+    content: counter(toc); font-family: var(--mono); font-size: 12px; color: var(--brand);
+  }
+  .toc a {
+    color: var(--ink); text-decoration: none; font-size: 16px; font-weight: 600;
+    letter-spacing: -0.018em;
+  }
+  .toc .mid { min-width: 0; }
+  .toc .note { display: block; color: var(--sub); font-size: 13.5px; margin-top: 2px; }
+  .toc .pg {
+    font-family: var(--mono); font-size: 13px; color: var(--sub);
+    padding-left: 16px; white-space: nowrap;
+  }
+
+  /* ─── 섹션 ─────────────────────────────────────────── */
+  section { margin-top: 72px; }
+  section > h2 {
+    font-size: 27px; line-height: 1.32; letter-spacing: -0.024em; font-weight: 700;
+    margin: 0 0 8px; padding-top: 20px; border-top: 2px solid var(--ink);
+    text-wrap: balance;
+  }
+  .kicker {
+    font-size: 12.5px; font-weight: 600; letter-spacing: -0.004em;
+    color: var(--brand); margin: 0 0 26px;
+  }
+  h3 {
+    font-size: 19px; line-height: 1.45; letter-spacing: -0.018em; font-weight: 600;
+    margin: 40px 0 10px; text-wrap: balance;
+  }
+  h4 {
+    font-size: 16px; line-height: 1.5; letter-spacing: -0.012em; font-weight: 600;
+    margin: 28px 0 6px;
+  }
+  p { margin: 0 0 18px; }
+  strong { font-weight: 600; }
+  em { font-style: normal; color: var(--sub); }
+
+  ul, ol { margin: 0 0 20px; padding-left: 22px; }
+  li { margin-bottom: 8px; }
+  li::marker { color: var(--faint); }
+
+  code, .mono { font-family: var(--mono); font-size: .85em; letter-spacing: 0; }
+  code { background: var(--paper-3); padding: 1px 5px; border-radius: 4px; }
+
+  a { color: var(--brand); }
+
+  /* ─── 강조 장치 ────────────────────────────────────── */
+  blockquote {
+    margin: 30px 0; padding: 2px 0 2px 24px; border-left: 3px solid var(--brand);
+    font-size: 19.5px; line-height: 1.62; font-weight: 500;
+    letter-spacing: -0.022em; color: var(--ink); text-wrap: pretty;
+  }
+  blockquote p { margin: 0; }
+  blockquote p + p { margin-top: 12px; }
+  blockquote cite {
+    display: block; margin-top: 12px; font-family: var(--sans); font-style: normal;
+    font-size: 12.5px; letter-spacing: .01em; color: var(--faint);
+  }
+
+  .callout {
+    margin: 26px 0; padding: 18px 22px; background: var(--paper-2);
+    border: 1px solid var(--rule); border-radius: 12px;
+  }
+  .callout.brand { background: var(--brand-soft); border-color: var(--brand-100); }
+  .callout.warn  { background: var(--paper-2); border-left: 3px solid var(--warn); border-radius: 0 12px 12px 0; }
+  .callout > :first-child { margin-top: 0; }
+  .callout > :last-child { margin-bottom: 0; }
+  .callout .lbl {
+    display: block; font-size: 12px; font-weight: 600; letter-spacing: -0.004em;
+    color: var(--brand); margin-bottom: 9px;
+  }
+  .callout.warn .lbl { color: var(--warn); }
+
+  /* ─── 표 ───────────────────────────────────────────── */
+  .tw { margin: 24px 0; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.6; }
+  th, td { text-align: left; padding: 11px 14px 11px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th {
+    font-size: 12px; font-weight: 600; letter-spacing: -0.004em;
+    color: var(--faint); border-bottom: 1px solid var(--rule-firm); padding-bottom: 8px;
+  }
+  td:first-child { font-weight: 600; }
+  tr:last-child td { border-bottom: 0; }
+  .num { font-family: var(--mono); font-size: 13.5px; white-space: nowrap; }
+
+  /* ─── 도식 ─────────────────────────────────────────── */
+  pre.fig {
+    margin: 26px 0; padding: 22px 24px; background: var(--paper-2);
+    border: 1px solid var(--rule); border-radius: 12px;
+    font-family: var(--mono); font-size: 12.5px; line-height: 1.62;
+    letter-spacing: 0; overflow-x: auto; color: var(--ink-2);
+  }
+  figcaption {
+    font-size: 12.5px; color: var(--faint); margin: -14px 0 26px; padding-left: 2px;
+  }
+
+  /* ─── 결정 카드 ────────────────────────────────────── */
+  .dec {
+    margin: 0 0 18px; padding: 20px 22px; background: var(--paper-2);
+    border: 1px solid var(--rule); border-left: 3px solid var(--rule-firm);
+    border-radius: 0 12px 12px 0;
+  }
+  .dec.key { border-left-color: var(--brand); background: var(--brand-soft); }
+  .dec h4 { margin: 0 0 10px; font-size: 17px; }
+  .dec p { margin: 0 0 10px; font-size: 15px; }
+  .dec p:last-child { margin-bottom: 0; }
+  .dec .why {
+    margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--rule-firm);
+    font-size: 14.5px; color: var(--sub);
+  }
+  .dec .why b { color: var(--ink); }
+
+  /* ─── 상태 배지 ────────────────────────────────────── */
+  .st { font-family: var(--mono); font-size: 11.5px; white-space: nowrap; }
+  .st.on  { color: var(--brand); }
+  .st.off { color: var(--faint); }
+
+  /* ─── 푸터 ─────────────────────────────────────────── */
+  .end {
+    margin-top: 80px; padding-top: 24px; border-top: 2px solid var(--ink);
+    font-size: 13px; color: var(--sub);
+  }
+  .end h3 { margin-top: 0; font-size: 16px; }
+
+  /* ═══ 인쇄 ═════════════════════════════════════════════ */
+  @page { size: A4; margin: 20mm 18mm 22mm; }
+
+  @media print {
+    :root {
+      --ink:#1C1B19; --ink-2:#45423D; --sub:#5F5A52; --faint:#7C7770;
+      --rule:#DAD6CE; --rule-firm:#BAB5AC;
+      --paper:#FFFFFF; --paper-2:#F8F7F4; --paper-3:#F0EEEA;
+      --brand:#1A5340; --brand-soft:#F2F8F4; --brand-100:#D5E7DD;
+    }
+    body { font-size: 10.5pt; line-height: 1.7; background: #fff; }
+    blockquote { font-size: 12.5pt; }
+    .page { max-width: none; padding: 0; }
+
+    .cover { padding: 0 0 0; page-break-after: always; min-height: 246mm; }
+    .cover h1 { font-size: 30pt; }
+    .cover .thesis { font-size: 13pt; }
+    .toc { page-break-after: always; }
+    .toc li { padding: 10pt 0; }
+    .toc a { font-size: 11.5pt; }
+
+    section { margin-top: 0; page-break-before: always; }
+    section:first-of-type { page-break-before: avoid; }
+    section > h2 { font-size: 18pt; padding-top: 0; }
+    h3 { font-size: 13pt; page-break-after: avoid; }
+    h4 { font-size: 11pt; page-break-after: avoid; }
+    p, li { orphans: 3; widows: 3; }
+
+    /* 덩어리는 쪼개지지 않게 */
+    blockquote, .callout, .dec, pre.fig, table, figcaption { page-break-inside: avoid; }
+    tr, h2 + p, h3 + p { page-break-inside: avoid; }
+
+    .tw { overflow: visible; }
+    pre.fig { font-size: 8.5pt; background: #F8F7F4; }
+    a { color: inherit; text-decoration: none; }
+    .toc a { color: inherit; }
+  }
+</style>
+
+<div class="page">
+
+<header class="cover">
+  <p class="meta">제품 기획서 · 2026년 8월</p>
+  <h1>내 일이 뭔지<br>아무도 모른다</h1>
+  <p class="thesis">
+    비개발자가 자기 업무 흐름을 적으면 다이어그램이 자동으로 그려지고,
+    어디를 자동화 — 혹은 제거 — 할지 드러나는 도구.
+  </p>
+  <div class="facts">
+    <span>가칭 <b>Preflow</b></span>
+    <span>대상 <b>사내 전 직원</b></span>
+    <span>상태 <b>계산 계층 구현 완료</b></span>
+  </div>
+</header>
+
+<nav class="toc">
+  <h2>차례</h2>
+  <ol>
+    <li>
+      <span class="mid"><a href="#s1">한 문장</a>
+        <span class="note">이 제품이 파는 것</span></span>
+      <span class="pg" data-sec="s1">3</span>
+    </li>
+    <li>
+      <span class="mid"><a href="#s2">비어 있는 자리</a>
+        <span class="note">왜 아무도 이걸 안 만들었나</span></span>
+      <span class="pg" data-sec="s2">4</span>
+    </li>
+    <li>
+      <span class="mid"><a href="#s3">어떻게 동작하는가</a></span>
+      <span class="pg" data-sec="s3">5</span>
+    </li>
+    <li>
+      <span class="mid"><a href="#s4">설계 결정 여덟</a>
+        <span class="note">그리고 그 근거</span></span>
+      <span class="pg" data-sec="s4">6</span>
+    </li>
+    <li>
+      <span class="mid"><a href="#s5">이 제품이 죽는 방법</a></span>
+      <span class="pg" data-sec="s5">9</span>
+    </li>
+    <li>
+      <span class="mid"><a href="#s6">시장과 경쟁</a></span>
+      <span class="pg" data-sec="s6">11</span>
+    </li>
+    <li>
+      <span class="mid"><a href="#s7">무엇을 어떤 순서로 만드나</a></span>
+      <span class="pg" data-sec="s7">12</span>
+    </li>
+    <li>
+      <span class="mid"><a href="#s8">지금 상태 — 정직하게</a></span>
+      <span class="pg" data-sec="s8">14</span>
+    </li>
+  </ol>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="s1">
+  <h2>한 문장</h2>
+  <p class="kicker">01 · 이 제품이 파는 것</p>
+
+  <blockquote>
+    <p>직원은 "설명하지 않아도 되는 업무 문서"를 얻고,<br>회사는 "직원이 직접 만든 자동화 백로그"를 얻는다.</p>
+  </blockquote>
+
+  <p>
+    같은 데이터로 두 개의 서로 다른 약속을 한다. 이 이중성이 제품 구조의 전부이고,
+    이 문서 나머지는 대부분 그 둘이 충돌하지 않게 만드는 방법에 관한 것이다.
+  </p>
+
+  <p>
+    직원에게 파는 것은 <strong>자동화가 아니다.</strong> 그건 회사에 파는 것이고,
+    직원에게는 다른 것을 준다 — 같은 걸 다섯 번 설명하지 않아도 되는 문서,
+    휴가 갈 때 대신할 사람에게 건넬 안내, 인수인계 때 그대로 쓰는 자료.
+  </p>
+
+  <div class="callout brand">
+    <span class="lbl">왜 이 구분이 중요한가</span>
+    <p>
+      직원 화면에 "자동화"라는 단어가 뜨는 순간, 사용자는 자기 일을 없애는 문서에
+      성실히 데이터를 입력해야 하는 상황에 놓인다. 그러면 소요시간은 부풀려지고,
+      불편한 단계는 정치적으로 선택된다. <strong>채택 문제가 아니라 데이터 품질 문제다.</strong>
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="s2">
+  <h2>비어 있는 자리</h2>
+  <p class="kicker">02 · 왜 아무도 이걸 안 만들었나</p>
+
+  <p>
+    n8n이나 Zapier 같은 자동화 도구를 도입한 조직은 곧 같은 벽에 부딪힌다.
+    <strong>무엇을 자동화할지 아는 사람이 없다.</strong> IT팀은 시스템 흐름은 알아도
+    현업이 매주 세 시간씩 돌리는 엑셀 수작업은 모르고, 현업은 그게 자동화 대상이라는
+    생각 자체를 해본 적이 없다.
+  </p>
+
+  <p>이 질문에 답하려는 기존 해법은 셋인데, 셋 다 같은 곳을 못 본다.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>해법</th><th>보는 것</th><th>못 보는 것</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>프로세스 마이닝<br><span class="st off">Celonis · 퍼즐데이터</span></td>
+          <td>ERP·그룹웨어 이벤트 로그</td>
+          <td>로그가 남지 않는 업무. 그리고 국내 진입 패키지가 1.5억 원대다</td>
+        </tr>
+        <tr>
+          <td>태스크 마이닝<br><span class="st off">Scribe · StepHow</span></td>
+          <td>브라우저 안의 클릭과 입력</td>
+          <td><strong>브라우저 밖 전부</strong> — 전화, 오프라인 승인, 카톡, 부서 간 대기</td>
+        </tr>
+        <tr>
+          <td>다이어그램 툴<br><span class="st off">Miro · Whimsical</span></td>
+          <td>사람이 그린 그림</td>
+          <td>그림만 남고 <strong>데이터가 안 쌓인다.</strong> 집계도 비교도 불가능</td>
+        </tr>
+        <tr>
+          <td>컨설팅</td>
+          <td>인터뷰로 캐낸 실제 흐름</td>
+          <td>1회성. <strong>프로젝트가 끝나는 날이 문서 사망일이다</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    공통점이 보인다. <strong>로그에도 화면에도 남지 않는 업무</strong>가 통째로 사각지대다.
+    그런데 실무 시간의 상당 부분이 정확히 거기 있다 — 카톡 확인, 엑셀 수기 정리,
+    유선 승인, 옆 부서 회신 대기.
+  </p>
+
+  <p>
+    이 영역의 유일한 데이터 소스는 <strong>당사자의 기억</strong>이다.
+    그리고 그걸 구조화해서 수집하는 제품은 사실상 없다.
+  </p>
+
+  <h3>단, 문제의 주인을 혼동하면 안 된다</h3>
+
+  <p>
+    "내 일이 뭔지부터 알아야 한다"는 문제의식의 주인은 <strong>자동화를 도입하려는 쪽</strong>이다.
+    COO, DX 담당, 경영지원실장. 영업팀 김대리가 아니다.
+  </p>
+
+  <blockquote>
+    <p>김대리는 자기 일을 안다 — 몸으로. 문서로 없을 뿐이다.<br>
+       그에게 "당신 일이 뭔지 알아야 합니다"는 문제 제기가 아니라 잔소리다.</p>
+  </blockquote>
+
+  <p>
+    이 구분을 놓치면 제품 전체가 어긋난다. 그래서 §1의 이중 약속이 필요했고,
+    그게 이 기획의 첫 번째 결정이다.
+  </p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="s3">
+  <h2>어떻게 동작하는가</h2>
+  <p class="kicker">03</p>
+
+  <p>
+    핵심 베팅은 하나다. <strong>입력은 글처럼, 출력은 그림으로.</strong>
+    사용자는 선을 단 한 번도 직접 긋지 않는다.
+  </p>
+
+  <p>
+    비개발자에게 빈 캔버스와 노드 팔레트를 주면 얼어붙는다. Miro가 좋은 도구인데도
+    업무 정리에 잘 안 쓰이는 이유가 그것이다. 반면 사람들이 실제로 말하는 방식은
+    <em>"메일이 오면 확인하고, 단순한 거면 바로 답장하고, 복잡하면 팀장님께 여쭤보고…"</em> —
+    선형 서술에 가끔의 분기다.
+  </p>
+
+  <pre class="fig">① 붙여넣기
+   기존 워드 매뉴얼 · 카톡 인수인계 · 메일 스레드를 그대로 붙여넣으면
+   한국어 연결어미와 번호·동사 패턴으로 단계를 분해한다. AI 없이.
+                    ↓ 붙여넣을 게 없으면
+② 질문 연쇄
+   한 번에 한 질문. 계층 없음, 실패 불가능.
+   "먼저 무슨 일이 시작되나요?" → "그다음엔요?" → 다섯 번
+                    ↓ 자동 전환
+③ 아웃라인 + 다이어그램
+   왼쪽에 글을 적으면 오른쪽에 그림이 자동으로 그려진다
+                    ↓ 다 쓰고 나서
+④ 메타데이터 카드
+   전체화면으로 한 화면 한 질문. "모르겠어요"가 정답과 같은 크기
+                    ↓
+⑤ 인수인계 문서 · 요약 · 자동화 후보</pre>
+  <figcaption>사용자가 통과하는 다섯 단계. ①과 ②는 대안 관계다.</figcaption>
+
+  <h3>왜 아웃라인이 첫 화면이 아닌가</h3>
+
+  <p>
+    초안에서 가장 크게 뒤집힌 지점이다. 처음에는 "아웃라인 우선"이 핵심 베팅이었는데,
+    UX 검토에서 정면으로 반박당했다.
+  </p>
+
+  <blockquote>
+    <p>
+      사람은 자기 업무를 순서가 매겨진 계층 구조로 기억하지 않는다. 에피소드로 기억한다 —
+      "메일이 오면 짜증나고, 엑셀에 옮기는 게 제일 오래 걸리고, 팀장님이 늦게 답하면 하루가 밀려요".
+      아웃라인은 이 원재료를 <strong>정리한 결과물</strong>인데, 첫 화면부터 정리된 형태를 요구하면
+      기억 인출과 구조 설계를 동시에 시키는 셈이다.
+    </p>
+  </blockquote>
+
+  <p>
+    그래서 아웃라인은 <strong>첫 입력 표면이 아니라 편집기</strong>로 강등됐다.
+    질문 연쇄로 대여섯 개를 모은 뒤 "이렇게 정리해봤어요"라며 넘긴다.
+  </p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="s4">
+  <h2>설계 결정 여덟</h2>
+  <p class="kicker">04 · 그리고 그 근거</p>
+
+  <p>
+    중요도 순이다. 첫 번째가 나머지 전부를 지배한다.
+    각 결정에는 <strong>뒤집는 조건</strong>이 붙어 있다 — 어떤 신호가 오면 재논의할지
+    미리 적어두지 않으면, 무엇을 가정하고 있는지 스스로도 모르게 된다.
+  </p>
+
+  <div class="dec key">
+    <h4>1 · 관리자에게 개인 데이터를 보여주지 않는다</h4>
+    <p>
+      이 제품은 <strong>직원이 자발적으로 진실을 적어야만 작동한다.</strong>
+      부풀린 소요시간과 이상적인 해피패스로 채워진 데이터는 쓸모가 없다 —
+      자동화 후보 목록이 쓰레기가 되고, 그러면 경영진에게 한 약속도 못 지킨다.
+    </p>
+    <p>
+      그래서 관리자 화면에는 <strong>사람이 등장하지 않는다.</strong>
+      집계 단위는 프로세스이고, 5인 미만 그룹은 표시 자체가 차단된다.
+    </p>
+    <p class="why">
+      진실을 얻는 유일한 방법은 그 진실이 자신에게 불리하게 쓰이지 않는다는 확신이고,
+      그 확신은 처리방침 문구가 아니라 <b>"만들 수 있는데 안 만들었다"는 증명</b>에서 나온다.
+      경영진은 "부서별로 좀 보면 안 되나"를 <b>6개월 안에 반드시 요구한다.</b>
+      그때 거절할 근거를 지금 만들어 두는 것이 이 프로젝트에서 할 수 있는 가장 가치 있는 일이다.
+    </p>
+  </div>
+
+  <div class="dec">
+    <h4>2 · Tab 들여쓰기를 분기 문법에서 뺀다</h4>
+    <p>
+      Tab으로 계층을 만드는 개념을 즉시 이해하지 못할 사용자가 <strong>30~50%</strong>로 추정된다.
+      대신 "만약 ~라면 / 아니면 ~라면"이라는 자연어 껍데기를 UI에 인쇄한다.
+    </p>
+    <p class="why">
+      더 나쁜 건 실패 모드가 <b>조용하다</b>는 것이다. Tab을 안 눌러도 화면은 멀쩡히 그려지고,
+      사용자는 자기가 틀렸다는 걸 모른 채 나중에 "이 도구 이상하다"고 결론낸다.
+      시끄러운 실패는 고칠 수 있지만 조용한 실패는 신뢰를 갉아먹는다.
+    </p>
+  </div>
+
+  <div class="dec">
+    <h4>3 · 노드 타입은 세 개, 표현력은 속성으로</h4>
+    <p>
+      <strong>작업 · 분기 · 기다림.</strong> 타입을 늘리면 학습 부담이 늘고,
+      안 늘리면 실무를 못 그린다. 문법이 아니라 속성으로 흡수하면
+      커버리지가 55~65%에서 <strong>85%</strong>로 오른다.
+    </p>
+    <p class="why">
+      병렬(AND)과 배타(XOR)를 구분하지 않으면 시각화만 어긋나는 게 아니라 <b>숫자가 틀린다.</b>
+      실측: 같은 그림에서 AND 4시간, XOR 2.5시간, 미구분 합산 5시간 — 각각 25%·100% 과대 계산.
+    </p>
+  </div>
+
+  <div class="dec">
+    <h4>4 · 작성 중에는 메타데이터를 묻지 않는다</h4>
+    <p>
+      작성 흐름에 여섯 필드를 노출하면 담당자 외에는 <strong>20% 미만</strong> 채워진다.
+      다 쓰고 나서 전체화면 카드로 분리하고, 입력이 아니라 <strong>확인</strong>으로 만든다 —
+      "엑셀에 정리"라고 쓰면 줄 끝에 배지가 뜨고 클릭 한 번.
+    </p>
+    <p class="why">
+      게으름이 아니라 세 가지다 — 인지 전환 비용(기억을 되짚는 중에 정량화 질문이 끼어든다),
+      정확도 불안("30분인지 40분인지 모르겠는데"), 보상 부재.
+    </p>
+  </div>
+
+  <div class="dec">
+    <h4>5 · 자기보고 데이터의 왜곡을 설계로 보정한다</h4>
+    <p>
+      <strong>빈도 왜곡이 시간 왜곡보다 치명적이다</strong> — 시간 × 빈도 곱셈이라
+      오차가 곱해져 랭킹 상위가 통째로 뒤집힌다. 그래서 "평소 얼마나 자주"가 아니라
+      <strong>"지난 7일 동안 몇 번"</strong>으로 회상 기간을 고정한다.
+    </p>
+    <p class="why">
+      가장 강력한 장치는 <b>총량 정산</b>이다. 그 사람이 적은 모든 흐름의 월 환산 합계를
+      되돌려준다 — <i>"합계 240시간 / 근무 160시간"</i>. 그러면 본인이 재배분한다.
+      개별 추정을 백 번 다듬는 것보다 효과가 크다.
+    </p>
+  </div>
+
+  <div class="dec">
+    <h4>6 · 자동화보다 제거가 먼저</h4>
+    <p>
+      랭킹 이전에 묻는다 — <strong>"자동화하기 전에 없앨 수 있는가?"</strong>
+      승인 3단계 중 반려율 0%인 단계는 자동화 대상이 아니라 제거 대상이다.
+    </p>
+    <p class="why">
+      제거 후보 리스트가 자동화 후보 리스트보다 훨씬 <b>희소하고 경영진에게 잘 팔린다.</b>
+      그리고 개발이 0줄이다. 실제 시드 데이터에서 나온 것 — 구매 팀장 결재(10~300만원)는
+      6개월 반려 0건에 평균 대기 3일. 기준선을 올리면 <b>리드타임 −3일, 연 62시간 회수.</b>
+    </p>
+  </div>
+
+  <div class="dec">
+    <h4>7 · 상대에 대한 평가를 수집하지 않는다</h4>
+    <p>
+      전 직원이 각자 적으면 "구매 요청" 하나가 요청자·팀장·구매팀·재무팀 네 조각으로 흩어진다.
+      이걸 잇고 <strong>불일치를 발견</strong>하는 것이 개인 도구로는 만들 수 없는 가치다 —
+      <em>"요청자는 2일 걸린다 하고 구매팀은 5일이라 한다."</em>
+    </p>
+    <p>
+      단, 수집하는 것은 <strong>자기 관점의 사실</strong>뿐이다.
+      불일치는 두 사람의 자기 기술을 시스템이 대조해서 찾아낸다.
+    </p>
+    <p class="why">
+      <b>"저쪽이 얼마나 늦나요"를 한 번이라도 물으면, 이후 어떤 노출 정책으로도 정치를 막을 수 없다.</b>
+      정치를 막는 건 노출 통제가 아니라 질문 설계다.
+    </p>
+  </div>
+
+  <div class="dec">
+    <h4>8 · 디자인은 마감이 아니라 기능</h4>
+    <p>
+      이유가 둘이다. <strong>"회사가 시킨 시스템"처럼 보이면 그 순간 끝난다</strong> —
+      감시 도구 낙인은 카피가 아니라 시각적 톤에서 먼저 결정된다.
+      그리고 <strong>결과물이 남에게 공유된다</strong> — 예뻐야 공유하고, 공유돼야 확산되므로
+      디자인이 곧 바이럴 계수다.
+    </p>
+    <p class="why">
+      구체적 금지: % 게이지·도넛·진행률 바·리더보드·팀 평균(<b>집계는 그리지 않는다</b>),
+      신호등 색(<b>색은 판단하지 않고 분류만</b>), confetti(<b>실직 공포를 정확히 자극한다</b>),
+      파랑(<b>"회사 시스템" 인상</b>).
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="s5">
+  <h2>이 제품이 죽는 방법</h2>
+  <p class="kicker">05</p>
+
+  <p>기능이 부족해서가 아니다. 위험한 순서대로 적는다.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th style="width:34%">사망 원인</th><th>방어</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>1 · 효용 미증명</td>
+          <td>
+            직원이 불편함을 적었는데 6개월간 아무것도 안 바뀌면, 그 사람은 물론
+            <strong>그가 속한 부서 전체가 두 번 다시 안 쓴다.</strong>
+            → 자동화 실행 예산과 담당 인력 없이 오픈하지 않는다.
+            도구보다 "발굴된 것을 처리하는 팀"이 먼저다.
+          </td>
+        </tr>
+        <tr>
+          <td>2 · 감시 도구 낙인</td>
+          <td>한 번 찍히면 정책을 바꿔도 신뢰는 안 돌아온다. → 설계 결정 1번 전체가 이 방어에 쓰인다.</td>
+        </tr>
+        <tr>
+          <td>3 · 입력 절벽</td>
+          <td>첫 문서를 끝까지 쓰는 사람이 20% 미만. → 시드 콘텐츠를 팀이 먼저 채우고, 붙여넣기 파싱과 질문 연쇄로 백지를 없앤다.</td>
+        </tr>
+        <tr>
+          <td>4 · 죽은 문서 무덤</td>
+          <td><strong>읽을 이유 없는 문서는 반드시 썩는다. 실행에 쓰이는 문서만 산다.</strong> → 작성한 흐름을 체크리스트로 다시 열게 만든다. 여는 순간 틀린 단계가 그 자리에서 고쳐진다.</td>
+        </tr>
+        <tr>
+          <td>5 · 레이아웃 점프</td>
+          <td>타이핑할 때마다 그림이 춤추면 즉시 신뢰를 잃는다. → 타이핑 중 재배치 금지, 구조 변경 시에만 다시 그린다.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn">
+    <span class="lbl">단 하나의 생존 지표</span>
+    <p>
+      <strong>D14 재편집률이 5% 아래면 이 제품은 "죽은 문서 생성기"다.</strong>
+      문서를 만들었다는 것만으로는 아무것도 증명되지 않는다.
+      2주 뒤에 다시 열어서 고치는 사람이 있어야 살아 있는 것이다.
+    </p>
+  </div>
+
+  <h3>측정하는 것</h3>
+
+  <p>
+    북극성 지표는 <strong>부서 커버리지</strong>다 — 최근 30일 내 프로세스를 1개 이상 완성했고,
+    <strong>그 문서가 타인에게 1회 이상 열람된</strong> 직원의 비율. 만든 것만으로는 세지 않는다.
+  </p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>지표</th><th class="num">목표</th><th>못 맞추면</th></tr></thead>
+      <tbody>
+        <tr><td>첫 다이어그램까지</td><td class="num">≤ 8분</td><td>입력 절벽</td></tr>
+        <tr><td>작성 완료율</td><td class="num">60%</td><td>결과물이 기대에 못 미침</td></tr>
+        <tr><td>노드 드래그 시도</td><td class="num">&lt; 1회/세션</td><td>레이아웃 신뢰 붕괴</td></tr>
+        <tr><td>공유율</td><td class="num">30%</td><td>"보여줄 만하다"에 실패</td></tr>
+        <tr><td>열람자 / 작성자</td><td class="num">≥ 3:1</td><td>성장 루프 없음</td></tr>
+        <tr><td>D14 재편집률</td><td class="num">25%</td><td>죽은 문서 생성기</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    현실적 예측은 <strong>전사 40%가 최소 1개 문서, 그중 20%만 살아있는 문서</strong>다.
+    그 정도로 충분하다 — 자동화 후보 발굴은 전수조사가 필요 없고,
+    40%면 반복업무 지형도의 80%가 드러난다.
+  </p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="s6">
+  <h2>시장과 경쟁</h2>
+  <p class="kicker">06</p>
+
+  <h3>가장 위험한 경쟁자</h3>
+
+  <p>
+    <strong>Notion이다.</strong> 직원이 이미 글을 쓰는 곳이고, AI가 Mermaid 다이어그램을 출력하며,
+    DB 속성으로 담당자·도구·시간을 담고 롤업으로 합계를 낸다.
+    <strong>템플릿 한 장으로 이 제품의 70%가 재현된다.</strong>
+    부족한 건 아웃라인과 다이어그램의 양방향 동기화 하나뿐이다.
+  </p>
+
+  <p>
+    두 번째는 <strong>Scribe 같은 태스크 마이닝</strong>인데, 기능이 아니라
+    <strong>입력 비용</strong>에서 이긴다. 적지 않아도 기록되기 때문이다.
+    다만 브라우저 밖은 못 본다.
+  </p>
+
+  <h3>해자가 있는가 — 냉정하게</h3>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>주장</th><th>판정</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>아웃라인 → 자동 다이어그램</td>
+          <td><strong>해자 아님.</strong> Napkin·Whimsical AI·Notion이 유사 결과를 낸다. 4~8주면 복제된다. 다만 이들은 "한 번 생성"이라 3주 후 문서와 그림이 어긋난다 — <strong>양방향 유지보수는 6~12개월 리드타임</strong></td>
+        </tr>
+        <tr>
+          <td>자동화 후보 스코어링</td>
+          <td><strong>계산식은 3개월이면 복제된다.</strong> 복제 불가능한 건 축적된 데이터 — 전 직원의 단계·도구·시간 레코드, 도구명 정규화 사전, 부서 간 중복 단계 그래프</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <p>
+      <strong>결론: 기능 해자는 없다. 데이터 자산 해자는 실재하나, 사용자가 꾸준히 입력할 때만 형성된다.</strong>
+      즉 이 제품의 방어력 전부가 <strong>"입력 습관 형성"</strong>이라는 한 점에 걸려 있다.
+    </p>
+  </div>
+
+  <h3>포지셔닝</h3>
+
+  <p>
+    두 갈래를 함께 쓴다. <strong>유료 헤드라인은 "직원들이 직접 만드는, 우리 회사의 자동화 백로그"</strong>,
+    <strong>무료 진입로는 "쓰기만 하면 흐름도가 되는 업무 기록 — 인수인계와 온보딩용"</strong>이다.
+  </p>
+
+  <blockquote>
+    <p>진입로만으로는 예산이 없고, 헤드라인만으로는 사용자가 없다.</p>
+  </blockquote>
+
+  <p>
+    요금 경계는 프라이버시 경계와 일부러 일치시켰다 —
+    <strong>"자기 일에 대한 것은 전부 무료, 여러 사람 일을 합쳐 보는 것만 유료."</strong>
+    이러면 가격 협상이 정책 협상으로 번지지 않는다.
+    "돈 더 내면 개인 데이터 볼 수 있나요?"라는 질문이 성립하지 않기 때문이다.
+  </p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="s7">
+  <h2>무엇을 어떤 순서로 만드나</h2>
+  <p class="kicker">07</p>
+
+  <h3>증명할 단 하나의 가설</h3>
+
+  <blockquote>
+    <p>
+      비개발자가 도움 없이 10분 안에 자기 업무 하나를 기록하고,
+      자동 생성된 다이어그램을 <strong>남에게 보여줄 만하다고 판단해 실제로 공유한다.</strong>
+    </p>
+    <cite>"공유했다"까지가 가설이다. 만들었다는 것만으로는 아무것도 증명되지 않는다</cite>
+  </blockquote>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th style="width:14%">단계</th><th>범위</th></tr></thead>
+      <tbody>
+        <tr><td>M0</td><td>디자인 토큰 · 스키마 · 스파이크 6건</td></tr>
+        <tr><td>M1</td><td>붙여넣기 파싱 → 질문 연쇄 → 아웃라인↔다이어그램 <strong>안정적</strong> 연동 · 저장 · 공유 링크</td></tr>
+        <tr><td>M1.5</td><td><strong>인수인계 문서 · 휴가 대체자 가이드 내보내기.</strong> 직원의 이기적 이득이 여기서 처음 손에 잡힌다</td></tr>
+        <tr><td>M2</td><td>메타데이터 카드 스택 · 짜증 플래그 · 댓글</td></tr>
+        <tr><td>M3</td><td>요약 카드. <strong>랭킹이 아니라 요약</strong> — 사람들은 여기서 스스로 병목을 찾는다</td></tr>
+        <tr><td>M4</td><td>체크리스트 모드 · 핸드오프 조립 · 불일치 리포트</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    초안은 마일스톤을 <strong>개발 난이도 순</strong>으로 짰는데 잘못이었다.
+    직원이 자기 이득을 손에 쥐기 전까지는 메타데이터를 채울 이유가 없고,
+    메타데이터 없이는 분석이 무의미하다. 그래서 <strong>채택 순</strong>으로 재배열했다 —
+    저장과 공유가 M1으로 올라오고, 내보내기가 M1.5가 됐다.
+  </p>
+
+  <h3>일정에 대한 정직한 말</h3>
+
+  <div class="callout warn">
+    <p>
+      초안의 9.5주는 <strong>2인 기준 23.5주, 1인 기준 45주</strong>가 현실이다.
+      그리고 그 반증은 저장소 안에 있었다 — 컴포넌트 문서가
+      <strong>컴포넌트 16개를 만드는 데만 5주</strong>를 배정하는데,
+      초안의 M0 + M1 합계가 3.5주였다. 같은 저장소의 두 문서가 서로를 반증했다.
+    </p>
+  </div>
+
+  <h3>롤아웃 — 전사 동시 오픈은 하지 않는다</h3>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th style="width:22%">단계</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>0 · 시드</td>
+          <td><strong>도구를 아무에게도 주지 않는다.</strong> 팀이 직접 8~12개 부서를 인터뷰해서 대신 작성한다. 콜드 스타트는 직원이 아니라 팀이 채워서 푼다</td>
+        </tr>
+        <tr>
+          <td>1 · 파일럿</td>
+          <td><strong>인사팀부터.</strong> 감시자로 의심받는 부서가 먼저 자기 것을 벗으면 "감시 도구" 프레임이 깨진다</td>
+        </tr>
+        <tr>
+          <td>2 · 계기 확산</td>
+          <td>홍보하지 않고 <strong>이벤트에 얹는다</strong> — 인사이동 인수인계, 신입 온보딩, 감사 대응, 장기휴가. <em>"이 도구 써보세요"</em>가 아니라 <em>"인수인계 이번엔 여기에 적어주세요"</em></td>
+        </tr>
+        <tr>
+          <td>3 · 챔피언</td>
+          <td>부서장이 아니라 <strong>질문을 가장 많이 받는 실무자 3~7년차.</strong> 임명하지 말고 로그에서 자연 발생한 사람을 지목한다</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<section id="s8">
+  <h2>지금 상태 — 정직하게</h2>
+  <p class="kicker">08</p>
+
+  <div class="tw">
+    <table>
+      <tbody>
+        <tr><td style="width:26%">기획</td><td>완료. 문서 26개 · 37,000줄</td></tr>
+        <tr><td>계산 계층</td><td>완료. 8패키지 · 32,000줄 · <strong>테스트 784건 통과</strong></td></tr>
+        <tr><td>앱 계층</td><td><strong>없음.</strong> <code>.tsx</code> 0개, <code>.css</code> 0개</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    <strong>사람이 브라우저를 열어 쓸 수 있는 것은 아직 아무것도 없다.</strong>
+    지금 돌아가는 것은 계산 계층뿐이다 — 트리를 그래프로 파생하고, 붙여넣은 글을 단계로 쪼개고,
+    좌표를 계산하고, 인수인계 문서를 만들고, 자동화 후보를 점수화한다.
+    전부 함수 호출로만 확인된다.
+  </p>
+
+  <h3>구현이 기획을 반증한 것들</h3>
+
+  <p>
+    명세를 코드로 옮기니 <strong>문서만 쓸 때는 나오지 않는 결함</strong>이 드러났다.
+    지금까지 24건이고 전부 테스트로 고정돼 있다. 대표적인 셋:
+  </p>
+
+  <div class="tw">
+    <table>
+      <tbody>
+        <tr>
+          <td style="width:30%">데이터 발산</td>
+          <td>텍스트 3-way 병합이 <strong>양쪽이 같은 지점에 삽입하면 순서에 따라 다른 결과</strong>를 냈다. 충돌 표시 오류가 아니라 두 클라이언트가 서로 다른 문장에 수렴하는 문제였다</td>
+        </tr>
+        <tr>
+          <td>설계 원칙의 반례</td>
+          <td>"편집한 노드를 화면에 고정한다"가 <strong>항상 옳지는 않았다.</strong> 움직인 노드가 그것뿐일 때는 캔버스를 미는 보정이 오히려 20~33배 나빴다</td>
+        </tr>
+        <tr>
+          <td>산술 오류</td>
+          <td>시드 데이터의 자동화 후보 카드에서 <strong>공식과 결과가 달랐다</strong> — 적힌 식대로 계산하면 378만인데 카드에는 270만이 인쇄돼 있었다</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>아직 안 정한 것</h3>
+
+  <div class="tw">
+    <table>
+      <tbody>
+        <tr><td style="width:26%">제품 이름</td><td><code>Preflow</code>가 유력하다. 도메인·로고·공유 페이지 워터마크가 여기 의존한다</td></tr>
+        <tr><td>n8n 앞 vs 옆</td><td>자동화 후보를 발견만 할지, 실행 가능한 명세까지 떨어뜨려 자동화팀에 위임할지. 파일럿 데이터로 결정한다</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>다음에 할 일</h3>
+
+  <div class="callout brand">
+    <p>
+      <strong>가장 얇은 수직 스켈레톤 하나.</strong>
+      로그인 → 한 줄 입력 → 노드 하나 → 공유 링크 → 다른 사람이 폰에서 열람.
+    </p>
+    <p>
+      지금 이 프로젝트의 가장 큰 미검증 리스크는 로직이 아니라 <strong>접합부</strong>다.
+      이 계산 계층이 실제 UI와 붙는지는 코드를 더 읽어서 안 풀리고, 붙여봐야 안다.
+      그리고 M1 가설 문장이 정확히 그 경로다 — 이 한 줄에 프로젝트 위험이 전부 한 번씩 걸려 있다.
+    </p>
+  </div>
+</section>
+
+<footer class="end">
+  <h3>이 문서가 만들어진 방식</h3>
+  <p>
+    사람 저자 한 명과 Claude가 함께 썼다. 21개의 서로 다른 <strong>역할 관점</strong>으로
+    나눠 검토를 반복했고, 각 관점은 서로의 결론을 모른 채 판단했다. 충돌 지점은 사람이 판정했으며
+    그 근거가 결정 기록 79건이다. <strong>외부 전문가가 개별적으로 검토한 것은 아니다.</strong>
+  </p>
+  <p>
+    이 방식의 한계도 적어둔다 — <strong>관점이 아무리 많아도 같은 모델의 같은 편향을 공유한다.</strong>
+    그래서 검증 가능한 것은 전부 코드로 옮겼다. 위 §8의 "구현이 기획을 반증한 것들"은
+    관점을 늘려서가 아니라 <strong>실행해봐서</strong> 나온 결과다.
+  </p>
+  <p style="margin-top:20px;color:var(--faint)">
+    전체 문서 26개와 코드는 저장소에 있다 · <span class="mono">github.com/wlsdks/workflow-builder</span>
+  </p>
+</footer>
+
+</div>

@@ -78,6 +78,15 @@ const CLAIMS = [
 
   { file: 'packages/README.md', re: /테스트 ([\d,]+)건/,               actual: 'totalTests', what: '총 테스트' },
   { file: 'packages/README.md', re: /npm test\s+# ([\d,]+)건/,         actual: 'totalTests', what: '총 테스트(명령 주석)' },
+
+  // 배포용 기획서(report/기획서.pdf)의 원본. PDF는 `npm run verify`가 열어보지
+  // 못하므로 **원본 HTML을 대신 잡는다.** 숫자가 어긋난 채로 PDF가 재생성되면
+  // 그건 저장소 밖으로 나가는 문서라 되돌릴 수 없다 — 나가기 전에 여기서 막는다.
+  { file: 'report/plan.html', re: /문서 (\d+)개 · 37,000줄/,             actual: 'docCount',   what: '문서 개수' },
+  { file: 'report/plan.html', re: /(\d+)패키지 · 32,000줄/,              actual: 'pkgCount',   what: '패키지 개수' },
+  { file: 'report/plan.html', re: /테스트 ([\d,]+)건 통과/,               actual: 'totalTests', what: '총 테스트' },
+  { file: 'report/plan.html', re: /결정 기록 (\d+)건/,                   actual: 'decisions',  what: '결정 건수' },
+  { file: 'report/plan.html', re: /전체 문서 (\d+)개와/,                  actual: 'docCount',   what: '문서 개수(맺음말)' },
 ];
 
 // 패키지 README는 자기 테스트 수를 스스로 주장한다 — 전부 대조
