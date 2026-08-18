@@ -4473,7 +4473,7 @@ RLS가 이미 막지만, 인덱스를 안 만드는 것은 **두 번째 방어�
 | 6 | `handoff_sockets.item_id`: 선언은 NOT NULL CASCADE, DDL이 되돌림 | **처음부터 nullable + SET NULL로 선언** | §1.4 |
 | 7 | `business_objects` 유니크: `(org_id, name_norm)`인데 org_id가 nullable | **`coalesce` 표현식 유니크** | §1.4 |
 | 8 | 중첩 프리셋 차분: MEASUREMENT는 "임의 기간 제거"만 다룸 | **시계열 일관 억제(규칙 3) 추가** — 프리셋만으로도 차분이 성립한다 | §4.2 |
-| 9 | GCM nonce: SECURITY는 `doc_id||item_id||rev`인데 `rev` 관리 주체가 없음 | **`private_notes.rev` + 증가 강제 트리거** | §6.1 |
+| 9 | GCM nonce: SECURITY는 `doc_id\|\|item_id\|\|rev`인데 `rev` 관리 주체가 없음 | **`private_notes.rev` + 증가 강제 트리거** | §6.1 |
 | 10 | `admin_reader` REVOKE 대상이 테이블 3개로 열거됨 | **스키마 단위 REVOKE**로 강화 — 41번째 테이블에서도 유효 | §3.1 |
 | 11 | 스냅샷 주기 `N`이 어디에도 정의되지 않음 | **`50 op 또는 24시간`** — 보존 정책 파라미터로 다룬다 | §1.6 |
 | 12 | `app_user`/`migrator`/`analytics_reader`가 기존 문서에 없음 | 여기서 정의. `admin_reader`만 MEASUREMENT §3 확정 | §3.1 |

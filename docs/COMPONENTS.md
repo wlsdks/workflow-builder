@@ -36,7 +36,7 @@
 | active | `bg #111110`, 그림자 제거 | `bg n-100` | `bg n-200` | `bg #8A2620` |
 | focus-visible | 소프트 링(잉크는 `.28`, 나머지 `.14`) | 동일 + `border brand-500` | 동일 | `rgb(180 52 43/.20)` |
 | disabled | `bg n-100 / text paper-400 / border n-200`, 그림자 제거, `cursor: not-allowed` | 동일 | `text paper-400`, 배경 없음 | 동일 |
-| loading | 라벨을 `loadingText`로 교체, `aria-busy="true"`, 폭 고정, `cursor: progress`. **스피너 없음** |
+| loading | 라벨을 `loadingText`로 교체 | 동일 | 동일 | 동일, `aria-busy="true"`, 폭 고정, `cursor: progress`. **스피너 없음** |
 
 `active`에서 그림자를 빼는 것이 "눌림"의 전부다. `translateY`를 쓰지 않는다.
 

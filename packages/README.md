@@ -6,6 +6,8 @@
 
 앱 계층(`apps/web`)은 아직 없다. 여기 있는 것은 **그 아래에 깔릴 계산 계층**이다.
 
+8개 패키지, 테스트 784건.
+
 ## 데이터가 흐르는 순서
 
 ```
@@ -62,7 +64,8 @@
 npm install
 npm test          # 784건
 npm run typecheck # 순수성 증명
-node scripts/gates.mjs   # 배포 차단 게이트 17종
+node scripts/gates.mjs      # 배포 차단 게이트 17종
+node scripts/doc-numbers.mjs # 문서 숫자가 실제와 맞는지
 ```
 
 게이트는 **자기 자신도 검사한다.** 규칙이 아무것도 못 잡으면 게이트가 스스로를 실패시킨다

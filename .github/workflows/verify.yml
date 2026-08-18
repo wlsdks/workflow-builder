@@ -22,6 +22,12 @@ jobs:
       - name: gates
         run: node scripts/gates.mjs
 
+      # ── 1b. 문서 숫자가 실제와 맞는가 ──
+      # README가 "npm test 돌려보라"고 지시하는 그 명령으로 반증되는
+      # 숫자들을, 읽는 사람이 반증하기 전에 여기서 잡는다.
+      - name: doc numbers
+        run: node scripts/doc-numbers.mjs
+
       # ── 2. 순수성이 타입으로 증명되는가 ──
       # graph-core / layout-core / paste-parse 는 lib:["ES2022"] + types:[]
       # DOM·Node 타입 없이 컴파일되어야 한다

@@ -1,6 +1,6 @@
 # 동기화 · 저장 엔진
 
-> **구현 상태 (2026-08-18)** — §1~§4의 **순수 계층만 구현됨**: `packages/graph-core/src/ops/`(op 타입 25종·`applyOp`·`invertOp`·`commutes`·`coalesce`·`merge3`·버스트 경계, 런타임 의존성 0) + `packages/sync-protocol/`(zod 스키마·봉투·응답). 테스트 393건 통과(graph-core 374 · sync-protocol 19). **§3.2 표는 269칸 중 20칸이 실제와 다르다** — 구현은 보수적으로(false 쪽으로) 갈라져 있고, 칸별 근거는 `packages/graph-core/test/ops.test.ts`의 `DEVIATIONS`에 있다. 미구현: `sync-client`(§4.1·§4.3~§8), 서버(§9~§10), undo 스택(§11), 관측성(§13).
+> **구현 상태 (2026-08-18)** — §1~§4의 **순수 계층만 구현됨**: `packages/graph-core/src/ops/`(op 타입 25종·`applyOp`·`invertOp`·`commutes`·`coalesce`·`merge3`·버스트 경계, 런타임 의존성 0) + `packages/sync-protocol/`(zod 스키마·봉투·응답). 테스트 397건 통과(graph-core 378 · sync-protocol 19). **§3.2 표는 269칸 중 20칸이 실제와 다르다** — 구현은 보수적으로(false 쪽으로) 갈라져 있고, 칸별 근거는 `packages/graph-core/test/ops.test.ts`의 `DEVIATIONS`에 있다. 미구현: `sync-client`(§4.1·§4.3~§8), 서버(§9~§10), undo 스택(§11), 관측성(§13).
 
 > 최종 갱신: 2026-08-17 · 상태: v0.1
 

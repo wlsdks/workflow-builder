@@ -982,7 +982,7 @@ D+90   개인 흔적 자동 삭제 (§6.3) · 봉인 열람 요청 창구 폐쇄
 | **첫 내보내기 시** | 인라인 | 개인 메모 미포함 |
 | **상시** | 설정 > 개인정보 | 약속 카드 전문 + "관리자 화면에 없는 것" 목록(§8.3) |
 | **퇴사 절차 시작 시** | 인앱 + 이메일 | D-14 안내 |
-| **정책 변경 시** | §11 |
+| **정책 변경 시** | §11 | |
 
 **강제 확인 버튼을 두지 않는 이유** — 읽음 확인은 읽히지 않는다. 동의 버튼은 마찰만 만들고 실제 이해를 만들지 않으며, 첫 화면에서 버튼을 강요하는 제품은 **"약관을 들이미는 회사 시스템"**으로 읽힌다. 그게 WRITING.md §4 첫 화면이 피하려는 정확히 그 인상이다.
 
@@ -1552,7 +1552,7 @@ D+90   개인 흔적 자동 삭제 (§6.3) · 봉인 열람 요청 창구 폐쇄
 | `document_views(doc_id, viewer_id, session_fingerprint, at)` — **append-only** | §2.5, §1.3 장치 5 |
 | `audit_log(...)` — **append-only, 별도 롤** | §8.4 |
 | `team_shelf(doc_id, dept_id, posted_by, at)` | §1.5 |
-| `documents.kind: personal | org_doc` | §1.6 공용 흐름 |
+| `documents.kind: personal \| org_doc` | §1.6 공용 흐름 |
 | `documents.excluded_from_map bool` | §5.4 |
 | `documents.is_private_note bool` | §6.4 |
 | `items.private_note text` | §4.2 |

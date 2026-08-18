@@ -2,7 +2,7 @@
 
 > **구현 상태 (2026-08-18)** — 계산 계층은 `packages/scoring`(§2 볼륨·§3 Feasibility 6요소·§4 Value·§5 ECRS 12종·§7 Confidence·D-116 가드)과 `packages/analytics-schema`(MEASUREMENT §2 이벤트 zod `.strict()`)로 **동작한다**. 골든 픽스처는 `packages/scoring/test/golden.test.ts`이고, 그 파일의 `DIVERGENCES` 표가 **SEED §D 손계산과 규칙 계산이 갈리는 10건**(§3.7의 0.79 산술 오류 · §4.1 `customer-wait` 단위 오류 · Confidence 0.6/0.9 도달 불가 · RiskValue 3건 미산정 포함)을 판정과 함께 고정한다. L1~L5 잡 러너와 n8n 익스포터는 미착수.
 
-> 최종 갱신: 2026-08-17 · 대상 패키지: `packages/analytics-core`, `packages/analytics-jobs`, `packages/exporters`
+> 최종 갱신: 2026-08-17 · 대상 패키지: `packages/scoring`, `packages/analytics-schema` (초안의 `analytics-core`/`analytics-jobs`/`exporters` 3분할은 구현 시 2개로 합쳐졌다)
 >
 > **전제 문서 (여기서 다시 설명하지 않는다)**
 > [PRD.md §4.8](./PRD.md) 스코어링 공식 · ECRS 우선 · 짜증 3축 분리 ·

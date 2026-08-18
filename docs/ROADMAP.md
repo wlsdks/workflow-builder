@@ -16,7 +16,7 @@
 | | 상태 |
 |---|---|
 | 기획 문서 | 20종 / **16,625줄**. 착수에 필요한 결정은 사실상 다 나 있다 |
-| `packages/graph-core` | **5,245줄 / 16파일**, `dependencies: {}`, 테스트 **57건 통과** (Node 24 네이티브 타입 스트리핑, 빌드 없음) |
+| `packages/graph-core` | **5,245줄 / 16파일**, `dependencies: {}`, 테스트 **378건 통과** (Node 24 네이티브 타입 스트리핑, 빌드 없음) |
 | 그 외 코드 | **없다.** `app/`도, `db/`도, `package.json`(루트)도 없다 |
 | 커밋 | 4개. 전부 문서 + graph-core |
 
@@ -50,7 +50,7 @@
 |---|---|---|---|
 | **1** | **★ 에디터 아키텍처가 두 가지로 적혀 있다.** `COMPONENTS.md §5 OutlineBlock`은 **직접 만든 `<div role="list">` + `<textarea rows=1>`**로 명세돼 있다. `ARCHITECTURE §3` / `D-034` / `GRAPH-CORE` 린트 목록은 **BlockNote**다 | **완전히 다른 두 개의 빌드다.** 키보드 모델(Tab 처리), 슬래시 명령(`inputRules` vs keydown), a11y 오버라이드, ID 전략이 전부 다르다. **M1b 전체(3주)의 형태가 여기서 갈린다** | **S0 / S1 스파이크** |
 | **2** | **★ `n-400` Stylelint 게이트가 공허하다.** DESIGN §164는 `n-400`·`n-200`이 `color`/`border-color`에 나오면 빌드 실패시키라고 한다. 그런데 `COMPONENTS §17`이 그 토큰을 **`paper-400` / `paper-200`이라는 Tailwind 클래스명으로 컴파일**한다 | **문자열 `n-400`을 찾는 규칙은 코드베이스에서 0건을 찾는다.** 게이트가 항상 초록이고, 아무도 그게 아무 일도 안 한다는 걸 모른다. **가장 위험한 종류의 실패다** | **S1 스프린트** |
-| **3** | **★ 토큰 팔레트가 감사 전 버전이다.** `COMPONENTS §17/§18`은 감사 **전** 팔레트. `DESIGN §4`가 이를 교정했다 — **`n-550 #6F6A62`(5.19:1)·`n-450 #948F87`(3.11:1) 신설, `branch #A56A12 → #9E6511`, 단일 소프트 링 → 이중 포커스 링**. §1~16의 모든 CVA 스니펫이 폐기된 토큰을 쓴다 | 컴포넌트 16개를 만든 뒤 고치면 전부 다시 손댄다. 그리고 **§1~16의 코드가 §2의 Stylelint 규칙을 스스로 위반한다** | **S1 스프린트 (M0 필수 티켓)** |
+| **3** | ✅ **해소됨(2026-08-18)** — `COMPONENTS §17/§18`이 교정본을 반영했고 게이트가 재발을 막는다. 원래 문제: **토큰 팔레트가 감사 전 버전이었다.** `COMPONENTS §17/§18`은 감사 **전** 팔레트. `DESIGN §4`가 이를 교정했다 — **`n-550 #6F6A62`(5.19:1)·`n-450 #948F87`(3.11:1) 신설, `branch #A56A12 → #9E6511`, 단일 소프트 링 → 이중 포커스 링**. §1~16의 모든 CVA 스니펫이 폐기된 토큰을 쓴다 | 컴포넌트 16개를 만든 뒤 고치면 전부 다시 손댄다. 그리고 **§1~16의 코드가 §2의 Stylelint 규칙을 스스로 위반한다** | **S1 스프린트 (M0 필수 티켓)** |
 | **4** | **파일럿 4주 실행안이 M4를 전제한다** | W3·W4가 자동 미달 → §1.3(a) | 즉시 (§11.1) |
 | **5** | **`analytics/schema.ts`를 graph-core 안에 두라고 한다** (MEASUREMENT §2, GRAPH-CORE §12.1 "예정 자리"). 그런데 zod는 런타임 의존성이고 graph-core는 `dependencies: {}`가 **영구 계약**이며 3중으로 막혀 있다 | 넣는 순간 순수성 계약이 깨진다 | **`packages/analytics-schema` 신설로 확정.** GRAPH-CORE §13-5 미해결 항목이 여기서 닫힌다 |
 | **6** | **`aria-activedescendant`** — ACCESSIBILITY §112는 **금지**(IME 조합 중 Chrome에서 조합이 끊긴다), COMPONENTS §834는 CommandPalette에 **필수**로 요구 | 둘 다 못 지킨다 | **CommandPalette를 M1에서 잘랐으므로(§1.5) 자동 해소.** 부활 시 roving tabindex로 |
@@ -274,7 +274,7 @@ PRD의 9.5주 대비 **2인 2.5~2.8배, 1인 4.7~5.5배.**
 **만드는 것**
 - pnpm workspace + Turborepo. 패키지 5개: `graph-core`(기존) / `analytics-schema`(신설) / `paste-parse`(빈 껍데기 + 계약) / `doc-gen`(빈 껍데기) / `apps/web`
 - Next.js 15 App Router + TS + Tailwind 골격, `next dev --turbopack` 기동
-- **CI 파이프라인 v1** — typecheck · lint · graph-core 57건 · `animate-spin`/`animate-pulse` grep 차단 · Stylelint `n-400`/`n-200` 규칙
+- **CI 파이프라인 v1** — typecheck · lint · graph-core 378건 · `animate-spin`/`animate-pulse` grep 차단 · Stylelint `n-400`/`n-200` 규칙
 - 디자인 토큰: `tailwind.config.ts`(§17, **~84 엔트리**) + `globals.css`(§18, **CSS 변수 49개**) + 포커스 규칙(§20) + Icon 래퍼(§19, 아이콘 **25개 상한**)
   - **★ 먼저 §0-3을 해소한다** — DESIGN §4 교정본 반영: `n-550 #6F6A62`·`n-450 #948F87` 신설, `branch → #9E6511`, **이중 포커스 링**(`0 0 0 2px var(--n-25), 0 0 0 4px var(--brand-500)`). 폐기 토큰(`#7C7770`·`#A56A12`·`#E4E1DB` 보더)은 파일에서 제거
 - **한글 폰트 파이프라인 — 과소평가하기 쉬운 항목 (1.5일)**
@@ -789,7 +789,7 @@ CDP 자동화가 불가능하면 → **`ime_composition_lost` 프로덕션 이�
 
 **이 중 단위 테스트로 잡히는 것이 하나도 없다.** 전부 두 개 이상의 것이 만났을 때만 난다.
 
-**반대로 순수 로직은 이미 단위 테스트가 끝나 있다** — graph-core 57건. 그래서 "단위 테스트를 더 쓸 곳"이 사실상 파서밖에 없다.
+**반대로 순수 로직은 이미 단위 테스트가 끝나 있다** — graph-core 378건. 그래서 "단위 테스트를 더 쓸 곳"이 사실상 파서밖에 없다.
 
 ### 5.2 비율과 경계
 
@@ -978,17 +978,17 @@ E8  인계 뷰 → 서식 유지 복사
 | 2 | **크로스테넌트 404** — 조직 A 세션 → 조직 B 전 리소스 | SECURITY §889 | 통합 테스트 |
 | 3 | **금지 속성 drop** — `item_title` 등 이벤트에 넣으면 드롭 + 알림 | MEASUREMENT §60 | zod `.strict()` + 프록시 테스트 |
 | 4 | **금지 조인 부재** — `pain_flag × assignee_id`가 집계 뷰에 없다 | POLICY §610 | 뷰 정의 스키마 테스트 |
-| 5 | **`privateNote`가 렌더 트리에 존재하면 빌드 실패** (경고 아님, 예외) | D-062, D-525 | 타입 + 빌드타임 검사 |
+| 5 | **`privateNote`가 렌더 트리에 존재하면 빌드 실패** (경고 아님, 예외) | D-062, D-052 | 타입 + 빌드타임 검사 |
 | 6 | **복호화 함수 임포트 차단** — 배치·지원·AI 경로에서 | D-058x (§584) | ESLint `no-restricted-imports` |
 | 7 | **`unstable_cache`/`fetch` 캐시를 사용자별 데이터에 사용 금지** | SECURITY §886 | ESLint 규칙 |
 | 8 | **테넌트 스코프 미지정 쿼리는 타입 에러** | SECURITY §886 | 래퍼 타입 + raw `db.*` ESLint 차단 |
-| 9 | **`pain_flag_toggled`에 `actor_pid` 부착 금지** | MEASUREMENT |
-| 9b | **로그 인자 AST 검사** — 본문 필드가 로그 호출에 들어가면 **빌드 실패**. 4중 방어의 3층 (①`items`/`documents`에 `toJSON()` 오버라이드 → `"[redacted]"` ②로거 미들웨어 키명 마스킹(`title`·`note`·`text`·`content`·`body`·`paste`) ③이 AST 검사 ④주 1회 프로덕션 로그 1,000줄 샘플 감사 → 검출 시 P0) | SECURITY §5.2 |
-| 9c | **`matching/*`이 `items.title`·`attrs.privateNote`·`comments`를 참조하면 빌드 실패** — 타입 `SocketFeature`에 원문 필드가 **없다**는 것이 보증의 실체 | D-046, ASSEMBLY §8.2 |
-| 9d | **`resolveDocumentAccess()`가 `org_members`를 인자로 받지 않는다** — 시그니처에서 뺀다. "관리자도 보게 하자"가 코드 변경 없이는 불가능해진다 | D-081, POLICY §1.0 |
-| 9e | **가장(impersonation) 엔드포인트 부재** — "이 사용자로 로그인"/"지원 모드"가 코드에 존재하면 실패 | POLICY §1.3, D-071 |
-| 9f | **관리자 화면 코드에서 `actor_pid` 보유 테이블·PostHog 클라이언트 import 금지** | SECURITY §7.3-D |
-| 9g | **`admin_reader` 롤의 base 테이블 접근 시도 1건 → P0** (런타임) | MEASUREMENT §9 |
+| 9 | **`pain_flag_toggled`에 `actor_pid` 부착 금지** | MEASUREMENT | |
+| 9b | **로그 인자 AST 검사** — 본문 필드가 로그 호출에 들어가면 **빌드 실패**. 4중 방어의 3층 (①`items`/`documents`에 `toJSON()` 오버라이드 → `"[redacted]"` ②로거 미들웨어 키명 마스킹(`title`·`note`·`text`·`content`·`body`·`paste`) ③이 AST 검사 ④주 1회 프로덕션 로그 1,000줄 샘플 감사 → 검출 시 P0) | SECURITY §5.2 | |
+| 9c | **`matching/*`이 `items.title`·`attrs.privateNote`·`comments`를 참조하면 빌드 실패** — 타입 `SocketFeature`에 원문 필드가 **없다**는 것이 보증의 실체 | D-046, ASSEMBLY §8.2 | |
+| 9d | **`resolveDocumentAccess()`가 `org_members`를 인자로 받지 않는다** — 시그니처에서 뺀다. "관리자도 보게 하자"가 코드 변경 없이는 불가능해진다 | D-081, POLICY §1.0 | |
+| 9e | **가장(impersonation) 엔드포인트 부재** — "이 사용자로 로그인"/"지원 모드"가 코드에 존재하면 실패 | POLICY §1.3, D-071 | |
+| 9f | **관리자 화면 코드에서 `actor_pid` 보유 테이블·PostHog 클라이언트 import 금지** | SECURITY §7.3-D | |
+| 9g | **`admin_reader` 롤의 base 테이블 접근 시도 1건 → P0** (런타임) | MEASUREMENT §9 | |
 | 9h | **`P1 → P2` 파이프라인 부재** — 행동 이벤트에서 집계 마트로 가는 경로가 코드에 없다 | MEASUREMENT §1 | 스키마 + 테스트 |
 
 #### B. 한국어·입력 (제품 생존 조건)
@@ -1006,10 +1006,10 @@ E8  인계 뷰 → 서식 유지 복사
 | 13 | **`animate-spin` / `animate-pulse` grep 차단** | 소스 전체에서 문자열 검출 시 실패. *"스피너·shimmer·진행률 바·%·도넛(완성도 링 제외) 0건"* | ACCESSIBILITY §287 |
 | 14 | **저대비 토큰이 `color`/`border-color`에 등장 시 빌드 실패** | ★ 문서는 `n-400`·`n-200`이라 쓰지만 **실제 컴파일된 클래스명은 `paper-400`·`paper-200`이다**(§0-2). 규칙은 **`paper-400` · `paper-200` · `text-paper-400` · `border-paper-200` · `placeholder:text-paper-400` · 원시 hex `#A8A39A` · `#E4E1DB`**를 전부 잡아야 한다. `n-400`만 찾는 규칙은 **0건을 찾고 항상 초록이다.** `#A8A39A` 대비 **2.43:1** | DESIGN §164, ACCESSIBILITY §281, COMPONENTS §17 |
 | 14b | **대비비 단위 테스트** — 토큰 파일에서 8개 조합 비율을 계산해 단언 | `#1F5C46`/white 7.84 · `#2A7358`/white 5.69 · `n-550 #6F6A62` 5.19 · `n-450 #948F87` 3.11 · `branch #9E6511` 4.86. **폐기된 `#7C7770`(4.29 ❌)·`#A56A12`(4.50 ⚠︎)·`#E4E1DB` 보더(1.26 ❌)가 되살아나면 실패** | DESIGN §4 |
-| 15 | **금지어 사전 42항** — 자동화·효율·비효율·낭비·리소스·최적화·개선·생산성·단순반복업무·업무량·공수·인력·대체·관리·모니터링·현황파악·평가·진단·점검·승인·제출·등록·미완료·누락·진행률·완료율·팀평균·순위·표준화·프로세스·태스크·저장완료·**오류/에러/실패**·잘못된입력입니다·필수항목입니다·사용자·인사이트·참여율·축하합니다·레벨/뱃지/연속기록·온보딩 | WRITING §2 |
-| 16 | **대비비 자동 검사** — 텍스트 4.5:1 / UI 3:1 미달 0건 | DESIGN §5 |
-| 17 | **파랑 금지** — `colors.blue/indigo/violet` 사용 시 실패 | D-020, COMPONENTS §1122 |
-| 18 | **axe-core 위반 0** | ACCESSIBILITY §272 |
+| 15 | **금지어 사전 42항** — 자동화·효율·비효율·낭비·리소스·최적화·개선·생산성·단순반복업무·업무량·공수·인력·대체·관리·모니터링·현황파악·평가·진단·점검·승인·제출·등록·미완료·누락·진행률·완료율·팀평균·순위·표준화·프로세스·태스크·저장완료·**오류/에러/실패**·잘못된입력입니다·필수항목입니다·사용자·인사이트·참여율·축하합니다·레벨/뱃지/연속기록·온보딩 | WRITING §2 | |
+| 16 | **대비비 자동 검사** — 텍스트 4.5:1 / UI 3:1 미달 0건 | DESIGN §5 | |
+| 17 | **파랑 금지** — `colors.blue/indigo/violet` 사용 시 실패 | D-020, COMPONENTS §1122 | |
+| 18 | **axe-core 위반 0** | ACCESSIBILITY §272 | |
 
 > **15번(금지어)의 구현 주의**: 소스 전체 grep은 오탐이 폭발한다(변수명 `errorBoundary` 등).
 > → **사용자 노출 문자열만** 검사한다: `i18n`/카피 상수 파일 + JSX 텍스트 노드 + `aria-label`/`title`/`placeholder` 속성값. AST 기반 ESLint 규칙으로 만들고, **예외는 `// eslint-disable-next-line copy/no-banned-words -- 사유` 로만** 허용해 PR 디프에 드러나게 한다.
@@ -1018,7 +1018,7 @@ E8  인계 뷰 → 서식 유지 복사
 
 | # | 게이트 | 출처 |
 |---|---|---|
-| 19 | graph-core 테스트 **57건 전부** | GRAPH-CORE |
+| 19 | graph-core 테스트 **378건 전부** | GRAPH-CORE |
 | 20 | `tsc --noEmit` (lib에 DOM 없음, `types: []`) | tsconfig |
 | 21 | 금지 import — `react`·`@xyflow/*`·`elkjs`·`drizzle-orm`·`pg`·`next`·`zustand`·`immer`·`node:*`·`@blocknote/*` | eslint.config.js |
 | 22 | 금지 전역/프로퍼티 — `window`·`document`·`process`·**`Math.random`**·**`Date.now`** | 동 |
@@ -1418,7 +1418,7 @@ workflow-builder/
 | `copy/term-map` | **용어 확정표 20건 자동 치환 제안** — workflow→흐름, step→단계, branch→갈래, handoff→인계, diagram→그림, template→예시, sync→"올라가요"(`동기화` 금지), onboarding→"처음 오신 분 안내" | WRITING §3 |
 | `design/no-spinner` | `animate-spin` · `animate-pulse` 문자열 금지 | ACCESSIBILITY §287 |
 | `design/no-low-contrast-text` (Stylelint) | `n-400` · `n-200`이 `color`/`border-color`에 등장 시 실패 | DESIGN §164 |
-| `design/no-blue` | `colors.blue|indigo|violet` 사용 금지 | D-020 |
+| `design/no-blue` | `colors.blue\|indigo\|violet` 사용 금지 | D-020 |
 | `next/no-user-data-cache` | 사용자별 데이터에 `unstable_cache`/`fetch` 캐시 금지. 캐시 키에 `org_id + user_id` 강제 | SECURITY §886 |
 | `db/tenant-scope-required` | raw `db.select()`/`db.insert()` 직접 사용 금지. `tenantDb(ctx)` 래퍼만 | SECURITY §886 |
 | `security/no-decrypt-import` | 복호화 함수를 배치·지원·AI 경로에서 임포트 금지 | D-058x |
@@ -1617,7 +1617,7 @@ workflow-builder/
 | 시간 | A | B |
 |---|---|---|
 | **09:00–09:30** | **킥오프 30분.** 이 문서 §1(마일스톤 재검토)·§3(수직 슬라이스)·§4(스파이크)만 함께 읽는다. 나머지는 필요할 때 | ← 동일 |
-| **09:30–10:00** | **환경 확인** — Node 24, pnpm, Docker. `cd packages/graph-core && npm test` → **57건 통과 확인**. 이게 기준선이다 | ← 동일 |
+| **09:30–10:00** | **환경 확인** — Node 24, pnpm, Docker. `cd packages/graph-core && npm test` → **378건 통과 확인**. 이게 기준선이다 | ← 동일 |
 | **10:00–11:00** | **★ 첫 커밋** — `chore: pnpm workspace + turborepo 골격`<br>루트 `package.json`(pnpm workspace), `pnpm-workspace.yaml`, `turbo.json`, `.nvmrc`(24), `.node-version`. `packages/graph-core`가 워크스페이스로 인식되고 `pnpm -F @workflow/graph-core test`가 통과 | **`docker-compose.yml`** — postgres:16(`POSTGRES_INITDB_ARGS="--locale=C"` 검토) + PostHog. `docker compose up -d` 성공 |
 | **11:00–12:00** | `apps/web` 생성 — `create-next-app` 15, App Router, TS, Tailwind, **Turbopack**. `pnpm dev`로 빈 페이지 | Postgres 접속 확인, `psql`로 `COLLATE "C"` 동작 검증 (`SELECT 'B' < 'a'` → true) |
 | **12:00–13:00** | 점심 | |
@@ -1685,14 +1685,14 @@ workflow-builder/
 | **09:15–11:30** | **S6 판정** — 30건에 대해 precision 측정. `assertLossless` 통과 확인. **11:30 판정, 연장 없음** | **S5 판정** + `spikes/` 정리. 각 스파이크 폴더에 **`RESULT.md` 1장씩**(무엇을 확인했고, 판정은 무엇이고, 실패 시 대안이 무엇인지) |
 | **11:30–12:00** | **커밋 4** — `docs: 스파이크 6건 판정 완료 + M1 계획 확정`<br>DECISIONS.md D-090~D-095 추가. §1.4 마일스톤 표를 **실제 판정 결과로 갱신** | ← 함께 |
 | **12:00–13:00** | 점심 | |
-| **13:00–15:30** | **S1 스프린트 준비** — 다음 주 작업 분해. pnpm workspace에 `analytics-schema`·`paste-parse`·`doc-gen`·`ui` 빈 패키지 생성 | **CI 골격 착수** — GitHub Actions: typecheck + graph-core 57건 + **`animate-spin` grep 게이트 1개**. 나머지 게이트는 S1 스프린트에서 |
+| **13:00–15:30** | **S1 스프린트 준비** — 다음 주 작업 분해. pnpm workspace에 `analytics-schema`·`paste-parse`·`doc-gen`·`ui` 빈 패키지 생성 | **CI 골격 착수** — GitHub Actions: typecheck + graph-core 378건 + **`animate-spin` grep 게이트 1개**. 나머지 게이트는 S1 스프린트에서 |
 | **15:30–16:00** | **데모 준비** — 녹화 3개: ① 분기 컨테이너 프로토타입 ② 200노드 타이핑(안 움직임) ③ 한글 입력 무손실 | |
 | **16:00–17:00** | **★ 주간 데모 + 회고** — 이해관계자에게 보여준다. **"아직 제품은 없지만, 제품을 못 만들게 할 뻔한 것 6개를 확인했습니다."** 그리고 **M1 일정이 2.5주가 아니라 N주라는 것을 이 자리에서 공유한다** | ← 동일 |
 | **17:00–17:30** | **★ W0-6 착수** — 자동화 실행 예산 확약서를 **오늘 요청한다.** §11.3 근거를 문서로 첨부 | |
 
 **첫 주 종료 시 저장소에 있는 것**
 ```
-✅ pnpm workspace + turborepo (graph-core 57건 통과)
+✅ pnpm workspace + turborepo (graph-core 378건 통과)
 ✅ apps/web 부팅
 ✅ docker-compose (postgres + posthog)
 ✅ spikes/ 6개 + RESULT.md 6장
@@ -1794,7 +1794,7 @@ DESIGN §6.6의 6개 장치 중 **활성 노드 앵커링**만 실제로 어렵�
 
 ### 마지막으로 — 이 계획에서 가장 확신하는 것과 가장 불확실한 것
 
-**가장 확신하는 것**: **기획이 이례적으로 잘 되어 있다.** 16,625줄 안에 임계값, 금지 조건, 대안, "뒤집는 조건"이 전부 적혀 있다. 대부분의 프로젝트는 **무엇을 만들지 모르는 것**이 최대 리스크인데, **여기선 그게 리스크가 아니다.** graph-core가 57건 테스트와 함께 이미 도는 것도 크다. **위험이 "무엇"이 아니라 "얼마나 걸리는가"에 집중돼 있는 것은 좋은 상태다.**
+**가장 확신하는 것**: **기획이 이례적으로 잘 되어 있다.** 16,625줄 안에 임계값, 금지 조건, 대안, "뒤집는 조건"이 전부 적혀 있다. 대부분의 프로젝트는 **무엇을 만들지 모르는 것**이 최대 리스크인데, **여기선 그게 리스크가 아니다.** graph-core가 378건 테스트와 함께 이미 도는 것도 크다. **위험이 "무엇"이 아니라 "얼마나 걸리는가"에 집중돼 있는 것은 좋은 상태다.**
 
 **가장 불확실한 것**: **이 문서의 모든 추정치.**
 

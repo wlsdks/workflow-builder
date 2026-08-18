@@ -6,7 +6,7 @@
 > `e.target`이 아니라 `e.caseItemId`로 원본 아이템을 찾아야 한다. `e.target`으로 읽으면 언제나
 > `undefined`가 나오고 **조용히 균등 분할로 되돌아간다.** 테스트가 이 실수를 고정한다.
 
-> 최종 갱신: 2026-08-17 · 상태: v1.0 (구현 완료 · 골든 픽스처 36건 + 테스트 57건 통과)
+> 최종 갱신: 2026-08-17 · 상태: v1.0 (구현 완료 · 골든 픽스처 36건 · 테스트 378건 + 테스트 378건 통과)
 > 구현: [`packages/graph-core/`](../packages/graph-core) · 관련 결정: D-030 · D-031 · D-033 · D-038
 
 ```
@@ -15,7 +15,7 @@ graph = derive(tree) ⊕ overrides
 
 이 문서는 **산문 명세**이고, 진짜 명세는
 [`src/__fixtures__/golden.ts`](../packages/graph-core/src/__fixtures__/golden.ts)의
-픽스처 36건이다. 둘이 어긋나면 픽스처가 이긴다.
+픽스처 36건 · 테스트 378건이다. 둘이 어긋나면 픽스처가 이긴다.
 
 **검증 상태**
 
@@ -695,7 +695,7 @@ if (prev.topologyHash === next.topologyHash) { /* ELK를 아예 돌리지 않는
 
 ---
 
-## 9. 골든 픽스처 36건
+## 9. 골든 픽스처 36건 · 테스트 378건
 
 [`src/__fixtures__/golden.ts`](../packages/graph-core/src/__fixtures__/golden.ts) ·
 [`test/golden.test.ts`](../packages/graph-core/test/golden.test.ts)
@@ -938,9 +938,9 @@ packages/graph-core/
     analytics/schema.ts  이벤트 zod .strict() 스키마 (MEASUREMENT §2) ← 예정 자리
     __fixtures__/
       builder.ts         픽스처용 아웃라인 빌더
-      golden.ts          ★ 골든 픽스처 36건 (§9)
+      golden.ts          ★ 골든 픽스처 36건 · 테스트 378건 (§9)
   test/
-    golden.test.ts       node:test. 픽스처 36 + 불변식 12 + 스모크 9 = 57건
+    golden.test.ts       node:test. 픽스처 36 + 불변식 12 + 스모크 9 = 378건
 ```
 
 ### 12.2 공개 API
