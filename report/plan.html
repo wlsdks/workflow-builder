@@ -253,7 +253,70 @@
       --brand:#1A5340; --brand-soft:#F2F8F4; --brand-100:#D5E7DD;
       --warn:#8A5810; --warn-soft:#FBF5EA; --hold:#613D5A; --hold-soft:#F8F3F7;
     }
-    body { font-size: 10.5pt; line-height: 1.72; background: #fff; }
+    body { font-size: 10pt; line-height: 1.63; background: #fff; }
+
+    /* 화면보다 조판을 조인다. 장 끝의 인용문 한 덩어리가 다음 쪽으로 통째로
+       밀리면서 90%가 빈 페이지가 생기는 걸 막는다 — 인용문을 쪼개는 대신
+       앞쪽을 조여서 같은 쪽에 들어가게 한다. */
+    p { margin-bottom: 15px; }
+    .tw { margin: 20px 0; }
+    figure { margin: 16px 0; }
+    figcaption { margin: 6px 0 16px; }
+    .callout { margin: 18px 0; padding: 14px 18px; }
+    blockquote { margin: 22px 0; }
+    blockquote cite { margin-top: 9px; }
+    .dec { margin-bottom: 12px; padding: 15px 18px; }
+    .dec p { margin-bottom: 8px; }
+    .dec .why { margin-top: 9px; padding-top: 9px; }
+    th, td { padding: 10px 14px 10px 0; }
+    ul, ol { margin-bottom: 16px; }
+    li { margin-bottom: 6px; }
+    .kinds { gap: 12px; margin: 22px 0; }
+    .screen .body { padding: 18px 20px; }
+    .sum .hd { padding: 12px 18px 9px; }
+    .sum .cell { padding: 10px 18px; }
+    .sum .rec { padding: 11px 18px; }
+    .ask { padding: 22px 18px 15px; }
+
+    .ask .foot { margin-top: 15px; }
+    .lines { line-height: 1.85; }
+
+    /* 부품마다 자기 크기를 px로 들고 있어서, body만 pt로 줄여도 인쇄에서
+       표·카드가 화면 크기 그대로 나왔다. 인쇄 크기를 부품별로 명시한다. */
+    table { font-size: 9.5pt; }
+    th { font-size: 8.5pt; }
+    .num { font-size: 9.5pt; }
+    figcaption { font-size: 8.5pt; }
+    blockquote { font-size: 12pt; }
+    blockquote cite { font-size: 8.5pt; }
+    .callout .lbl { font-size: 9pt; }
+    .kicker { font-size: 9pt; }
+    .dec h4 { font-size: 11pt; margin-bottom: 8px; }
+    .dec p { font-size: 9.5pt; line-height: 1.6; }
+    .dec .why { font-size: 9pt; line-height: 1.58; }
+    .kind .chip { font-size: 9.5pt; padding: 5px 11px; margin-bottom: 9px; }
+    .kind { padding: 14px; }
+    .kind p { font-size: 9pt; line-height: 1.58; }
+    .lines { font-size: 10.5pt; }
+    .lines .hint { font-size: 9pt; }
+    .between { font-size: 9pt; margin: 16px 0; }
+    .screen .bar { font-size: 8.5pt; padding: 8px 14px; }
+    .ask .src { font-size: 9pt; }
+    .ask .qq { font-size: 15pt; margin-bottom: 17px; }
+    .ask .opt { font-size: 10pt; padding: 8px 15px; }
+    .ask .foot { font-size: 8.5pt; }
+    .sum .hd h5 { font-size: 12.5pt; }
+    .sum .hd span { font-size: 9pt; }
+    .sum .cell dt { font-size: 8.5pt; }
+    .sum .cell dd { font-size: 12pt; }
+    .sum .cell dd small { font-size: 9pt; }
+    .sum .rec b { font-size: 9pt; }
+    .sum .rec p { font-size: 9.5pt; line-height: 1.6; }
+    .end { font-size: 9pt; }
+    .end h3 { font-size: 11.5pt; }
+    .flow .t { font-size: 13px; }
+    .flow .qt { font-size: 12px; }
+    .flow .cond, .flow .wait { font-size: 10.5px; }
     .page { max-width: none; padding: 0; }
 
     .cover { padding: 0; page-break-after: always; min-height: 246mm; }
@@ -266,12 +329,14 @@
     section { margin-top: 0; page-break-before: always; }
     section:first-of-type { page-break-before: avoid; }
     section > h2 { font-size: 18.5pt; padding-top: 0; }
-    h3 { font-size: 13.5pt; margin-top: 26pt; page-break-after: avoid; }
-    h4 { font-size: 11.5pt; page-break-after: avoid; }
+    h3 { font-size: 13.5pt; margin: 20pt 0 8px; page-break-after: avoid; }
+    h4 { font-size: 11.5pt; margin-top: 20px; page-break-after: avoid; }
     .lead { font-size: 11.5pt; }
     blockquote { font-size: 12.5pt; }
     p, li { orphans: 3; widows: 3; }
 
+    /* 표를 쪼개는 것도 해 봤다. 앞쪽은 채워지는데 넘어간 쪽에 2행짜리 조각이
+       남아서 더 나빠졌다 — 표는 통째로 옮기는 쪽이 낫다. */
     blockquote, .callout, .dec, .screen, figure, table, .kinds, .tw { page-break-inside: avoid; }
     figcaption { page-break-before: avoid; }
     tr, h2 + p, h3 + p { page-break-inside: avoid; }
@@ -302,13 +367,13 @@
   <h2>차례</h2>
   <ol>
     <li><span class="mid"><a href="#s1">무슨 문제인가</a><span class="note">자동화를 하려는데 무엇을 자동화할지 아무도 모른다</span></span><span class="pg" data-sec="s1">3</span></li>
-    <li><span class="mid"><a href="#s2">그래서 무엇을 하려는가</a><span class="note">한 가지를 만들어 두 사람에게 서로 다른 것을 준다</span></span><span class="pg" data-sec="s2">6</span></li>
-    <li><span class="mid"><a href="#s3">실제로 어떻게 생겼나</a><span class="note">화면과 결과물</span></span><span class="pg" data-sec="s3">8</span></li>
-    <li><span class="mid"><a href="#s4">왜 이렇게 만들었나</a><span class="note">결정 여덟 가지와 그 근거</span></span><span class="pg" data-sec="s4">12</span></li>
-    <li><span class="mid"><a href="#s5">실패한다면 어떻게 실패하나</a></span><span class="pg" data-sec="s5">15</span></li>
-    <li><span class="mid"><a href="#s6">남들은 왜 안 만들었나</a><span class="note">그리고 우리는 따라잡히나</span></span><span class="pg" data-sec="s6">17</span></li>
-    <li><span class="mid"><a href="#s7">언제 무엇이 나오나</a></span><span class="pg" data-sec="s7">19</span></li>
-    <li><span class="mid"><a href="#s8">지금 어디까지 왔나</a></span><span class="pg" data-sec="s8">21</span></li>
+    <li><span class="mid"><a href="#s2">그래서 무엇을 하려는가</a><span class="note">한 가지를 만들어 두 사람에게 서로 다른 것을 준다</span></span><span class="pg" data-sec="s2">5</span></li>
+    <li><span class="mid"><a href="#s3">실제로 어떻게 생겼나</a><span class="note">화면과 결과물</span></span><span class="pg" data-sec="s3">7</span></li>
+    <li><span class="mid"><a href="#s4">왜 이렇게 만들었나</a><span class="note">결정 여덟 가지와 그 근거</span></span><span class="pg" data-sec="s4">11</span></li>
+    <li><span class="mid"><a href="#s5">실패한다면 어떻게 실패하나</a></span><span class="pg" data-sec="s5">13</span></li>
+    <li><span class="mid"><a href="#s6">남들은 왜 안 만들었나</a><span class="note">그리고 우리는 따라잡히나</span></span><span class="pg" data-sec="s6">15</span></li>
+    <li><span class="mid"><a href="#s7">언제 무엇이 나오나</a></span><span class="pg" data-sec="s7">16</span></li>
+    <li><span class="mid"><a href="#s8">지금 어디까지 왔나</a></span><span class="pg" data-sec="s8">18</span></li>
   </ol>
 </nav>
 
