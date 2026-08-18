@@ -1,0 +1,24 @@
+{
+  "name": "@workflow/layout-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "순수 기하. LayoutInput → 좌표. React·DOM·타이머·워커·elkjs 런타임 의존 없음.",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.ts\"",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json",
+    "lint": "eslint src test"
+  },
+  "dependencies": {
+    "@workflow/graph-core": "file:../graph-core"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.8.0"
+  },
+  "//dependencies": "★ elkjs는 영원히 여기 없다. ElkNode는 types.ts의 구조적 타입이고, 실제 인스턴스 생성은 apps/web/lib/layout/pool.ts의 일이다. 이 줄이 깨지는 순간 (a) 테스트가 워커를 요구하고 (b) OG 라우트 번들에 500KB가 들어오고 (c) ELK 교체 시 건드릴 파일이 둘(build.ts/read.ts)이 아니게 된다. graph-core는 타입 + toLayoutEdges만 쓰며 그 자체가 런타임 의존성 0인 순수 패키지다."
+}

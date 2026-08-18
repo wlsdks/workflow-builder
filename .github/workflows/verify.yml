@@ -1,0 +1,33 @@
+name: verify
+
+on:
+  push: { branches: [main] }
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: install
+        run: npm install
+
+      # ── 1. 게이트가 살아 있는가 (D-100) ──
+      # 규칙이 아무것도 못 잡으면 여기서 멈춘다.
+      # "방어하는 척하면서 아무것도 안 막는 것"이 이 단계에서 걸린다.
+      - name: gates
+        run: node scripts/gates.mjs
+
+      # ── 2. 순수성이 타입으로 증명되는가 ──
+      # graph-core / layout-core / paste-parse 는 lib:["ES2022"] + types:[]
+      # DOM·Node 타입 없이 컴파일되어야 한다
+      - name: typecheck
+        run: npm run typecheck
+
+      # ── 3. 골든 픽스처 ──
+      - name: test
+        run: npm test

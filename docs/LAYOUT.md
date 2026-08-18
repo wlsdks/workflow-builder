@@ -1,5 +1,7 @@
 # 레이아웃 엔진 구현 명세
 
+> **구현 상태 (2026-08-18)** — 순수 계층 `packages/layout-core` 구현 완료. `types·hash·options·key·gate·anchor·cycle·geometry·fallback·jump·invariants·build·read` 13개 모듈, 테스트 107건 통과(골든 픽스처 36건 × 하드 불변식, 앵커 대수 검증 + 반례 4종, 게이트 양방향 18건, jump_score p90 = 0.066 < 0.15), `dependencies`에 elkjs 없음, `node scripts/gates.mjs` 통과. 미구현: `collapse.ts`(foldGraph)·`text.ts`(wrapHangul)·`export/svg.ts`, 그리고 `apps/web` 계층 전부(engine·pool·ladder·commit·cache·snapshot·urlState). 명세와 다른 점 3가지는 §4.2·§11.3·§3 각 절의 코드 주석에 근거와 함께 표시돼 있다.
+
 > 이 문서는 [DESIGN.md §6.5–6.7](./DESIGN.md), [ARCHITECTURE.md §4–5](./ARCHITECTURE.md), [DECISIONS.md D-023/D-024/D-037/D-038](./DECISIONS.md)에서 **이미 확정된 것 위에** 구현을 얹는다. ELK 옵션표·안정성 6단 전략·노드 규격·모션 토큰은 여기서 다시 적지 않는다.
 >
 > 이 문서가 지켜야 하는 단 하나의 숫자: **세션당 노드 드래그 시도 중앙값 < 1회** ([MEASUREMENT.md](./MEASUREMENT.md) `canvas_node_drag_attempted`). v1 캔버스는 읽기 전용(D-038)이라 드래그는 성공하지 않는다 — 시도 횟수가 그대로 불만의 크기다.
@@ -605,7 +607,7 @@ screen(s) = (p_prev + s·Δ)·z + T_prev − s·z·Δ = p_prev·z + T_prev = scr
 
 **앵커의 화면 좌표가 모든 순간에 상수다.** 끝점이 아니라 구간 전체에서 고정된다. easing 함수가 무엇이든, 두 트랜지션이 **같은 함수**이기만 하면 성립한다.
 
-> 따라서 뷰포트 이동에 `setViewport(v, { duration: 220 })`을 쓰면 **안 된다.** React Flow의 `duration`은 d3-transition의 기본 easing(`easeCubicInOut`)을 쓰는데 우리 노드는 `cubic-bezier(.2,.8,.2,1)`이다. 두 곡선이 다르면 위 상수성이 깨져 중간에 최대 12% 정도 어긋난다 — 정확히 "미묘하게 미끄러지는" 느낌이다. **뷰포트 transform은 즉시 기록하고, 보간은 CSS 트랜지션 하나가 양쪽을 동시에 담당한다.**
+> 따라서 뷰포트 이동에 `setViewport(v, { duration: 220 })`을 쓰면 **안 된다.** React Flow의 `duration`은 d3-transition의 기본 easing(`easeCubicInOut`)을 쓰는데 우리 노드는 `cubic-bezier(.2,.8,.2,1)`이다. 두 곡선이 다르면 위 상수성이 깨진다. **실측: 최대 편차 `0.72 × z·Δ`** — 구현 시 401점 샘플링으로 측정했고, 초안이 적었던 "최대 12%"는 **6배 과소평가**였다 — 정확히 "미묘하게 미끄러지는" 느낌이다. **뷰포트 transform은 즉시 기록하고, 보간은 CSS 트랜지션 하나가 양쪽을 동시에 담당한다.**
 
 ### 3.2 앵커 선택 규칙
 

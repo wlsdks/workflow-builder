@@ -1,0 +1,23 @@
+{
+  "name": "@workflow/analytics-schema",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "MEASUREMENT §2 이벤트 택소노미의 zod .strict() 정본. 금지 속성은 '검사'되는 것이 아니라 '존재하지 않는다'.",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.ts\"",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.8.0"
+  },
+  "//": "graph-core에 zod를 넣으라는 요구가 여기로 온다 (D-119). 이 패키지가 그 요구의 착지점이다."
+}

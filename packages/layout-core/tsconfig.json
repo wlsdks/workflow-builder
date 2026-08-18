@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+
+    // ★ "DOM"이 없다. document / window / performance 사용이 컴파일 에러가 된다.
+    //   LAYOUT §14.2 "layout-core가 모르는 것: React, DOM, window, Worker, 시간".
+    //   정책이 아니라 타입 시스템으로 순수성을 강제한다.
+    "lib": ["ES2022"],
+    "types": [],
+
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": false,
+    "noImplicitOverride": true,
+    "noFallthroughCasesInSwitch": true,
+    "verbatimModuleSyntax": true,
+
+    // Node 24 네이티브 타입 스트리핑으로 빌드 없이 실행하기 위한 3종 세트.
+    "allowImportingTsExtensions": true,
+    "rewriteRelativeImportExtensions": true,
+    "erasableSyntaxOnly": true,
+
+    "noEmit": true,
+    "skipLibCheck": true,
+    "isolatedModules": true
+  },
+  "include": ["src/**/*.ts"]
+}

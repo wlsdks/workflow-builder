@@ -1,0 +1,24 @@
+{
+  "name": "@workflow/sync-protocol",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "op 와이어 스키마. graph-core의 Op 타입과 1:1 (D-119 — zod는 graph-core에 들어가지 않는다).",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.ts\"",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint src test"
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@workflow/graph-core": "*",
+    "@types/node": "^22.10.0",
+    "typescript": "^5.8.0"
+  }
+}

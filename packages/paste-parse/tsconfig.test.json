@@ -1,0 +1,10 @@
+{
+  // 테스트만 Node 전역을 본다. src는 tsconfig.json의 `types: []` / DOM 없는 lib 아래에서
+  // 컴파일되므로, 소스에서 실수로 node:fs나 document를 쓰면 **컴파일이 깨진다.**
+  // 순수성을 리뷰어의 기억이 아니라 두 개의 tsconfig로 강제한다.
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": ["src/**/*.ts", "test/**/*.ts"]
+}

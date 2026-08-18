@@ -1,0 +1,27 @@
+{
+  "name": "@workflow/doc-gen",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "문서 트리 = generate(graph ⊕ 사람이 적은 것). 순수 함수 패키지. 문장은 여기서만 만들어지고, 포맷마다 다시 쓰지 않는다.",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.ts\"",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json",
+    "lint": "eslint src test"
+  },
+  "peerDependencies": {
+    "@workflow/graph-core": "*"
+  },
+  "peerDependenciesMeta": {
+    "@workflow/graph-core": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.8.0"
+  },
+  "//dependencies": "★ 런타임 의존성 0. graph-core도 값으로 import 하지 않는다 — 입력 타입을 구조적으로만 받는다."
+}

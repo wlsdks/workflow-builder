@@ -1,5 +1,7 @@
 # 분석 엔진 · n8n 내보내기 구현 명세
 
+> **구현 상태 (2026-08-18)** — 계산 계층은 `packages/scoring`(§2 볼륨·§3 Feasibility 6요소·§4 Value·§5 ECRS 12종·§7 Confidence·D-116 가드)과 `packages/analytics-schema`(MEASUREMENT §2 이벤트 zod `.strict()`)로 **동작한다**. 골든 픽스처는 `packages/scoring/test/golden.test.ts`이고, 그 파일의 `DIVERGENCES` 표가 **SEED §D 손계산과 규칙 계산이 갈리는 10건**(§3.7의 0.79 산술 오류 · §4.1 `customer-wait` 단위 오류 · Confidence 0.6/0.9 도달 불가 · RiskValue 3건 미산정 포함)을 판정과 함께 고정한다. L1~L5 잡 러너와 n8n 익스포터는 미착수.
+
 > 최종 갱신: 2026-08-17 · 대상 패키지: `packages/analytics-core`, `packages/analytics-jobs`, `packages/exporters`
 >
 > **전제 문서 (여기서 다시 설명하지 않는다)**

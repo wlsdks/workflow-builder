@@ -62,7 +62,14 @@ export { compareSortKey } from './preprocess.ts';
 export { formatGraph, formatNodes, formatEdges, formatDiagnostics } from './format.ts';
 
 export { recomputeScope, OP_SCOPE, needsLayout, changedNodeIds } from './incremental.ts';
-export type { Op, OpType, RecomputeScope } from './incremental.ts';
+export type { RecomputeScope } from './incremental.ts';
+
+/* ── op 순수 계층 (SYNC.md §2) ──────────────────────────────────────────
+ * 리듀서가 graph-core에 사는 이유(§2.1): derive()의 입력을 만드는 함수이고,
+ * 소비자가 4곳(브라우저·서버 액션·웹워커·스냅샷 복원)이며, 결정성 계약과
+ * 테스트 자산을 그대로 공유한다. zod는 여기 들어오지 않는다 (D-119).
+ */
+export * from './ops/index.ts';
 
 export { toN8n } from './export/n8n.ts';
 export type { N8nExportResult, ToN8nOptions, UnmappedItem } from './export/n8n.ts';

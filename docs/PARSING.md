@@ -1,5 +1,6 @@
 # 붙여넣기 파싱 알고리즘 명세
 
+> 구현: `packages/paste-parse` · 테스트 59건 (골든 픽스처 6 + 무손실 불변식 + 속성 테스트 1,000건) · 명세와 갈린 지점은 `src/__fixtures__/golden.ts`의 `deviations`에 근거와 함께 적혀 있다
 > 최종 갱신: 2026-08-17 · 상태: 초안 v0.1
 > 대상 패키지: `packages/paste-parse` (React·Drizzle·DOM 무의존 순수 패키지)
 > 관련 문서: [PRD §3](./PRD.md) · [STATES.md §붙여넣기](./STATES.md) · [WRITING.md §5](./WRITING.md) · [TOOLS.md](./TOOLS.md) · [MEASUREMENT.md §붙여넣기 파싱](./MEASUREMENT.md)

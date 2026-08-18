@@ -1,6 +1,22 @@
 # 동기화 · 저장 엔진
 
+> **구현 상태 (2026-08-18)** — §1~§4의 **순수 계층만 구현됨**: `packages/graph-core/src/ops/`(op 타입 25종·`applyOp`·`invertOp`·`commutes`·`coalesce`·`merge3`·버스트 경계, 런타임 의존성 0) + `packages/sync-protocol/`(zod 스키마·봉투·응답). 테스트 393건 통과(graph-core 374 · sync-protocol 19). **§3.2 표는 269칸 중 20칸이 실제와 다르다** — 구현은 보수적으로(false 쪽으로) 갈라져 있고, 칸별 근거는 `packages/graph-core/test/ops.test.ts`의 `DEVIATIONS`에 있다. 미구현: `sync-client`(§4.1·§4.3~§8), 서버(§9~§10), undo 스택(§11), 관측성(§13).
+
 > 최종 갱신: 2026-08-17 · 상태: v0.1
+
+> ## ⚠️ 구현이 찾아낸 치명 결함 — `merge3` 대칭성 위반
+>
+> §2.5의 초안 코드는 **양쪽이 같은 지점에 순수 삽입**할 때 `a.end <= b.start`와 `b.end <= a.start`가
+> **둘 다 참**이 되어 먼저 쓴 분기가 이긴다. 즉 `merge3(b,x,y) ≠ merge3(b,y,x)`이고,
+> **두 클라이언트가 서로 다른 문장에 수렴한다.**
+>
+> ```
+> merge3('견적서', '견적서 발송', '견적서 검토')  ≠
+> merge3('견적서', '견적서 검토', '견적서 발송')
+> ```
+>
+> 이건 "충돌 표시가 어긋난다" 수준이 아니라 **데이터 발산**이다. 바이트 순서 타이브레이크로 고쳤고,
+> 2,000건 속성 테스트(P7)가 지킨다.
 > 사용자에게 보이는 상태·문구는 [STATES.md §5](./STATES.md), 데이터 모델은 [ARCHITECTURE.md §2](./ARCHITECTURE.md), 순수 파생은 [GRAPH-CORE.md](./GRAPH-CORE.md)를 따른다.
 > 이 문서는 **그 위에 얹는 구현 명세**다. 이미 결정된 것(op 기반, fractional index, tombstone, zustand SoT, 800ms 디바운스, `sendBeacon`, Server Actions)은 다시 논증하지 않는다.
 
@@ -351,7 +367,7 @@ export const ApplyOpsInput = z.object({
   baseRevision: z.number().int().nonnegative(),
   ops: z.array(EnvelopeSchema).min(1).max(200),
   /** 클라이언트가 이 배치를 적용한 뒤 계산한 derive().contentHash. 발산 탐지용 (§13) */
-  expectedContentHash: z.string().length(16).optional(),
+  expectedContentHash: z.string().length(7).optional(),  // hash32는 base36 7자 — 16으로 두면 모든 요청이 거부된다
 });
 ```
 

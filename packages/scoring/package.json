@@ -1,0 +1,27 @@
+{
+  "name": "@workflow/scoring",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "PRD §4.8 스코어링 · Feasibility 6요소 · ECRS 12종 · 금지 출력 가드. 순수 함수, 런타임 의존성 0.",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --test \"test/*.test.ts\"",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.test.json"
+  },
+  "peerDependencies": {
+    "@workflow/graph-core": "*"
+  },
+  "peerDependenciesMeta": {
+    "@workflow/graph-core": { "optional": true }
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.8.0"
+  },
+  "dependencies": {},
+  "//dependencies": "★ 비어 있다. graph-core조차 런타임으로 물지 않는다 — 이 패키지는 graph-core가 이미 계산한 값을 **숫자로** 받는다. 대신 test/golden.test.ts가 BAND_HOURS를 graph-core 원본과 대조해 두 벌 관리가 되는 것을 막는다."
+}

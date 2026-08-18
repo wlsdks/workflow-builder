@@ -221,7 +221,7 @@ describe('역투영 (§11) — 스모크', () => {
 
 describe('증분 범위 (§8)', () => {
   it('set_title은 위상·메트릭을 건드리지 않는다', () => {
-    deepStrictEqual(recomputeScope([{ type: 'set_title', id: 'a', title: 'x' }]), {
+    deepStrictEqual(recomputeScope([{ type: 'set_title', id: 'a', from: 'w', to: 'x' }]), {
       derive: true,
       topology: false,
       labels: true,
@@ -231,13 +231,16 @@ describe('증분 범위 (§8)', () => {
   });
 
   it('set_attr{reworkRate}는 메트릭만 건드린다 (확률은 위상이 아니다)', () => {
-    const s = recomputeScope([{ type: 'set_attr', id: 'a', patch: { reworkRate: 0.3 } }]);
+    const s = recomputeScope([{ type: 'set_attr', id: 'a', from: {}, to: { reworkRate: 0.3 } }]);
     strictEqual(s.topology, false);
     strictEqual(s.metrics, true);
   });
 
   it('set_attr{mode}는 위상을 건드린다 (join 노드 생성/삭제)', () => {
-    strictEqual(recomputeScope([{ type: 'set_attr', id: 'a', patch: { mode: 'and' } }]).topology, true);
+    strictEqual(
+      recomputeScope([{ type: 'set_attr', id: 'a', from: {}, to: { mode: 'and' } }]).topology,
+      true,
+    );
   });
 });
 

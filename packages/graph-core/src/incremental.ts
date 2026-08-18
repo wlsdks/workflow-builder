@@ -27,47 +27,24 @@
  * 그래서 op → **무엇을 다시 하는가**의 표만 있으면 충분하다.
  */
 
-import type { DerivedGraph, DurationBand, ItemAttrs, NodeKind } from './types.ts';
+import type { DerivedGraph, ItemAttrs } from './types.ts';
 
-/* ── op 정의 (ARCHITECTURE §6 `applyOps`) ──────────────────────────────── */
+/* ── op 정의 ────────────────────────────────────────────────────────────
+ *
+ * op의 정본은 `./ops/types.ts`다 (SYNC.md §1.5). 이 파일은 그 위에
+ * "무엇을 다시 계산하는가"만 얹는다.
+ *
+ * SYNC.md §1.1의 graph-core 변경 요청을 반영했다:
+ *   - `set_tools` 삭제 → `add_tool` / `remove_tool` (집합은 원소 단위로 쪼갠다)
+ *   - `toggle_pain` 삭제 → `set_pain{from,to}` (토글은 멱등도 교환도 아니다)
+ *   - `set_freq` / `set_automation` / `set_edge_label` / `set_doc_title` /
+ *     `paste_batch` / `record_conflict` / `resolve_conflict` 추가
+ *   - 모든 필드 op이 `from`을 싣는다 (D-110)
+ */
 
-export type OpType =
-  | 'insert_item'
-  | 'delete_item'
-  | 'restore_item'
-  | 'move_item'
-  | 'reorder_item'
-  | 'set_title'
-  | 'set_kind'
-  | 'set_attr'
-  | 'set_assignee'
-  | 'set_duration'
-  | 'set_tools'
-  | 'toggle_pain'
-  | 'confirm_item'
-  | 'add_edge'
-  | 'remove_edge'
-  | 'suppress_edge'
-  | 'unsuppress_edge';
+export type { Op, OpType } from './ops/types.ts';
 
-export type Op =
-  | { type: 'insert_item'; id: string; parentId: string | null; sortKey: string; kind: NodeKind; title: string }
-  | { type: 'delete_item'; id: string }
-  | { type: 'restore_item'; id: string }
-  | { type: 'move_item'; id: string; parentId: string | null; sortKey: string }
-  | { type: 'reorder_item'; id: string; sortKey: string }
-  | { type: 'set_title'; id: string; title: string }
-  | { type: 'set_kind'; id: string; kind: NodeKind }
-  | { type: 'set_attr'; id: string; patch: Partial<ItemAttrs> }
-  | { type: 'set_assignee'; id: string; assigneeId: string | null }
-  | { type: 'set_duration'; id: string; durationBand: DurationBand | null }
-  | { type: 'set_tools'; id: string; toolIds: readonly string[] }
-  | { type: 'toggle_pain'; id: string; painFlag: boolean }
-  | { type: 'confirm_item'; id: string }
-  | { type: 'add_edge'; id: string; sourceId: string; targetId: string; label?: string }
-  | { type: 'remove_edge'; id: string }
-  | { type: 'suppress_edge'; id: string; sourceId: string; targetId: string }
-  | { type: 'unsuppress_edge'; id: string };
+import type { Op, OpType } from './ops/types.ts';
 
 /* ── 재계산 범위 ───────────────────────────────────────────────────────── */
 
@@ -110,13 +87,19 @@ const S = (
  * | set_attr(avgWaitH)|  ○   |  ●   |   ●    |   ○    |                                         |
  * | set_assignee      |  ○   |  ●   |   ●    |   ○    | 인계 지점 재계산                        |
  * | set_duration      |  ○   |  ●   |   ●    |   ○    |                                         |
- * | set_tools         |  ○   |  ●   |   ●    |   ○    | 도구 전환 횟수                          |
- * | toggle_pain       |  ○   |  ●   |   ○    |   ○    | 짜증 렌즈 전용 (D-025)                   |
+ * | add_tool/remove_tool| ○  |  ●   |   ●    |   ○    | 도구 전환 횟수                          |
+ * | set_pain          |  ○   |  ●   |   ○    |   ○    | 짜증 렌즈 전용 (D-025)                   |
+ * | set_freq/automation| ○   |  ●   |   ●    |   ○    |                                         |
  * | confirm_item      |  ○   |  ●   |   ○    |   ○    | 신선도 채도만                           |
  * | add_edge          |  ●   |  ●   |   ●    |   ●    |                                         |
  * | remove_edge       |  ●   |  ●   |   ●    |   ●    |                                         |
  * | suppress_edge     |  ●   |  ●   |   ●    |   ●    | 유일한 진입로를 끊을 수 있다             |
  * | unsuppress_edge   |  ●   |  ●   |   ●    |   ●    |                                         |
+ * | set_edge_label    |  ○   |  ●   |   ○    |   ○    | 엣지 라벨만                             |
+ * | set_doc_title     |  ○   |  ○   |   ○    |   ○    | **derive조차 필요 없다**                 |
+ * | paste_batch       |  ●   |  ●   |   ●    |   ●    | 가장 넓다                               |
+ * | record_conflict   |  ○   |  ●   |   ○    |   ○    | 인라인 칩 렌더                          |
+ * | resolve_conflict  |  ○   |  ●   |   ○    |   ○    | 값이 바뀌면 해당 필드 스코프를 OR       |
  *
  * ● = 다시 계산 / ○ = 건드리지 않음
  *
@@ -135,13 +118,23 @@ export const OP_SCOPE: Record<OpType, RecomputeScope> = {
   set_attr: S(true, true, true, false),
   set_assignee: S(false, true, true, false),
   set_duration: S(false, true, true, false),
-  set_tools: S(false, true, true, false),
-  toggle_pain: S(false, true, false, false),
+  set_freq: S(false, true, true, false),
+  set_automation: S(false, true, true, false),
+  set_pain: S(false, true, false, false),
+  add_tool: S(false, true, true, false),
+  remove_tool: S(false, true, true, false),
   confirm_item: S(false, true, false, false),
   add_edge: S(true, true, true, true),
   remove_edge: S(true, true, true, true),
   suppress_edge: S(true, true, true, true),
   unsuppress_edge: S(true, true, true, true),
+  set_edge_label: S(false, true, false, false),
+  /** 문서 제목은 그래프에 들어가지 않는다 — derive조차 필요 없다 (§1.7) */
+  set_doc_title: S(false, false, false, false),
+  paste_batch: S(true, true, true, true),
+  record_conflict: S(false, true, false, false),
+  /** 값이 실제로 바뀌면 해당 필드 스코프를 OR해야 하지만, op만 보고는 알 수 없다 */
+  resolve_conflict: S(false, true, false, false),
 };
 
 /** set_attr는 어떤 키를 건드렸는지에 따라 범위가 크게 다르다 */
@@ -159,7 +152,7 @@ export function recomputeScope(ops: readonly Op[]): RecomputeScope {
   for (const op of ops) {
     let s = OP_SCOPE[op.type];
     if (op.type === 'set_attr') {
-      const keys = Object.keys(op.patch) as Array<keyof ItemAttrs>;
+      const keys = Object.keys(op.to) as Array<keyof ItemAttrs>;
       const topo = keys.some((k) => TOPOLOGY_ATTRS.has(k));
       const metricOnly = keys.every((k) => METRIC_ONLY_ATTRS.has(k));
       s = S(topo, !metricOnly || keys.includes('avgWaitH'), true, false);

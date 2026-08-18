@@ -305,13 +305,14 @@ export function projectCanvasEdit(ctx: ProjectContext, edit: CanvasEdit): Projec
     case 'change-kind': {
       const me = byId.get(edit.nodeId);
       if (!me) return notFound();
-      return { ok: true, ops: [{ type: 'set_kind', id: me.id, kind: edit.to }] };
+      // from은 D-110 — 3-way merge와 rebase가 "동시 편집인가"를 물을 수 있게 한다
+      return { ok: true, ops: [{ type: 'set_kind', id: me.id, from: me.kind, to: edit.to }] };
     }
 
     case 'set-title': {
       const me = byId.get(edit.nodeId);
       if (!me) return notFound();
-      return { ok: true, ops: [{ type: 'set_title', id: me.id, title: edit.title }] };
+      return { ok: true, ops: [{ type: 'set_title', id: me.id, from: me.title, to: edit.title }] };
     }
   }
 }
