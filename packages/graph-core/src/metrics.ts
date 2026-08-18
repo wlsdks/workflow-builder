@@ -33,6 +33,7 @@ import type {
   Diagnostic,
   DurationBand,
   Handoff,
+  ItemAttrs,
   Measure,
   Metrics,
   NodeId,
@@ -75,6 +76,48 @@ export type MetricsContext = {
   options: DeriveOptions;
   diag: (d: Diagnostic) => void;
 };
+
+
+/**
+ * 분기 출력 엣지에 확률을 배분한다.
+ *
+ * 명시된 `caseShare`가 하나라도 있으면 **그 값들로 비례 배분**하고, 값이 없는 갈래는
+ * 남은 몫을 균등하게 나눠 갖는다. 전부 없으면 종전대로 균등 분할이다.
+ *
+ * 균등 분할만 있던 시절의 문제 — 실제 데이터에서 5갈래 중 하나가 전체의 45%인데
+ * 1/5로 계산되면 `leadTimeH`가 틀리고, **아무것도 그걸 알려주지 않았다.**
+ *
+ * 정규화(합=1)를 사용자에게 요구하지 않는 이유: 사람은 "10번 중 9번"만 알고
+ * 나머지는 모르는 채로 적는다. 합이 1을 넘을 때만 비례 축소한다.
+ */
+function distributeShare(
+  outs: readonly DerivedEdge[],
+  share: Map<string, number>,
+  items: ReadonlyMap<string, { readonly item: { attrs?: ItemAttrs } }>,
+): void {
+  const stated = outs.map((e) => {
+    // 갈래 컨테이너는 노드가 되지 않는다 — 엣지가 갈래 안 **첫 단계**를 직접 가리킨다.
+    // 그래서 `e.target`이 아니라 엣지에 실린 `caseItemId`로 원래 갈래를 찾아야 한다.
+    // 이걸 놓치면 caseShare가 언제나 undefined이고, 균등 분할로 조용히 되돌아간다.
+    const raw = e.caseItemId != null ? items.get(e.caseItemId)?.item.attrs?.caseShare : undefined;
+    return typeof raw === 'number' && Number.isFinite(raw) && raw > 0 ? raw : null;
+  });
+
+  const total = stated.reduce<number>((a, v) => a + (v ?? 0), 0);
+  if (total <= 0) {
+    for (const e of outs) share.set(e.id, 1 / outs.length);
+    return;
+  }
+
+  const unstated = stated.filter((v) => v === null).length;
+  const scale = total > 1 ? 1 / total : 1;
+  const rest = Math.max(0, 1 - total * scale);
+
+  outs.forEach((e, i) => {
+    const v = stated[i];
+    share.set(e.id, v == null ? (unstated > 0 ? rest / unstated : 0) : v * scale);
+  });
+}
 
 export function computeMetrics(ctx: MetricsContext): Metrics {
   const { nodes, edges, outgoing, incoming, topoOrder, cycles, tree, options, diag } = ctx;
@@ -146,7 +189,7 @@ export function computeMetrics(ctx: MetricsContext): Metrics {
       for (const e of backs) share.set(e.id, p / backs.length);
       for (const e of fwds) share.set(e.id, (1 - p) / fwds.length);
     } else {
-      for (const e of outs) share.set(e.id, 1 / outs.length);
+      distributeShare(outs, share, tree.byId);
     }
   }
 

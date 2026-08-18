@@ -1460,6 +1460,26 @@ G-c. demote 총량 > 50%                → confidence = 'low' 강제 (UI가 원
 
 ### 9.1 공식
 
+> ## ⚠️ 구현이 찾아낸 결함 — 이 공식은 게으를수록 높은 점수를 준다
+>
+> `markerCoverage`(마커 기반 항목 / 전체 항목)와 `1 − clauseRatio`(절 분할 비중의 역수)는
+> **같은 방향을 두 번 보상한다.** 절 분할을 덜 할수록 분모가 줄어 `markerCoverage`가 오르고,
+> 동시에 `clauseRatio`가 내려가 두 번째 항도 오른다.
+>
+> ```
+> 항목 11개 중 마커 8개  →  coverage 0.73
+> 항목  8개 중 마커 8개  →  coverage 1.00     ← 분할을 3번 덜 했을 뿐인데
+> ```
+>
+> **파서가 일을 덜 할수록 신뢰도가 높아진다.** 실제로 픽스처 F5가 이 때문에 `mid` 대신 `high`를 받는다.
+>
+> **정정** — `markerCoverage`의 분모를 **전체 항목이 아니라 "마커가 있을 수 있었던 위치 수"**로 바꾼다.
+> 절 분할로 생긴 항목은 애초에 마커를 가질 수 없으므로 분모에서 뺀다. 그러면 두 항이 독립해진다.
+> `1 − clauseRatio`는 그대로 두되 **가중치를 0.15 → 0.20**으로 올린다 — 추론 의존도는 신뢰도의
+> 직접 신호이고, 이제 중복 보상이 아니다.
+>
+> 구현은 `packages/paste-parse`의 `deviations`에 이 판단이 기록되어 있다.
+
 ```ts
 export function computeConfidence(s: Signals): { level: Confidence; score: number; reasons: string[] } {
   const score =

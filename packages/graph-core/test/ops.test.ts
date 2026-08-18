@@ -1100,3 +1100,78 @@ describe('§1.2 타이핑 버스트 경계', () => {
     ok(TITLE_IDLE_MS < 800);
   });
 });
+
+/* ════════════════════════════════════════════════════════════════════════
+ * caseShare — 갈래 비중
+ *
+ * 균등 분할만 있던 시절, 실제 데이터에서 5갈래 중 하나가 전체의 45%인데
+ * 1/5로 계산됐다. leadTimeH가 틀리는데 **아무것도 그걸 알려주지 않았다.**
+ * ════════════════════════════════════════════════════════════════════════ */
+
+describe('caseShare (갈래 비중)', () => {
+  const mk = (
+    id: string, parentId: string | null, sortKey: string,
+    kind: 'task' | 'branch', title: string,
+    durationBand: string | null = null, attrs: Record<string, unknown> = {},
+  ) => ({ id, parentId, sortKey, kind, title, durationBand, attrs }) as never;
+
+  /** CS-01 실제 분포: 5갈래 210건 중 95/55/35/20/5 */
+  const CASES = [
+    ['배송조회', 95, '5m'], ['단순문의', 55, '15m'], ['환불', 35, '15m'],
+    ['불량', 20, '15m'], ['클레임', 5, '1h'],
+  ] as const;
+
+  const build = (withShare: boolean) => [
+    mk('a', null, 'a0', 'task', '문의 유입 확인', '1m'),
+    mk('b', null, 'a1', 'branch', '문의 유형 분류', null, { mode: 'xor' }),
+    ...CASES.flatMap(([label, n, band], i) => [
+      mk(`c${i}`, 'b', `a${i}`, 'task', label, null, {
+        caseLabel: label,
+        ...(withShare ? { caseShare: n / 210 } : {}),
+      }),
+      mk(`c${i}s`, `c${i}`, 'a0', 'task', `${label} 처리`, band),
+    ]),
+    mk('z', null, 'a2', 'task', '상담 이력 기록', '5m'),
+  ];
+
+  const touchOf = (withShare: boolean) => derive(build(withShare), []).metrics.touchH.value;
+
+  it('명시된 비중이 균등 분할과 다른 답을 낸다', () => {
+    const even = touchOf(false);
+    const stated = touchOf(true);
+    ok(Math.abs(even - stated) > 0.05, `균등 ${even} vs 명시 ${stated} — 차이가 없다면 caseShare가 안 읽히고 있다`);
+    // 짧은 갈래(5분)가 45%를 차지하므로 명시 비중이 더 작아야 한다
+    ok(stated < even, `명시 ${stated} 가 균등 ${even} 보다 커서는 안 된다`);
+  });
+
+  it('비중이 하나도 없으면 종전대로 균등 분할이다', () => {
+    // 회귀 방어 — caseShare 도입이 기존 문서의 숫자를 바꾸면 안 된다
+    const g = derive(build(false), []);
+    const outs = g.edges.filter((e) => e.source === 'b');
+    strictEqual(outs.length, 5);
+  });
+
+  it('갈래 컨테이너는 노드가 아니므로 caseItemId로 찾아야 한다', () => {
+    // 이 테스트가 있는 이유: e.target으로 읽으면 언제나 undefined가 나오고
+    // **조용히 균등 분할로 되돌아간다.** 그 실수를 여기서 고정한다.
+    const g = derive(build(true), []);
+    const outs = g.edges.filter((e) => e.source === 'b');
+    for (const e of outs) {
+      ok(e.caseItemId != null, '분기 출력 엣지는 caseItemId를 실어야 한다');
+      strictEqual(g.nodes.find((n) => n.id === e.caseItemId), undefined, '갈래 컨테이너는 노드가 되지 않는다');
+    }
+  });
+
+  it('합이 1을 넘으면 비례 축소한다 (사용자가 건수를 적었을 때)', () => {
+    const items = [
+      mk('a', null, 'a0', 'branch', '분류', null, { mode: 'xor' }),
+      mk('c0', 'a', 'a0', 'task', 'A', null, { caseLabel: 'A', caseShare: 95 }),
+      mk('c0s', 'c0', 'a0', 'task', 'A 처리', '1h'),
+      mk('c1', 'a', 'a1', 'task', 'B', null, { caseLabel: 'B', caseShare: 5 }),
+      mk('c1s', 'c1', 'a0', 'task', 'B 처리', '1h'),
+    ];
+    // 95 + 5 = 100 → 0.95 / 0.05 로 축소되어야 하므로 touchH ≈ 1h
+    const m = derive(items as never, []).metrics.touchH.value;
+    ok(Math.abs(m - 1) < 0.01, `touchH ${m} — 비례 축소가 안 되고 있다`);
+  });
+});

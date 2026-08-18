@@ -34,6 +34,19 @@ export type ItemAttrs = {
   waitFor?: WaitFor;
   avgWaitH?: number;
   timeoutH?: number;
+
+  /**
+   * 갈래가 선택될 상대 비중. `branch`의 **자식(갈래)** 에 붙인다.
+   *
+   * 없으면 형제끼리 균등 분할한다 — 그런데 그 균등 분할이 조용히 틀린 답을 만든다.
+   * 실제 데이터(CS-01)에서 5갈래 중 하나가 전체의 45%인데 1/5로 계산되면
+   * `leadTimeH`가 틀리고, **아무것도 그걸 알려주지 않는다.**
+   *
+   * 정규화는 하지 않는다. 형제 중 **하나라도** 값이 있으면 그 값들로 비례 배분하고,
+   * 값이 없는 형제는 나머지를 균등하게 나눠 갖는다. 사용자가 "이건 10번 중 9번"만
+   * 알고 나머지는 모를 수 있기 때문이다.
+   */
+  caseShare?: number;
   // task
   reworkRate?: number;
   returnToItemId?: string;
