@@ -175,12 +175,38 @@
   }
   .between::before, .between::after { content: ""; flex: 1; height: 1px; background: var(--rule-firm); }
 
+  /* ── 판정 ─────────────────────────────────────────── */
+  .st { font-size: 12px; font-weight: 600; white-space: nowrap; }
+  .st.on { color: var(--brand); }
+  .st.off { color: var(--warn); }
+
+  .rows { border-top: 1px solid var(--rule); }
+  .row {
+    display: grid; grid-template-columns: 54px 1fr; gap: 14px;
+    padding: 12px 24px; border-bottom: 1px solid var(--rule); font-size: 14.5px;
+    line-height: 1.6; align-items: baseline;
+  }
+  .row:last-child { border-bottom: 0; }
+  .row > span:first-child {
+    font-size: 11.5px; font-weight: 600; text-align: center;
+    padding: 3px 0; border-radius: 5px;
+  }
+  .row .ok { color: var(--brand); background: var(--brand-soft); }
+  .row .no { color: var(--warn); background: var(--warn-soft); }
+  .row b { font-weight: 600; }
+
   /* ── 흐름도 ───────────────────────────────────────── */
   .flow { width: 100%; height: auto; display: block; }
   .flow .edge { stroke: var(--faint); stroke-width: 1.6; fill: none; }
   .flow marker path { fill: var(--faint); }
   .flow .box { fill: var(--paper); stroke: var(--ink-2); stroke-width: 1.6; }
-  .flow .box.hold { fill: var(--hold-soft); stroke: var(--hold); stroke-dasharray: 6 4; }
+  .flow .box.ok  { fill: var(--brand-soft); stroke: var(--brand); }
+  .flow .box.mid { fill: var(--warn-soft); stroke: var(--warn); stroke-dasharray: 7 4; }
+  .flow .box.no  { fill: var(--hold-soft); stroke: var(--hold); stroke-dasharray: 2 3; }
+  .flow .v { font-size: 11px; font-weight: 600; }
+  .flow .v.ok  { fill: var(--brand); }
+  .flow .v.mid { fill: var(--warn); }
+  .flow .v.no  { fill: var(--hold); }
   .flow .pill { fill: var(--warn-soft); stroke: var(--warn); stroke-width: 1.6; }
   .flow text { font-family: var(--sans); fill: var(--ink); text-anchor: middle; }
   .flow .t { font-size: 14.5px; }
@@ -193,11 +219,12 @@
   .kinds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 28px 0; }
   .kind { border: 1px solid var(--rule); border-radius: 12px; padding: 18px; background: var(--paper-2); }
   .kind .chip {
-    display: inline-block; padding: 7px 14px; border-radius: 8px; background: var(--paper);
-    border: 1.6px solid var(--ink-2); font-size: 13.5px; font-weight: 600; margin-bottom: 12px;
+    display: inline-block; padding: 7px 14px; border-radius: 8px;
+    background: var(--brand-soft); border: 1.6px solid var(--brand); color: var(--brand);
+    font-size: 13.5px; font-weight: 600; margin-bottom: 12px;
   }
   .kind.b .chip { border-color: var(--warn); color: var(--warn); background: var(--warn-soft); border-radius: 18px; }
-  .kind.h .chip { border-color: var(--hold); color: var(--hold); background: var(--hold-soft); border-style: dashed; }
+  .kind.h .chip { border-color: var(--hold); color: var(--hold); background: var(--hold-soft); border-style: dotted; }
   .kind p { margin: 0; font-size: 14px; line-height: 1.65; color: var(--ink-2); }
   .kind p + p { margin-top: 8px; color: var(--sub); font-size: 13.5px; }
 
@@ -312,6 +339,9 @@
     .sum .cell dd small { font-size: 9pt; }
     .sum .rec b { font-size: 9pt; }
     .sum .rec p { font-size: 9.5pt; line-height: 1.6; }
+    .row { font-size: 9.5pt; padding: 9px 18px; grid-template-columns: 46px 1fr; }
+    .row > span:first-child { font-size: 8pt; }
+    .flow .v { font-size: 10px; }
     .end { font-size: 9pt; }
     .end h3 { font-size: 11.5pt; }
     .flow .t { font-size: 13px; }
@@ -350,15 +380,15 @@
 <div class="page">
 
 <header class="cover">
-  <p class="meta">제품 기획서 · 2026년 8월</p>
+  <p class="meta">Preflow · 제품 기획서 · 2026년 8월</p>
   <h1>내 일이 뭔지<br>아무도 모른다</h1>
   <p class="thesis">
-    직원이 자기 업무를 글로 적으면 흐름도가 저절로 그려지고,
-    어디를 자동화할 수 있는지, 어디는 아예 없앨 수 있는지 드러나는 도구.
+    에이전트에게 일을 넘기려면 그 일이 뭔지 적혀 있어야 한다.
+    그리고 적을 수 있는 사람은 그 일을 하는 당사자뿐이다.
   </p>
   <div class="facts">
-    <span>가칭 <b>Preflow</b></span>
-    <span>쓰는 사람 <b>사내 전 직원</b></span>
+    <span>쓰는 사람 <b>먼저 한 부서</b></span>
+    <span>만드는 사람 <b>2명</b></span>
     <span>지금 <b>화면 만들기 직전</b></span>
   </div>
 </header>
@@ -366,14 +396,14 @@
 <nav class="toc">
   <h2>차례</h2>
   <ol>
-    <li><span class="mid"><a href="#s1">무슨 문제인가</a><span class="note">자동화를 하려는데 무엇을 자동화할지 아무도 모른다</span></span><span class="pg" data-sec="s1">3</span></li>
-    <li><span class="mid"><a href="#s2">그래서 무엇을 하려는가</a><span class="note">한 가지를 만들어 두 사람에게 서로 다른 것을 준다</span></span><span class="pg" data-sec="s2">5</span></li>
-    <li><span class="mid"><a href="#s3">실제로 어떻게 생겼나</a><span class="note">화면과 결과물</span></span><span class="pg" data-sec="s3">7</span></li>
-    <li><span class="mid"><a href="#s4">왜 이렇게 만들었나</a><span class="note">결정 여덟 가지와 그 근거</span></span><span class="pg" data-sec="s4">11</span></li>
-    <li><span class="mid"><a href="#s5">실패한다면 어떻게 실패하나</a></span><span class="pg" data-sec="s5">13</span></li>
-    <li><span class="mid"><a href="#s6">남들은 왜 안 만들었나</a><span class="note">그리고 우리는 따라잡히나</span></span><span class="pg" data-sec="s6">15</span></li>
-    <li><span class="mid"><a href="#s7">언제 무엇이 나오나</a></span><span class="pg" data-sec="s7">16</span></li>
-    <li><span class="mid"><a href="#s8">지금 어디까지 왔나</a></span><span class="pg" data-sec="s8">18</span></li>
+    <li><span class="mid"><a href="#s1">무슨 문제인가</a><span class="note">AI에게 넘길 일을 아무도 적어 놓지 않았다</span></span><span class="pg" data-sec="s1">3</span></li>
+    <li><span class="mid"><a href="#s2">그래서 무엇을 하려는가</a><span class="note">AI가 할 부분과 사람이 할 부분을 갈라 준다</span></span><span class="pg" data-sec="s2">6</span></li>
+    <li><span class="mid"><a href="#s3">실제로 어떻게 생겼나</a><span class="note">꺼내기·쪼개기·판정·실행</span></span><span class="pg" data-sec="s3">8</span></li>
+    <li><span class="mid"><a href="#s4">왜 이렇게 만들었나</a><span class="note">결정 열 가지와 그 근거</span></span><span class="pg" data-sec="s4">11</span></li>
+    <li><span class="mid"><a href="#s5">실패한다면 어떻게 실패하나</a></span><span class="pg" data-sec="s5">14</span></li>
+    <li><span class="mid"><a href="#s6">왜 사서 쓰지 않고 만드나</a><span class="note">Notion 템플릿으로 안 되는 것</span></span><span class="pg" data-sec="s6">16</span></li>
+    <li><span class="mid"><a href="#s7">언제 무엇이 나오나</a><span class="note">2명, 먼저 한 부서</span></span><span class="pg" data-sec="s7">18</span></li>
+    <li><span class="mid"><a href="#s8">지금 어디까지 왔나</a></span><span class="pg" data-sec="s8">20</span></li>
   </ol>
 </nav>
 
@@ -383,8 +413,8 @@
   <p class="kicker">1장</p>
 
   <p class="lead">
-    회사가 업무 자동화를 하기로 한다. 도구도 정했다. 그런데 바로 다음 질문에서 멈춘다.
-    <strong>무엇부터 자동화할 것인가.</strong>
+    회사가 AI로 업무를 자동화하기로 한다. 도구도 정했다.
+    그런데 바로 다음 질문에서 멈춘다. <strong>무엇부터 자동화할 것인가.</strong>
   </p>
 
   <p>
@@ -393,13 +423,27 @@
     <em>"이게 자동화 대상이 될 수 있다"</em>는 생각 자체를 해본 적이 없다. 그냥 원래 그렇게 하던 일이다.
   </p>
 
+  <h3 class="q">에이전트 시대라서 이 문제가 더 커졌다</h3>
+
   <p>
-    그래서 자동화 프로젝트는 대개 <strong>가장 눈에 띄는 것</strong>부터 시작한다.
-    목소리 큰 부서, 최근에 사고 난 업무, 임원이 지나가며 말한 것. 효과가 가장 큰 것이 아니라
-    가장 먼저 보인 것이다.
+    예전 자동화는 개발자가 붙였다. 그래서 무엇을 자동화할지도 개발자가 골랐고,
+    고를 수 있는 건 <strong>시스템에 기록이 남는 일</strong>뿐이었다.
   </p>
 
-  <h3 class="q">왜 아무도 모르나</h3>
+  <p>
+    에이전트는 다르다. 사람이 하던 일을 <strong>사람이 설명한 대로</strong> 할 수 있다.
+    범위가 갑자기 넓어졌다. 그런데 넓어진 그 영역이 정확히
+    <strong>아무데도 적혀 있지 않은 영역</strong>이다.
+  </p>
+
+  <blockquote>
+    <p>
+      에이전트에게 시킬 수 있게 된 순간,
+      <strong>무엇을 시킬지 적어 놓는 일</strong>이 병목이 됐다.
+    </p>
+  </blockquote>
+
+  <h3 class="q">왜 안 적혀 있나</h3>
 
   <p>
     회사 안에서 어떤 일이 어떻게 처리되는지 알아내는 방법은 지금까지 네 가지였다.
@@ -413,7 +457,7 @@
         <tr>
           <td>시스템 기록 분석<br><span style="font-weight:400;color:var(--faint);font-size:13px">Celonis 등</span></td>
           <td>그룹웨어·전사시스템에 남은 처리 기록</td>
-          <td>기록이 안 남는 일. 도입 비용도 1.5억 원대라 시작 자체가 어렵다</td>
+          <td>기록이 안 남는 일. 도입 비용도 억 단위라 시작 자체가 어렵다</td>
         </tr>
         <tr>
           <td>화면 녹화 분석<br><span style="font-weight:400;color:var(--faint);font-size:13px">Scribe 등</span></td>
@@ -423,7 +467,7 @@
         <tr>
           <td>그림 그리는 도구<br><span style="font-weight:400;color:var(--faint);font-size:13px">Miro 등</span></td>
           <td>사람이 직접 그린 그림</td>
-          <td>그림만 남고 <strong>데이터가 안 쌓인다.</strong> 부서끼리 비교할 수도, 합쳐 볼 수도 없다</td>
+          <td>그림만 남고 <strong>데이터가 안 쌓인다.</strong> 에이전트가 읽을 수 있는 형태가 아니다</td>
         </tr>
         <tr>
           <td>컨설팅</td>
@@ -464,41 +508,90 @@
         </tr>
         <tr>
           <td>인터뷰를 한다</td>
-          <td>제일 잘 나온다. 대신 한 사람당 한 시간이 든다. <strong>500명이면 500시간이다</strong></td>
+          <td>제일 잘 나온다. 대신 한 사람당 한 시간이 든다. 그리고 <strong>인터뷰한 그날의 기록으로 굳는다</strong></td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <h3 class="q">그런데 물어봐도 진실이 안 나온다</h3>
+  <h3 class="q">그럼 Claude에 붙여넣으면 되지 않나</h3>
 
   <p>
-    이게 가장 어려운 부분이다. 직원 입장에서 생각해 보면 당연하다.
-  </p>
-
-  <blockquote>
-    <p>"내 업무를 자세히 적어 주세요. 자동화할 겁니다."</p>
-    <cite>자기 일을 없애는 문서에 성실하게 답을 채우라는 요청이다</cite>
-  </blockquote>
-
-  <p>
-    이 상황에서 사람은 거짓말을 하지 않는다. 대신 <strong>조용히 조절한다.</strong>
-    소요 시간은 조금 넉넉하게 적고, 단순 반복이라 자동화하기 쉬워 보이는 단계는
-    <em>"판단이 필요한 일"</em>이라고 쓴다. 자기가 불편한 단계보다 남이 늦는 단계를 강조한다.
+    <strong>된다.</strong> 자기 업무를 줄글로 쓸 수 있는 사람은 그걸 붙여넣고
+    <em>"어디를 자동화할 수 있어?"</em>라고 물으면 오늘 당장 꽤 쓸 만한 답을 받는다. 공짜다.
   </p>
 
   <p>
-    결과는 <strong>수집 실패가 아니라 데이터 오염</strong>이다. 채워지긴 채워지는데
-    그 데이터로 뽑은 자동화 우선순위가 실제 순위와 다르다. 그걸 근거로 프로젝트를 시작하면
-    엉뚱한 곳에 돈을 쓰게 된다. 그리고 아무도 그 사실을 모른다.
+    이 사실을 피해 가면 안 된다. <strong>이걸 못 넘으면 이 프로젝트는 만들 이유가 없다.</strong>
+    그래서 정직하게 따진다. 붙여넣기로 안 되는 게 뭔가.
   </p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th style="width:32%">붙여넣기로 안 되는 것</th><th>왜</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>애초에 붙여넣을 게 없다</td>
+          <td><strong>대부분의 사람은 자기 업무를 줄글로도 못 쓴다.</strong>
+              몰라서가 아니라 순서와 조건으로 정리해 본 적이 없어서다.
+              "붙여넣으면 된다"는 <strong>이미 쓸 수 있는 소수</strong>에게만 해당한다</td>
+        </tr>
+        <tr>
+          <td>우리 회사 도구를 모른다</td>
+          <td>"그룹웨어에 등록한다"가 <strong>연결 가능한 단계인지</strong>는
+              우리 그룹웨어에 연결 통로가 있느냐에 달렸다. 그걸 아는 건 우리뿐이다</td>
+        </tr>
+        <tr>
+          <td>우리 회사 규정을 모른다</td>
+          <td>어떤 단계는 기술적으로 가능해도 <strong>사람이 승인해야 한다.</strong>
+              결재 규정과 책임 범위는 회사마다 다르다</td>
+        </tr>
+        <tr>
+          <td>한 번 답하고 사라진다</td>
+          <td>대화는 안 남고 업무는 바뀐다. 그리고 <strong>답에서 실행까지 이어지지 않는다.</strong>
+              "이렇게 하시면 됩니다"까지가 끝이다</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <p>
+      <strong>첫 줄이 가장 중요하다.</strong> 이 도구가 상대할 사람은
+      <strong>자기 업무를 줄글로 못 쓰는 사람</strong>이다.
+      쓸 수 있는 사람은 이미 Claude를 쓰고 있고, 그건 잘된 일이다.
+    </p>
+    <p>
+      그래서 이 도구의 첫 번째 일은 분석이 아니라 <strong>꺼내는 것</strong>이다.
+      그 사람 머릿속에 있는 걸 질문으로 끄집어내서 단계로 만드는 것.
+    </p>
+  </div>
+
+  <h3 class="q">더 어려운 문제. 적을 이유가 없다</h3>
+
+  <p>
+    설령 도구가 아무리 쉬워도, 사람은 <strong>지금 안 아픈 일</strong>에 시간을 쓰지 않는다.
+    그리고 업무를 적어 두면 좋은 순간은 <strong>가끔, 갑자기</strong> 온다.
+  </p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th style="width:34%">적어 두면 좋은 순간</th><th style="width:26%">얼마나 자주 오나</th><th>문제</th></tr></thead>
+      <tbody>
+        <tr><td>인수인계할 때</td><td class="num">1~2년에 한 번</td><td>그때는 이미 늦다. 나가기 2주 전에 급히 쓴다</td></tr>
+        <tr><td>신입에게 설명할 때</td><td class="num">연 1~2회</td><td>말로 하는 게 더 빠르다고 느낀다</td></tr>
+        <tr><td>휴가 대신할 사람에게</td><td class="num">몇 달에 한 번</td><td>위와 같다</td></tr>
+      </tbody>
+    </table>
+  </div>
 
   <div class="callout warn">
     <span class="lbl">문제를 한 줄로</span>
     <p>
-      회사 업무의 상당 부분은 <strong>당사자 기억 속에만 있고</strong>,
-      그걸 꺼내려고 물어보는 순간 <strong>당사자에게 사실대로 답할 이유가 사라진다.</strong>
-      이 두 가지를 동시에 풀지 못하면 자동화는 짐작으로 시작할 수밖에 없다.
+      업무 지식은 <strong>당사자 기억 속에만 있는데</strong>,
+      그걸 적어 둘 이유는 <strong>1년에 한두 번만 생긴다.</strong>
+      "쉽게 적게 해 주는 도구"만으로는 이 간극이 안 메워진다.
+      <strong>적는 그 순간에 바로 돌아오는 것</strong>이 있어야 한다.
     </p>
   </div>
 
@@ -506,7 +599,7 @@
 
   <p>
     <em>"내 일이 뭔지부터 알아야 한다"</em>는 문제의식의 주인은 <strong>자동화를 추진하는 쪽</strong>이다.
-    경영진, DX 담당, 경영지원실장. 영업팀 김대리가 아니다.
+    영업팀 김대리가 아니다.
   </p>
 
   <blockquote>
@@ -515,104 +608,202 @@
   </blockquote>
 
   <p>
-    이 구분을 놓치면 제품 전체가 어긋난다. 그래서 다음 장의 구조가 필요했다.
+    이 구분을 놓치면 제품 전체가 어긋난다. 그래서 다음 장은
+    <strong>"김대리가 지금 당장 뭘 얻는가"</strong>부터 시작한다.
   </p>
 </section>
 
-<!-- ══════════════════════════════════════════════════ -->
 <section id="s2">
   <h2>그래서 무엇을 하려는가</h2>
   <p class="kicker">2장</p>
 
-  <p class="lead">
-    직원이 자기 업무를 <strong>글로 적기만 하면</strong> 흐름도가 저절로 그려지는 도구를 만든다.
-    선을 긋거나 도형을 고르는 일은 없다. 그리고 그렇게 쌓인 기록에서
-    자동화·제거 후보가 자동으로 뽑힌다.
-  </p>
-
-  <p>
-    다만 앞 장에서 본 대로, <strong>"자동화를 위해 적어 주세요"라고 말하는 순간 데이터가 오염된다.</strong>
-    그래서 이 제품은 같은 것을 만들되 두 사람에게 서로 다른 것을 준다.
-  </p>
-
   <blockquote>
-    <p>직원은 "설명하지 않아도 되는 업무 문서"를 얻고,<br>회사는 "직원이 직접 만든 자동화 후보 목록"을 얻는다.</p>
+    <p>
+      당신 업무를 단계로 꺼내서,<br>
+      <strong>AI가 대신할 수 있는 단계</strong>와 <strong>사람이 꼭 해야 하는 단계</strong>를 갈라 준다.
+    </p>
   </blockquote>
 
-  <h3 class="q">직원에게 파는 것은 자동화가 아니다</h3>
+  <p class="lead">
+    기록이 목적이 아니다. <strong>판정이 목적이고 기록은 그 재료다.</strong>
+    이 순서를 뒤집으면 아무도 안 쓴다.
+  </p>
 
   <p>
-    직원 화면에는 자동화라는 말이 나오지 않는다. 대신 이 사람이 이미 겪고 있는 불편을 해결한다.
+    사람들이 문 앞에 서는 이유가 <em>"업무를 기록해 두세요"</em>가 아니라
+    <em>"당신 일 중에 AI가 대신할 수 있는 걸 찾아 드릴게요"</em>가 된다.
+    전자는 나중을 위한 저축이고, 후자는 지금 궁금한 것이다.
+  </p>
+
+  <h3 class="q">판정은 세 갈래다</h3>
+
+  <div class="kinds">
+    <div class="kind">
+      <span class="chip">넘길 수 있다</span>
+      <p>연결 통로가 있고 규정에도 안 걸린다.</p>
+      <p>"메일에서 요청 내용을 뽑아 표에 옮긴다"</p>
+    </div>
+    <div class="kind b">
+      <span class="chip">조건부</span>
+      <p>기술은 되는데 사람 확인이 필요하다.</p>
+      <p>"초안까지 만들고 보내기 전에 확인받는다"</p>
+    </div>
+    <div class="kind h">
+      <span class="chip">사람이 해야</span>
+      <p>규정·책임·판단이 걸려 있다.</p>
+      <p>"금액 승인", "고객에게 사과 전화"</p>
+    </div>
+  </div>
+
+  <p>
+    <strong>가운데 칸이 제일 중요하다.</strong> 실무는 대부분 여기다.
+    통째로 넘기는 것도, 통째로 사람이 하는 것도 아니고
+    <strong>일부만 넘기고 사람이 확인하는 형태</strong>가 현실적이다.
+    이 칸이 없으면 판정이 극단으로 갈리고, 극단으로 갈린 판정은 안 맞는다.
+  </p>
+
+  <h3 class="q">무엇을 근거로 판정하나</h3>
+
+  <p>
+    여기가 이 도구의 존재 이유다. 셋을 쓰는데, <strong>둘은 Claude가 원리상 알 수 없다.</strong>
+  </p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th style="width:30%">판정 근거</th><th style="width:14%">밖에서 아나</th><th>내용</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>사내 도구 연결 가능 여부</td>
+          <td><span class="st off">모름</span></td>
+          <td>단계에 나온 도구가 우리가 붙일 수 있는 것인지.
+              <strong>우리 회사 도구 목록과 연결 가능 여부를 미리 조사해서 표로 들고 있어야 한다</strong></td>
+        </tr>
+        <tr>
+          <td>규정상 사람이 필요한가</td>
+          <td><span class="st off">모름</span></td>
+          <td>결재 권한, 법적 책임, 대외 커뮤니케이션.
+              이건 <strong>회사가 한 번 정해서 넣어 두는 규칙</strong>이다</td>
+        </tr>
+        <tr>
+          <td>일반적인 판단</td>
+          <td><span class="st on">앎</span></td>
+          <td>이 종류의 작업이 대체로 자동화 가능한지.
+              <strong>이것만 쓰면 Claude 래퍼가 된다.</strong> 앞의 둘과 겹쳐야 값어치가 생긴다</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout brand">
+    <span class="lbl">나중에 가장 강해지는 근거</span>
+    <p>
+      네 번째가 있다. <strong>"이미 다른 부서가 이 단계를 넘겼나."</strong>
+      초기에는 쌓인 게 없어 못 쓰지만, 쓰일수록 강해지고
+      <strong>원리상 밖에서는 절대 알 수 없다.</strong>
+      <em>"총무팀에서 이미 이 단계 넘겼어요. 그거 그대로 쓰실래요?"</em>
+    </p>
+  </div>
+
+  <h3 class="q">판정이 끝이 아니라 시작이다</h3>
+
+  <p>
+    <em>"이렇게 하시면 됩니다"</em>까지가 끝이면 붙여넣기와 다를 게 없다.
+    그래서 판정 옆에 <strong>실행 버튼</strong>이 붙는다.
+  </p>
+
+  <p>
+    <strong>"넘길 수 있다"로 판정된 단계에 <em>"지금 해볼까요?"</em>가 뜬다.</strong>
+    누르면 그 단계만 에이전트가 대신 해 본다. 전체 자동화가 아니라 한 단계다.
+    되면 다음부터 그 단계는 안 해도 되고, 안 되면 판정이 틀렸다는 게 즉시 드러난다.
+  </p>
+
+  <h3 class="q">그러면 기록은 왜 남기나</h3>
+
+  <p>
+    판정을 받으려면 어차피 업무를 단계로 꺼내야 한다.
+    그 과정에서 나온 것이 <strong>부산물로 남는다.</strong> 그리고 그 부산물이 쓸모가 있다.
   </p>
 
   <ul>
-    <li><strong>같은 설명을 반복하지 않는다.</strong> 신입이 물을 때마다, 옆 팀이 물을 때마다 처음부터 다시 설명하는 대신 링크 하나를 보낸다</li>
-    <li><strong>휴가 갈 때 인수인계가 준비돼 있다.</strong> 대신할 사람에게 건넬 안내문이 이미 만들어져 있다</li>
-    <li><strong>부서 이동할 때 그대로 쓴다.</strong> 인수인계 문서를 처음부터 쓰지 않아도 된다</li>
-    <li><strong>"나 이만큼 한다"가 증거로 남는다.</strong> 내 업무량을 말이 아니라 문서로 보여줄 수 있다</li>
+    <li><strong>다음에 그 일 할 때 체크리스트로 연다.</strong> 빠뜨리지 않고, 어디까지 했는지 안다.
+        그리고 <strong>열 때마다 틀린 단계가 그 자리에서 고쳐진다</strong></li>
+    <li><strong>인수인계·신입 교육에 그대로 쓴다.</strong> 급하게 워드를 켜지 않아도 된다</li>
+    <li><strong>회사는 자동화 후보 지도를 얻는다.</strong> 짐작이 아니라 당사자 기록에서 나온다</li>
   </ul>
 
   <p>
-    네 가지 모두 <strong>적은 사람에게 곧바로 돌아오는 이득</strong>이다.
-    그래서 사실대로 적는 것이 자기에게 유리하다. 부풀려 적으면 그 문서가 부정확해져서
-    본인이 다시 설명하게 된다.
+    셋 다 값어치가 있지만, <strong>셋 중 어느 것도 처음 문을 열게 만들지는 못한다.</strong>
+    1장에서 본 대로 이 이득들은 가끔 오기 때문이다.
+    문을 여는 건 판정이고, 나머지는 그 뒤에 따라온다.
   </p>
 
-  <h3 class="q">회사가 얻는 것은 짐작이 아닌 목록이다</h3>
+  <h3 class="q">누가 무엇을 볼 수 있나</h3>
 
   <p>
-    직원들이 각자 자기 것을 적으면, 회사는 그때까지 존재한 적 없는 데이터를 갖게 된다.
-    부서를 가로지르는 실제 업무 지도다. 여기서 세 가지가 나온다.
+    사내 도구이므로 <strong>부서장은 팀원 문서를 볼 수 있다.</strong> 숨기지 않는다.
+    첫 화면에 그렇게 적힌다. 대신 네 가지를 함께 건다.
   </p>
 
   <div class="tw">
     <table>
       <tbody>
-        <tr><td style="width:26%">자동화 후보</td><td>반복 횟수 × 소요 시간 × 자동화 난이도로 정렬된 목록. 짐작이 아니라 당사자 기록에서 나온다</td></tr>
-        <tr><td>제거 후보</td><td><strong>자동화보다 먼저 물을 것.</strong> 이 단계, 그냥 없애면 안 되나? 반려율 0%인 승인 단계가 여기서 걸린다</td></tr>
-        <tr><td>어긋난 지점</td><td>같은 일을 두 부서가 다르게 기억하는 곳. <em>"요청자는 2일이라 하고 구매팀은 5일이라 한다."</em> 여기에 대개 진짜 병목이 있다</td></tr>
+        <tr><td style="width:24%">서로 본다</td><td>부서장이 팀원 걸 보면 팀원도 부서장 걸 본다. 그리고 <strong>부서장이 먼저 적는다</strong></td></tr>
+        <tr><td>열람이 남는다</td><td><em>"부서장님이 어제 이 문서를 보셨습니다."</em> 보는 건 자유지만 몰래는 아니다</td></tr>
+        <tr><td>줄 세우지 않는다</td><td><strong>개인별 소요시간 합계·근무시간 대비 비율·사람 간 비교를 아예 만들지 않는다.</strong> 문서는 보이되 점수는 없다</td></tr>
+        <tr><td>메모는 따로</td><td>공유용 문서와 비공개 메모는 저장되는 곳이 다르다. 섞일 경로가 없다</td></tr>
       </tbody>
     </table>
   </div>
 
-  <h3 class="q">두 약속이 충돌하지 않게 하려면</h3>
-
   <p>
-    여기가 이 기획의 핵심이다. 직원에게 "당신에게 불리하게 쓰이지 않는다"고 약속하면서
-    회사에는 데이터를 준다. 말로만 하면 아무도 안 믿는다. 그래서 <strong>구조로 만든다.</strong>
+    <strong>정직하게 적어 둔다.</strong> 이 구조는 1장의 "사실대로 안 적는다" 문제를
+    <strong>완전히 해결하지 못한다.</strong> 완화할 뿐이다.
+    그래서 소요시간은 부풀려질 수 있다고 전제하고 설계한다(4장 여섯 번째 결정).
+    자발 참여이고 처음에는 한 부서라서, 그 위험을 감당할 수 있다고 본다.
   </p>
-
-  <ul>
-    <li><strong>관리자 화면에 사람 이름이 나오지 않는다.</strong> 볼 수 있는 단위는 사람이 아니라 업무다</li>
-    <li><strong>5명보다 적은 그룹은 아예 표시되지 않는다.</strong> 3명짜리 팀의 평균은 사실상 개인 정보이기 때문이다</li>
-    <li><strong>"남이 얼마나 늦나"를 묻지 않는다.</strong> 각자 자기 관점의 사실만 적고, 어긋난 지점은 시스템이 두 기록을 대조해서 찾는다</li>
-    <li><strong>비공개 메모는 처음부터 다른 곳에 저장된다.</strong> 공유용 문서를 만들 때 실수로 섞일 경로 자체가 없다</li>
-  </ul>
-
-  <div class="callout brand">
-    <span class="lbl">이 약속이 왜 기능인가</span>
-    <p>
-      경영진은 <em>"부서별로 좀 보면 안 되나"</em>를 <strong>반드시 요구한다.</strong> 6개월 안에 온다.
-      그때 <em>"정책상 안 됩니다"</em>는 밀린다. <strong>"그 기능이 아예 없습니다"</strong>는 안 밀린다.
-      거절할 근거를 지금 만들어 두는 것이 이 프로젝트에서 할 수 있는 가장 값진 일이다.
-    </p>
-  </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════ -->
 <section id="s3">
   <h2>실제로 어떻게 생겼나</h2>
   <p class="kicker">3장 · 총무팀의 구매 요청 처리를 예로 든다</p>
 
   <p class="lead">
-    핵심은 하나다. <strong>쓰는 건 글, 나오는 건 그림.</strong>
+    다섯 단계다. <strong>꺼내기 → 쪼개기 → 판정 → 실행 → 다음에 다시 열기.</strong>
     사용자는 선을 단 한 번도 직접 긋지 않는다.
   </p>
 
-  <h3>① 왼쪽에 이렇게 적는다</h3>
+  <h3>① 못 쓰는 사람에게서 꺼낸다</h3>
 
   <p>
-    한 줄에 한 단계씩, 평소 말하듯 적는다. 갈라지는 곳에서는
+    1장에서 정한 대로, 이 도구가 상대할 사람은 <strong>자기 업무를 줄글로 못 쓰는 사람</strong>이다.
+    그래서 빈 화면을 주지 않는다. <strong>한 번에 한 질문만</strong> 한다.
+  </p>
+
+  <figure>
+    <div class="screen"><div class="body ask">
+      <p class="src">2 / 5</p>
+      <p class="qq">그다음엔 뭘 하세요?</p>
+      <div class="opts">
+        <span class="opt">확인한다</span>
+        <span class="opt">누구한테 물어본다</span>
+        <span class="opt">기다린다</span>
+        <span class="opt">직접 입력한다</span>
+      </div>
+      <p class="foot">고르거나, 그냥 적으셔도 됩니다</p>
+    </div></div>
+    <figcaption>계층도 순서도 없다. 틀릴 수 있는 구석이 없어야 한다</figcaption>
+  </figure>
+
+  <p>
+    붙여넣을 게 있으면 그게 더 빠르다. 기존 워드 매뉴얼이나 카카오톡 인수인계를
+    그대로 붙여넣으면 <strong>한국어 어미와 번호 패턴으로 단계를 쪼갠다.</strong>
+    비슷한 업무를 이미 누가 적어 뒀으면 <strong>복사해서 고치는 게 가장 빠르다.</strong>
+  </p>
+
+  <h3>② 단계로 쪼개지고 그림이 그려진다</h3>
+
+  <p>
+    한 줄에 한 단계씩 정리된다. 갈라지는 곳에서는
     <span style="color:var(--warn);font-weight:600">주황색 부분</span>을 화면이 대신 인쇄해 준다.
     사용자는 빈칸만 채운다.
   </p>
@@ -627,164 +818,147 @@
         <div class="ln"><span class="n">4</span><span><span class="shell">만약</span> 100만원 이상<span class="shell">이면</span> 팀장님 결재를 기다린다</span></div>
         <div class="ln"><span class="n">5</span><span>구매 시스템에 등록한다</span></div>
         <div class="ln"><span class="n">6</span><span>발주하고 요청자에게 알린다<span class="caret"></span></span></div>
-        <div class="ln"><span class="n"></span><span class="hint">엔터를 누르면 다음 단계 · 갈라지면 “만약”을 눌러 주세요</span></div>
       </div>
     </div>
-    <figcaption>쓰는 화면. 도형도, 선도, 메뉴도 없다</figcaption>
+    <figcaption>도형도, 선도, 메뉴도 없다</figcaption>
   </figure>
 
-  <div class="between">한 글자 칠 때마다 오른쪽이 따라 그려진다</div>
+  <h3>③ 여기서부터가 이 도구의 값어치다</h3>
 
-  <h3>② 오른쪽에 이게 그려진다</h3>
+  <p>
+    각 단계에 <strong>판정이 얹힌다.</strong> 색만으로 구분하지 않고
+    테두리 모양도 다르게 해서, 색을 구분하기 어려운 사람도 알 수 있게 한다.
+  </p>
 
   <figure>
     <div class="screen"><div class="body">
-      <svg class="flow" viewBox="0 0 720 540" role="img" aria-labelledby="flowTitle">
-        <title id="flowTitle">구매 요청 처리 흐름도. 단계 다섯 개, 갈래 한 개, 기다림 한 개.</title>
+      <svg class="flow" viewBox="0 0 720 556" role="img" aria-labelledby="flowTitle">
+        <title id="flowTitle">구매 요청 처리 흐름도에 판정이 얹힌 모습.
+          여섯 단계 중 셋은 넘길 수 있고, 하나는 조건부, 둘은 사람이 해야 한다.</title>
         <defs>
           <marker id="arw" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
             <path d="M0,1 L9,5 L0,9 z"/>
           </marker>
         </defs>
 
-        <path class="edge" d="M360,68 V104" marker-end="url(#arw)"/>
-        <path class="edge" d="M360,162 V166" marker-end="url(#arw)"/>
-        <path class="edge" d="M360,206 V226"/>
-        <path class="edge" d="M175,226 H545"/>
-        <path class="edge" d="M175,226 V248" marker-end="url(#arw)"/>
-        <path class="edge" d="M545,226 V248" marker-end="url(#arw)"/>
-        <path class="edge" d="M175,318 V358"/>
-        <path class="edge" d="M545,318 V358"/>
-        <path class="edge" d="M175,358 H545"/>
-        <path class="edge" d="M360,358 V376" marker-end="url(#arw)"/>
-        <path class="edge" d="M360,434 V460" marker-end="url(#arw)"/>
+        <path class="edge" d="M360,72 V108" marker-end="url(#arw)"/>
+        <path class="edge" d="M360,166 V170" marker-end="url(#arw)"/>
+        <path class="edge" d="M360,210 V230"/>
+        <path class="edge" d="M175,230 H545"/>
+        <path class="edge" d="M175,230 V252" marker-end="url(#arw)"/>
+        <path class="edge" d="M545,230 V252" marker-end="url(#arw)"/>
+        <path class="edge" d="M175,322 V362"/>
+        <path class="edge" d="M545,322 V362"/>
+        <path class="edge" d="M175,362 H545"/>
+        <path class="edge" d="M360,362 V380" marker-end="url(#arw)"/>
+        <path class="edge" d="M360,438 V464" marker-end="url(#arw)"/>
 
-        <rect class="box" x="235" y="18" width="250" height="50" rx="10"/>
-        <text class="t" x="360" y="48">구매 요청서가 메일로 온다</text>
+        <rect class="box ok" x="235" y="22" width="250" height="50" rx="10"/>
+        <text class="t" x="360" y="45">구매 요청서가 메일로 온다</text>
+        <text class="v ok" x="360" y="63">넘길 수 있다</text>
 
-        <rect class="box" x="235" y="112" width="250" height="50" rx="10"/>
-        <text class="t" x="360" y="142">규정에 맞는지 확인한다</text>
+        <rect class="box mid" x="235" y="116" width="250" height="50" rx="10"/>
+        <text class="t" x="360" y="139">규정에 맞는지 확인한다</text>
+        <text class="v mid" x="360" y="157">조건부 · 사람이 확인</text>
 
-        <rect class="pill" x="272" y="174" width="176" height="32" rx="16"/>
-        <text class="qt" x="360" y="195">금액이 얼마인가</text>
+        <rect class="pill" x="272" y="178" width="176" height="32" rx="16"/>
+        <text class="qt" x="360" y="199">금액이 얼마인가</text>
 
-        <rect class="box" x="50" y="254" width="250" height="64" rx="10"/>
-        <text class="cond" x="175" y="277">100만원 미만이면</text>
+        <rect class="box ok" x="50" y="258" width="250" height="64" rx="10"/>
+        <text class="cond" x="175" y="281">100만원 미만이면</text>
         <text class="t" x="175" y="301">바로 승인한다</text>
+        <text class="v ok" x="175" y="317">넘길 수 있다</text>
 
-        <rect class="box hold" x="420" y="254" width="250" height="64" rx="10"/>
-        <text class="cond" x="545" y="277">100만원 이상이면</text>
+        <rect class="box no" x="420" y="258" width="250" height="64" rx="10"/>
+        <text class="cond" x="545" y="281">100만원 이상이면</text>
         <text class="t" x="545" y="301">팀장님 결재를 기다린다</text>
-        <text class="wait" x="558" y="338">기다림 · 평균 3일</text>
+        <text class="v no" x="545" y="317">사람이 해야 · 결재 규정</text>
 
-        <rect class="box" x="235" y="382" width="250" height="50" rx="10"/>
-        <text class="t" x="360" y="412">구매 시스템에 등록한다</text>
+        <rect class="box ok" x="235" y="386" width="250" height="50" rx="10"/>
+        <text class="t" x="360" y="409">구매 시스템에 등록한다</text>
+        <text class="v ok" x="360" y="427">넘길 수 있다</text>
 
-        <rect class="box" x="235" y="466" width="250" height="50" rx="10"/>
-        <text class="t" x="360" y="496">발주하고 요청자에게 알린다</text>
+        <rect class="box no" x="235" y="470" width="250" height="50" rx="10"/>
+        <text class="t" x="360" y="493">발주하고 요청자에게 알린다</text>
+        <text class="v no" x="360" y="511">사람이 해야 · 대외 연락</text>
       </svg>
     </div></div>
-    <figcaption>같은 내용의 다른 얼굴. 글을 고치면 그림이 고쳐지고, 그림을 고치면 글이 고쳐진다</figcaption>
+    <figcaption>같은 흐름도인데 이제 무엇을 넘길 수 있는지가 보인다</figcaption>
   </figure>
 
-  <h3>③ 단계의 종류는 세 가지뿐이다</h3>
+  <h3>④ 왜 그렇게 판정했는지 펼쳐 보여준다</h3>
 
   <p>
-    타입을 늘리면 배울 게 늘고, 안 늘리면 실제 업무를 못 그린다.
-    그래서 <strong>세 가지로 고정</strong>하고, 나머지 차이는 각 단계에 붙는 정보로 흡수한다.
-    색만으로 구분하지 않고 <strong>테두리 모양도 다르게</strong> 해서 색을 구분하기 어려운 사람도 알 수 있게 한다.
+    <strong>근거를 안 보여주면 아무도 안 믿는다.</strong>
+    그리고 틀렸을 때 고칠 방법도 없다. 그래서 단계를 누르면 판정 근거가 펼쳐진다.
   </p>
-
-  <div class="kinds">
-    <div class="kind">
-      <span class="chip">할 일</span>
-      <p>내가 직접 하는 일.</p>
-      <p>"엑셀에 옮긴다", "메일을 보낸다"</p>
-    </div>
-    <div class="kind b">
-      <span class="chip">갈래</span>
-      <p>상황에 따라 길이 나뉘는 곳.</p>
-      <p>둘 중 하나만 가는지, 둘 다 동시에 가는지 구분한다</p>
-    </div>
-    <div class="kind h">
-      <span class="chip">기다림</span>
-      <p>내가 아무것도 못 하고 기다리는 시간.</p>
-      <p>승인 대기, 회신 대기, 정해진 날짜</p>
-    </div>
-  </div>
-
-  <div class="callout">
-    <span class="lbl">왜 "기다림"을 따로 뒀나</span>
-    <p>
-      대부분의 업무 도구는 <strong>사람이 일하는 시간만</strong> 센다. 그런데 실제 리드 타임을
-      잡아먹는 건 대개 기다림이다. 위 예시에서 사람이 실제로 손을 움직이는 시간은 20분인데,
-      끝나기까지 <strong>3일</strong>이 걸린다. 이 차이가 안 보이면 엉뚱한 곳을 고치게 된다.
-    </p>
-  </div>
-
-  <h3>④ 쓰는 도중이 아니라 다 쓰고 나서 물어본다</h3>
-
-  <p>
-    소요 시간이나 사용 도구를 <strong>쓰는 중에</strong> 물으면 대부분 건너뛴다.
-    기억을 되짚는 중에 숫자를 요구받으면 흐름이 끊기기 때문이다.
-    그래서 다 쓴 다음, 한 화면에 한 질문씩 넘긴다.
-  </p>
-
-  <figure>
-    <div class="screen"><div class="body ask">
-      <p class="src">5단계 · “구매 시스템에 등록한다”</p>
-      <p class="qq">한 번 할 때 얼마나 걸리세요?</p>
-      <div class="opts">
-        <span class="opt">5분쯤</span>
-        <span class="opt">20분쯤</span>
-        <span class="opt">1시간쯤</span>
-        <span class="opt">반나절</span>
-        <span class="opt">잘 모르겠어요</span>
-      </div>
-      <p class="foot">3 / 8</p>
-    </div></div>
-    <figcaption>“잘 모르겠어요”가 다른 답과 똑같은 크기다. 모르는 걸 모른다고 답할 수 있어야 한다</figcaption>
-  </figure>
-
-  <p>
-    묻는 방식에도 규칙이 있다. <em>"평소 얼마나 자주 하세요"</em>는 묻지 않는다.
-    사람은 이 질문에 <strong>체감</strong>으로 답하고, 그 체감은 실제보다 크게 어긋난다.
-    대신 <strong>"지난 7일 동안 몇 번 하셨어요"</strong>라고 묻는다. 세어 볼 수 있는 질문이다.
-  </p>
-
-  <h3>⑤ 그래서 무엇이 나오나</h3>
-
-  <p><strong>직원에게는</strong> 그대로 건네는 인수인계 문서. 링크 하나로 공유되고, 휴대폰에서도 열린다.</p>
-  <p><strong>회사에게는</strong> 이런 카드가 업무별로 쌓인다.</p>
 
   <figure>
     <div class="screen sum"><div class="body">
       <div class="hd">
-        <h5>구매 요청 처리</h5>
-        <span>총무팀 · 4명이 같은 업무로 기록함</span>
+        <h5>5단계 · 구매 시스템에 등록한다</h5>
+        <span>판정: 넘길 수 있다</span>
       </div>
-      <dl class="grid">
-        <div class="cell"><dt>얼마나 자주</dt><dd>주 12건</dd></div>
-        <div class="cell"><dt>손이 가는 시간</dt><dd>20분 <small>/ 건</small></dd></div>
-        <div class="cell"><dt>끝나기까지</dt><dd>3일 <small>대기 포함</small></dd></div>
-      </dl>
+      <div class="rows">
+        <div class="row"><span class="ok">확인</span>
+          <span>이 단계에 나온 <b>구매 시스템</b>은 우리 회사에서 연결 가능한 도구다</span></div>
+        <div class="row"><span class="ok">확인</span>
+          <span>결재 규정에 <b>사람이 직접 해야 한다는 조항이 없다</b></span></div>
+        <div class="row"><span class="ok">확인</span>
+          <span>정해진 값을 옮겨 담는 작업이라 판단이 끼지 않는다</span></div>
+        <div class="row"><span class="no">아직</span>
+          <span>이 단계를 넘긴 다른 부서는 <b>아직 없다</b></span></div>
+      </div>
       <div class="rec">
-        <b>자동화보다 먼저, 없앨 수 있는지부터</b>
+        <b>이 판정이 틀렸다면</b>
         <p>
-          팀장 결재 단계는 <strong>지난 6개월 반려 0건</strong>인데 평균 3일이 걸린다.
-          결재 기준을 100만원에서 300만원으로 올리면 처리 시간이 <strong>3일 줄고</strong>,
-          연 62시간을 되찾는다. <strong>개발은 필요 없다.</strong>
+          "아니에요, 이건 사람이 해야 해요"를 누르면 판정이 바뀌고
+          <strong>이유를 한 줄 적게 한다.</strong> 같은 이유가 여러 번 쌓이면
+          그건 규칙이 잘못됐다는 뜻이라 규칙을 고친다.
         </p>
       </div>
     </div></div>
-    <figcaption>제거 후보가 자동화 후보보다 먼저 나온다. 이유는 4장 여섯 번째 결정에 있다</figcaption>
+    <figcaption>판정보다 근거가 중요하다. 근거가 없으면 두 번째부터 아무도 안 본다</figcaption>
   </figure>
+
+  <h3>⑤ 한 단계씩 실제로 넘겨 본다</h3>
+
+  <p>
+    <em>"이렇게 하시면 됩니다"</em>까지가 끝이면 붙여넣기와 다를 게 없다.
+    <strong>"넘길 수 있다"로 판정된 단계에 <em>"지금 해볼까요?"</em>가 뜬다.</strong>
+  </p>
+
+  <p>
+    전체 자동화가 아니라 <strong>한 단계</strong>다. 되면 다음부터 그 단계는 안 해도 되고,
+    안 되면 판정이 틀렸다는 게 그 자리에서 드러난다.
+    <strong>이 실패가 곧 다음 판정을 정확하게 만드는 재료</strong>가 된다.
+  </p>
+
+  <h3>⑥ 다음에 그 일 할 때 다시 연다</h3>
+
+  <p>
+    남은 단계는 여전히 사람이 한다. 그래서 다음에 그 일을 할 때
+    <strong>이 문서를 체크리스트로 연다.</strong>
+    빠뜨리지 않고, 중간에 끊겨도 어디까지 했는지 안다.
+  </p>
+
+  <div class="callout brand">
+    <span class="lbl">이게 왜 중요한가</span>
+    <p>
+      문서가 <strong>스스로 정확해진다.</strong> 열었는데 단계가 틀리면 그 자리에서 고친다.
+      아무도 "문서 갱신하세요"라고 시키지 않아도 된다.
+    </p>
+    <p>
+      그리고 <strong>다시 열 때마다 판정도 다시 돈다.</strong>
+      지난달엔 못 넘기던 단계가 새 연결이 생겨 넘길 수 있게 되면,
+      그때 <em>"이제 이거 넘길 수 있어요"</em>가 뜬다. 돌아올 이유가 계속 생긴다.
+    </p>
+  </div>
 </section>
 
-<!-- ══════════════════════════════════════════════════ -->
 <section id="s4">
   <h2>왜 이렇게 만들었나</h2>
-  <p class="kicker">4장 · 결정 여덟 가지</p>
+  <p class="kicker">4장 · 결정 열 가지</p>
 
   <p>
     중요한 순서다. 첫 번째가 나머지 전부를 지배한다.
@@ -793,25 +967,59 @@
   </p>
 
   <div class="dec key">
-    <h4>하나 · 관리자에게 개인 데이터를 보여주지 않는다</h4>
+    <h4>하나 · 판정이 틀린다는 전제로 설계한다</h4>
     <p>
-      이 제품은 <strong>직원이 스스로 사실대로 적어야만 작동한다.</strong>
-      부풀린 시간과 이상적인 순서로 채워진 기록은 쓸모가 없다.
-      자동화 후보 목록이 엉망이 되고, 그러면 회사에 한 약속도 못 지킨다.
+      이 도구는 <strong>판정 때문에 쓰인다.</strong> 그러니 판정이 틀리면 끝이다.
+      <em>"이건 AI가 할 수 있어요"</em> 했는데 실제로 못 하면, 그 사람은 두 번 다시 안 온다.
+      한 번이면 충분하다.
     </p>
     <p>
-      그래서 관리자 화면에는 <strong>사람이 등장하지 않는다.</strong>
-      집계 단위는 사람이 아니라 업무이고, 5명보다 적은 그룹은 표시 자체가 막힌다.
+      그래서 정확도를 올리려 애쓰는 대신 <strong>틀렸을 때의 경로를 먼저 만든다.</strong>
+    </p>
+    <ul>
+      <li><strong>근거를 항상 펼쳐 보여준다.</strong> 판정만 던지면 믿을 수도 반박할 수도 없다</li>
+      <li><strong>사용자가 뒤집을 수 있고, 뒤집으면 이유를 한 줄 받는다.</strong>
+          같은 이유가 여러 번 쌓이면 규칙이 잘못된 것이므로 규칙을 고친다</li>
+      <li><strong>"조건부" 칸을 넉넉히 쓴다.</strong> 애매하면 조건부다.
+          "넘길 수 있다"고 잘못 말하는 것이 "조건부"라고 말하는 것보다 훨씬 비싸다</li>
+      <li><strong>한 단계씩만 실제로 넘겨 본다.</strong> 판정이 맞았는지 그 자리에서 판명된다</li>
+    </ul>
+    <p class="why">
+      <b>비대칭이 핵심이다.</b> 못 넘길 걸 못 넘긴다고 하면 아무 일도 안 일어난다.
+      넘길 수 있다고 했는데 안 되면 <b>신뢰가 통째로 날아간다.</b>
+      그래서 판정은 의도적으로 보수적으로 기울인다. 성능 지표가 아니라 신뢰 지표를 본다.
+    </p>
+  </div>
+
+  <div class="dec key">
+    <h4>둘 · 부서장은 다 본다. 대신 네 가지를 건다</h4>
+    <p>
+      사내 도구이므로 <strong>부서장은 팀원 문서를 볼 수 있다.</strong>
+      숨기지 않고 첫 화면에 그렇게 적는다. "안 봅니다"라고 해 놓고 보는 것이
+      제일 나쁘고, 그건 반드시 들킨다.
+    </p>
+    <p>
+      대신 2장에 적은 넷을 함께 건다.
+      <strong>서로 본다 · 열람이 남는다 · 줄 세우지 않는다 · 메모는 따로.</strong>
+      특히 세 번째가 실질적인 방어선이다.
     </p>
     <p class="why">
-      <b>뒤집는 조건은 없다.</b> 이건 다른 결정과 성격이 다르다.
-      한 번 허용하면 되돌릴 수 없기 때문이다. 직원이 "이건 나를 보는 도구다"라고
-      한 번 판단하면, 나중에 정책을 되돌려도 신뢰는 돌아오지 않는다.
+      <b>"문서를 본다"와 "점수를 본다"는 완전히 다른 문제다.</b>
+      개인별 소요시간 합계, 근무시간 대비 비율, 사람 간 비교를 아예 만들지 않는다.
+      원본은 보이되 <b>줄을 세울 재료를 안 준다.</b>
+      이게 없으면 도구가 인사평가 자료로 흘러가고, 그때부터 아무도 사실대로 안 적는다.
+    </p>
+    <p class="why">
+      <b>대가를 알고 택한다.</b> 이 구조는 1장의 "사실대로 안 적는다" 문제를
+      완전히 해결하지 못한다. 자발 참여이고 처음엔 한 부서라서 감당 가능하다고 보는 것이지,
+      풀었다고 보는 게 아니다. <b>뒤집는 조건은 이렇다.</b>
+      확산 단계에서 부서장 열람이 참여를 막는 신호가 관측되면 그때 닫는다.
+      다만 <b>닫는 건 여는 것보다 훨씬 어렵다는 걸 알고 있다.</b>
     </p>
   </div>
 
   <div class="dec">
-    <h4>둘 · 들여쓰기로 갈래를 만들게 하지 않는다</h4>
+    <h4>셋 · 들여쓰기로 갈래를 만들게 하지 않는다</h4>
     <p>
       처음 설계는 Tab 키로 단계를 안쪽으로 밀어 넣어 갈래를 표현하는 방식이었다.
       개발자에게는 자연스럽지만, <strong>전체 직원의 30~50%는 이 개념을 바로 이해하지 못한다</strong>고 봤다.
@@ -825,7 +1033,7 @@
   </div>
 
   <div class="dec">
-    <h4>셋 · 단계의 종류는 셋, 나머지는 붙는 정보로</h4>
+    <h4>넷 · 단계의 종류는 셋, 나머지는 붙는 정보로</h4>
     <p>
       할 일 · 갈래 · 기다림. 특히 <strong>갈래에서 "둘 중 하나"와 "둘 다 동시에"를 구분</strong>하는 게
       중요하다. 이걸 구분하지 않으면 그림만 어긋나는 게 아니라 <strong>숫자가 틀린다.</strong>
@@ -838,7 +1046,7 @@
   </div>
 
   <div class="dec">
-    <h4>넷 · 쓰는 도중에는 아무것도 묻지 않는다</h4>
+    <h4>다섯 · 쓰는 도중에는 아무것도 묻지 않는다</h4>
     <p>
       쓰는 흐름 안에 시간·도구·담당자 같은 항목을 노출하면,
       담당자 본인 외에는 <strong>20%도 채우지 않는다.</strong>
@@ -853,7 +1061,7 @@
   </div>
 
   <div class="dec">
-    <h4>다섯 · 기억이 틀린다는 걸 전제로 묻는다</h4>
+    <h4>여섯 · 기억이 틀린다는 걸 전제로 묻는다</h4>
     <p>
       사람의 기억은 시간보다 <strong>횟수에서 더 크게 틀린다.</strong>
       그런데 업무량은 시간 × 횟수라서 두 오차가 곱해진다. 그래서 순위 맨 위가 통째로 뒤집힌다.
@@ -868,7 +1076,7 @@
   </div>
 
   <div class="dec">
-    <h4>여섯 · 자동화보다 제거를 먼저 묻는다</h4>
+    <h4>일곱 · 자동화보다 제거를 먼저 묻는다</h4>
     <p>
       순위를 매기기 전에 먼저 묻는다. <strong>"자동화하기 전에, 이거 그냥 없애면 안 되나?"</strong>
       승인 세 단계 중 반려율이 0%인 단계는 자동화 대상이 아니라 없앨 대상이다.
@@ -881,20 +1089,35 @@
   </div>
 
   <div class="dec">
-    <h4>일곱 · 남에 대한 평가는 수집하지 않는다</h4>
+    <h4>여덟 · 남에 대한 평가는 수집하지 않는다</h4>
     <p>
-      전 직원이 각자 적으면 "구매 요청" 하나가 요청자·팀장·구매팀·재무팀 네 조각으로 흩어진다.
-      이걸 이어 붙여 <strong>어긋난 지점을 찾는 것</strong>이 개인용 도구로는 절대 만들 수 없는 가치다.
-      다만 수집하는 건 <strong>각자 자기 관점의 사실</strong>뿐이고, 대조는 시스템이 한다.
+      묻는 건 <strong>"나는 여기서 기다린다"</strong>뿐이다.
+      <em>"저쪽이 얼마나 늦나요"</em>는 묻지 않는다.
+    </p>
+    <p>
+      자발 참여라서 더 그렇다. 원하는 사람만 쓰는 도구에 상대를 평가하는 칸이 하나라도 있으면,
+      <strong>그 칸이 있다는 사실만으로 안 쓸 이유가 생긴다.</strong>
+    </p>
+    <p>
+      대신 한 사람의 기록만으로도 <strong>기다림이 쌓이는 지점</strong>이 그대로 드러난다.
+      상대 부서가 한 글자도 안 적어도 나온다.
     </p>
     <p class="why">
-      <b>"저쪽이 얼마나 늦나요"를 한 번이라도 물으면, 그 뒤로는 어떤 공개 정책으로도 정치를 막을 수 없다.</b>
-      정치를 막는 건 누구에게 보여주느냐가 아니라 무엇을 묻느냐다.
+      초안은 "여러 부서 기록을 이어 붙여 어긋난 지점을 찾는다"를 핵심 가치로 뒀는데,
+      자발 참여에서는 성립하지 않는다. 한 업무가 네 부서에 걸쳐 있고 참여율이 40%면
+      <b>양쪽이 다 걸릴 확률이 16%밖에 안 된다.</b> 6건 중 1건 나오는 걸 핵심 가치라 부를 수 없다.
+      그래서 <b>한쪽만으로 작동하는 쪽</b>으로 낮춰 잡았다. 양쪽이 다 적히면 나오는 건 덤이다.
+    </p>
+    <p class="why">
+      함정이 하나 있다. "구매 승인을 기다린다"는 기록이 여러 명에게서 모이면
+      결과가 사실상 <b>"구매팀이 느리다"</b>로 읽힌다. 자기 사실만 모았는데 남의 평가가 되는 것이다.
+      그래서 집계 단위를 부서가 아니라 <b>이음매</b>로 잡는다.
+      "구매팀"이 아니라 "구매 승인이라는 이음매에서 평균 3일이 쌓인다"로.
     </p>
   </div>
 
   <div class="dec">
-    <h4>여덟 · 디자인은 마감이 아니라 기능이다</h4>
+    <h4>아홉 · 디자인은 마감이 아니라 기능이다</h4>
     <p>
       이유가 둘이다. <strong>"회사가 시킨 시스템"처럼 보이면 그 순간 끝난다.</strong>
       감시 도구라는 인상은 문구보다 <strong>보이는 느낌</strong>에서 먼저 결정된다.
@@ -906,6 +1129,33 @@
       <b>빨강/노랑/초록 신호등</b>(색이 판단하면 안 된다. 분류만 한다),
       <b>완료 축하 효과</b>(자기 일을 없앴다는 불안을 정확히 자극한다),
       <b>파란색</b>("회사 시스템" 인상을 준다).
+    </p>
+  </div>
+
+  <div class="dec key">
+    <h4>열 · 오픈소스로 내도 프라이버시 규칙은 설정으로 빼지 않는다</h4>
+    <p>
+      부서장 위로는 <strong>업무 단위 집계만</strong> 보이고, 그 집계도
+      5명보다 적은 그룹은 표시되지 않는다. 3명짜리 그룹의 평균은 사실상 개인 정보이기 때문이다.
+    </p>
+    <p>
+      이 도구는 나중에 공개할 계획이다(6장). 그러면 회사마다 사정이 다르니
+      <strong>그 기준을 설정으로 빼 달라는 요구가 반드시 온다.</strong>
+      규모가 작은 곳에서는 5명 기준이 거의 모든 집계를 막아 버리니 합리적인 요구다.
+    </p>
+    <p>
+      그래도 빼지 않는다. <strong>코드에 숫자로 박아 두고, 낮추려면 갈라내서 고치게 한다.</strong>
+      그러면 누가 언제 낮췄는지 기록에 남는다.
+    </p>
+    <p class="why">
+      두 번째 결정에서 이미 <b>부서장 열람을 허용했다.</b> 남은 방어선이 이것뿐인데
+      그것마저 설정으로 빼면 아무것도 안 남는다.
+      <i>"오픈소스에는 설정이 있던데요"</i> 한마디에 무너진다.
+      <b>공개판에 존재하는 설정은 사내에도 존재하는 설정이다.</b>
+    </p>
+    <p class="why">
+      대가는 분명하다. <b>작은 회사는 이 도구를 그대로 못 쓴다.</b> 감수한다.
+      사내에서 쓰려고 만드는 도구이고 공개는 덤이다. 덤을 위해 본체를 무르지 않는다.
     </p>
   </div>
 </section>
@@ -922,33 +1172,42 @@
       <thead><tr><th style="width:22%">이렇게 죽는다</th><th style="width:38%">무슨 일이 벌어지나</th><th>막는 방법</th></tr></thead>
       <tbody>
         <tr>
-          <td>하나<br>효용이 없다</td>
-          <td>직원이 불편함을 적었는데 6개월간 아무 변화가 없으면, 그 사람은 물론
-              <strong>그 부서 전체가 다시는 안 쓴다.</strong></td>
-          <td>발굴된 것을 실제로 처리할 <strong>예산과 담당자 없이는 열지 않는다.</strong>
-              도구보다 처리하는 팀이 먼저다</td>
+          <td>하나<br>판정이 틀린다</td>
+          <td>"넘길 수 있다"고 해서 눌렀는데 안 된다.
+              <strong>한 번이면 끝이다.</strong> 그 사람은 두 번 다시 안 온다</td>
+          <td>4장 첫 번째 결정 전체. 근거를 항상 펼치고, 애매하면 "조건부"로 기울이고,
+              틀렸을 때 뒤집는 경로를 먼저 만든다</td>
         </tr>
         <tr>
-          <td>둘<br>감시 도구로 찍힌다</td>
-          <td>한 번 찍히면 정책을 바꿔도 신뢰는 안 돌아온다</td>
-          <td>4장 첫 번째 결정 전체가 이걸 막는 데 쓰인다</td>
+          <td>둘<br>Claude 래퍼가 된다</td>
+          <td>판정 근거가 <strong>일반 상식뿐</strong>이면 붙여넣기와 결과가 같다.
+              그러면 굳이 이걸 쓸 이유가 없다</td>
+          <td>사내 도구 연결 표와 결재 규정을 <strong>먼저 채워 둔다.</strong>
+              이 둘이 비어 있으면 열지 않는다</td>
         </tr>
         <tr>
           <td>셋<br>첫 문장을 못 쓴다</td>
-          <td>빈 화면 앞에서 멈추는 사람이 대부분이다</td>
-          <td>기존 매뉴얼이나 카카오톡 인수인계를 <strong>붙여넣기만 하면</strong> 단계로 쪼개 준다.
-              그것도 없으면 한 번에 한 질문씩 물어서 채운다</td>
+          <td>대상이 <strong>줄글로 못 쓰는 사람</strong>이다. 빈 화면을 주면 그대로 닫는다</td>
+          <td>한 번에 한 질문. 붙여넣기 지원. 비슷한 업무 복제.
+              <strong>백지를 아예 안 준다</strong></td>
         </tr>
         <tr>
-          <td>넷<br>문서가 죽어서 쌓인다</td>
-          <td><strong>읽을 이유 없는 문서는 반드시 낡는다.
-              실제로 쓰이는 문서만 산다.</strong></td>
-          <td>적은 흐름을 체크리스트로 다시 열게 만든다.
-              여는 순간 틀린 단계가 그 자리에서 고쳐진다</td>
+          <td>넷<br>감시 도구로 찍힌다</td>
+          <td>부서장이 다 보므로 <strong>이 위험이 구조적으로 남아 있다.</strong>
+              한 번 찍히면 정책을 바꿔도 신뢰는 안 돌아온다</td>
+          <td>부서장이 먼저 적는다. 열람 기록을 작성자에게 보여준다.
+              줄 세울 재료를 안 만든다. <strong>안 적는 부서장이 있는 부서에는 안 넣는다</strong></td>
         </tr>
         <tr>
-          <td>다섯<br>그림이 춤춘다</td>
-          <td>타이핑할 때마다 도형이 이리저리 움직이면 즉시 신뢰를 잃는다</td>
+          <td>다섯<br>넘긴 게 없다</td>
+          <td>판정만 나오고 실제로 넘긴 단계가 0건이면,
+              <strong>결국 아무것도 안 바뀐 것</strong>이다</td>
+          <td>가장 쉬운 한 단계부터 실제로 붙인다.
+              1단계 안에 <strong>실제로 넘어간 단계가 하나는 있어야 한다</strong></td>
+        </tr>
+        <tr>
+          <td>여섯<br>그림이 춤춘다</td>
+          <td>타이핑할 때마다 도형이 움직이면 즉시 신뢰를 잃는다</td>
           <td>글자를 고치는 중에는 <strong>배치를 다시 계산하지 않는다.</strong>
               단계가 추가·삭제될 때만 다시 그린다</td>
         </tr>
@@ -959,76 +1218,89 @@
   <div class="callout warn">
     <span class="lbl">숫자 하나만 본다면 이것</span>
     <p>
-      <strong>2주 뒤에 자기 문서를 다시 열어 고치는 사람이 5% 아래면, 이 제품은 실패다.</strong>
-      문서를 만들었다는 것만으로는 아무것도 증명되지 않는다.
-      다시 열어 고친다는 건 그 문서가 실제로 쓰이고 있다는 뜻이고, 그때만 살아 있는 것이다.
+      <strong>실제로 넘어간 단계의 수.</strong>
+      문서를 몇 개 만들었는지, 몇 명이 썼는지는 이것 앞에서 아무 의미가 없다.
+      <strong>한 단계라도 실제로 AI가 대신하기 시작하면</strong> 그때부터 이 도구는 스스로 팔린다.
+      그 전까지는 아무리 잘 만들어도 "설명은 좋은데 안 쓰는 도구"다.
     </p>
   </div>
 
   <h3>무엇을 재는가</h3>
 
   <p>
-    가장 중요한 하나는 <strong>부서 커버리지</strong>다. 최근 30일 안에 업무를 하나 이상 완성했고,
-    <strong>그 문서를 다른 사람이 한 번 이상 열어 본</strong> 직원의 비율.
-    만든 것만으로는 세지 않는다. 아무도 안 읽는 문서는 없는 것과 같기 때문이다.
+    1차 목표가 <strong>한 부서</strong>이므로 전사 지표는 아직 안 본다.
+    그 부서 안에서 이 여섯 개를 본다.
   </p>
 
   <div class="tw">
     <table>
       <thead><tr><th>재는 것</th><th class="num">목표</th><th>못 맞추면 무슨 뜻인가</th></tr></thead>
       <tbody>
-        <tr><td>첫 그림이 나오기까지</td><td class="num">8분 이내</td><td>첫 문장을 못 쓰고 있다</td></tr>
-        <tr><td>끝까지 쓰는 비율</td><td class="num">60%</td><td>중간 결과물이 기대에 못 미친다</td></tr>
-        <tr><td>도형을 손으로 옮기려는 시도</td><td class="num">거의 없음</td><td>자동 배치를 못 믿는다는 뜻</td></tr>
-        <tr><td>남에게 공유하는 비율</td><td class="num">30%</td><td>“보여줄 만하다”에 실패했다</td></tr>
-        <tr><td>읽는 사람 ÷ 쓰는 사람</td><td class="num">3배 이상</td><td>저절로 퍼지지 않는다</td></tr>
-        <tr><td>2주 뒤 다시 고치는 비율</td><td class="num">25%</td><td>죽은 문서만 쌓이고 있다</td></tr>
+        <tr><td>실제로 넘어간 단계</td><td class="num">1건 이상</td><td>판정이 말뿐이다</td></tr>
+        <tr><td>판정을 뒤집는 비율</td><td class="num">20% 이하</td><td>판정이 안 맞는다</td></tr>
+        <tr><td>그 부서에서 문서를 만든 사람</td><td class="num">절반 이상</td><td>첫 문장을 못 쓰고 있다</td></tr>
+        <tr><td>첫 판정까지 걸리는 시간</td><td class="num">10분 이내</td><td>꺼내는 과정이 너무 무겁다</td></tr>
+        <tr><td>그 일 할 때 다시 여는 비율</td><td class="num">25%</td><td>죽은 문서만 쌓인다</td></tr>
+        <tr><td>부서장이 자기 걸 적었나</td><td class="num">필수</td><td>상호성이 깨져 감시 도구가 된다</td></tr>
       </tbody>
     </table>
   </div>
 
   <p>
-    현실적인 예상은 <strong>전 직원의 40%가 문서를 하나 이상 만들고, 그중 20%만 계속 살아 있는 문서</strong>다.
-    그 정도로 충분하다. 자동화 후보를 찾는 데는 전수 조사가 필요 없고,
-    40%면 반복 업무 지형의 대부분이 드러난다.
+    두 번째가 가장 정직한 지표다. <strong>판정을 뒤집는 비율</strong>은
+    사용자가 우리 판단을 얼마나 안 믿는지를 직접 보여준다.
+    그리고 뒤집을 때 받는 한 줄이 다음 판정을 고치는 재료가 된다.
   </p>
 </section>
 
-<!-- ══════════════════════════════════════════════════ -->
 <section id="s6">
-  <h2>남들은 왜 안 만들었나</h2>
-  <p class="kicker">6장 · 그리고 우리는 따라잡히나</p>
+  <h2>왜 사서 쓰지 않고 만드나</h2>
+  <p class="kicker">6장</p>
 
-  <h3 class="q">가장 위험한 상대는 누구인가</h3>
+  <p class="lead">
+    이건 밖에 파는 제품이 아니다. 우리 회사에서 쓰려고 만든다.
+    그러니 답할 질문도 다르다. <strong>"경쟁에서 이기나"가 아니라 "직접 만들 값어치가 있나"</strong>다.
+  </p>
+
+  <h3 class="q">가장 그럴듯한 대안은 Notion이다</h3>
 
   <p>
-    <strong>Notion이다.</strong> 직원이 이미 글을 쓰고 있는 곳이고, 인공지능이 흐름도를 그려 주며,
+    직원이 이미 글을 쓰고 있는 곳이고, 인공지능이 흐름도를 그려 주며,
     표 속성으로 담당자·도구·시간을 담고 합계까지 낸다.
     <strong>템플릿 한 장이면 이 제품이 하려는 일의 70%가 재현된다.</strong>
+    2명이 6개월을 쓰는 것보다 훨씬 싸다.
   </p>
 
-  <p>
-    빠진 건 하나다. <strong>글과 그림이 계속 같이 움직이는 것이다.</strong>
-    Notion 방식은 "한 번 그려 준다"라서, 3주 뒤 업무가 바뀌면 글은 고쳐지지만 그림은 그대로 남는다.
-    그러면 그림을 아무도 안 믿게 되고, 결국 안 본다.
-  </p>
-
-  <h3 class="q">그럼 우리는 따라잡히나</h3>
+  <p>그래서 정직하게 따져 봤다. 템플릿으로 안 되는 게 뭔가.</p>
 
   <div class="tw">
     <table>
-      <thead><tr><th style="width:32%">우리가 가진 것</th><th>얼마나 버티나</th></tr></thead>
+      <thead><tr><th style="width:30%">필요한 것</th><th>템플릿으로 되나</th></tr></thead>
       <tbody>
         <tr>
-          <td>글을 쓰면 그림이 나오는 것</td>
-          <td><strong>못 버틴다.</strong> 비슷한 결과를 내는 도구가 이미 여럿이고, 4~8주면 따라온다.
-              다만 <strong>계속 같이 움직이게</strong> 만드는 건 다른 문제라 6~12개월은 걸린다</td>
+          <td>회사 맥락으로 판정한다</td>
+          <td><strong>안 된다.</strong> 우리 도구에 연결이 되는지, 규정상 사람이 필요한지를
+              Notion도 Claude도 모른다. <strong>이게 이 도구의 존재 이유다</strong></td>
         </tr>
         <tr>
-          <td>자동화 후보를 점수 매기는 계산</td>
-          <td><strong>계산식은 3개월이면 복제된다.</strong> 복제할 수 없는 건 계산식이 아니라
-              <strong>쌓인 데이터</strong>다. 전 직원의 실제 단계·도구·시간 기록,
-              부서마다 다르게 부르는 도구 이름을 정리한 사전, 부서 간 중복 업무 지도</td>
+          <td>판정에서 실행까지 이어진다</td>
+          <td><strong>안 된다.</strong> "이렇게 하시면 됩니다"까지가 끝이다.
+              단계 하나를 눌러서 실제로 넘기는 경로가 없다</td>
+        </tr>
+        <tr>
+          <td>글과 그림이 같이 움직인다</td>
+          <td><strong>안 된다.</strong> 한 번 그려 주고 끝이라 3주 뒤 업무가 바뀌면
+              글만 고쳐지고 그림은 그대로 남는다. 그러면 아무도 그림을 안 믿는다</td>
+        </tr>
+        <tr>
+          <td>줄 세우지 않는다</td>
+          <td><strong>안 된다.</strong> 관리자 권한으로 다 보이고,
+              보이는 걸 가공해 사람을 비교하는 걸 막을 방법이 없다</td>
+        </tr>
+        <tr>
+          <td>쓰기 쉽다</td>
+          <td><strong>템플릿이 더 낫다.</strong> 이미 쓰는 도구라 새로 배울 게 없다.
+              이건 우리가 진 부분이고, 3장 전체가 이 격차를 메우려는 시도다</td>
         </tr>
       </tbody>
     </table>
@@ -1036,114 +1308,196 @@
 
   <div class="callout">
     <p>
-      <strong>결론은 이렇다. 기능으로는 못 막는다. 데이터로는 막을 수 있다.
-      그런데 데이터는 사람들이 계속 적어야만 쌓인다.</strong>
-      즉 이 제품의 방어력 전부가 <strong>"적는 습관이 붙느냐"</strong>는 한 점에 걸려 있다.
-      그래서 5장의 위험 목록이 기능 목록보다 길다.
+      <strong>결론은 이렇다. 처음 두 줄 때문에 만든다.</strong>
+      회사 맥락으로 판정하는 것, 그리고 판정에서 실행까지 이어지는 것.
+      나머지는 템플릿으로도 어느 정도 된다.
+    </p>
+    <p>
+      그래서 <strong>1단계에서 그 두 줄이 안 되면 이 프로젝트는 접는 게 맞다.</strong>
+      나머지를 아무리 잘 만들어도 Notion 템플릿이나 Claude 대화보다 나을 이유가 없기 때문이다.
     </p>
   </div>
 
-  <h3 class="q">뭐라고 소개할 것인가</h3>
+  <h3 class="q">이미 있는 도구로는 왜 안 되나</h3>
 
-  <p>같은 제품을 두 가지로 소개한다. 듣는 사람이 다르기 때문이다.</p>
+  <p>
+    화면 녹화 방식(Scribe 등)은 <strong>입력 비용에서 우리보다 낫다.</strong>
+    적지 않아도 기록되니까. 다만 1장에서 본 대로 브라우저 밖을 못 본다.
+    전화, 대면 승인, 카카오톡, 옆 부서 회신 대기가 통째로 빠진다.
+  </p>
+
+  <p>
+    시스템 기록 분석(Celonis 등)은 도입 비용이 억 단위다.
+    300~1,000명 규모에서 검증되지 않은 문제에 쓸 금액이 아니다.
+  </p>
+
+  <h3 class="q">사내에서 뭐라고 소개할 것인가</h3>
+
+  <p>
+    같은 도구를 두 가지로 소개한다. 듣는 사람이 다르기 때문이다.
+    <strong>이건 마케팅이 아니라 정직함의 문제다.</strong> 직원에게 "자동화하려고요"라고
+    말하면 1장에서 본 데이터 오염이 그대로 일어난다.
+  </p>
 
   <div class="tw">
     <table>
       <tbody>
-        <tr><td style="width:22%">회사에게</td><td>“직원들이 직접 만드는, 우리 회사의 자동화 후보 목록”</td></tr>
-        <tr><td>직원에게</td><td>“쓰기만 하면 흐름도가 되는 업무 기록. 인수인계와 신입 교육용”</td></tr>
+        <tr><td style="width:22%">경영진에게</td><td>"직원들이 직접 만드는, 우리 회사의 자동화 후보 목록"</td></tr>
+        <tr><td>직원에게</td><td>"쓰기만 하면 흐름도가 되는 업무 기록. 인수인계와 신입 교육용"</td></tr>
       </tbody>
     </table>
   </div>
 
   <blockquote>
-    <p>직원용 소개만으로는 예산이 안 나오고, 회사용 소개만으로는 쓰는 사람이 없다.</p>
+    <p>직원용 소개만으로는 만들 명분이 없고, 경영진용 소개만으로는 쓰는 사람이 없다.</p>
   </blockquote>
 
   <p>
-    요금 경계도 같은 원리로 그었다. <strong>내 일에 대한 것은 전부 무료, 여러 사람 걸 합쳐 보는 것만 유료.</strong>
-    이렇게 하면 가격 협상이 프라이버시 협상으로 번지지 않는다.
-    <em>"돈을 더 내면 개인별로 볼 수 있나요?"</em>라는 질문이 아예 성립하지 않기 때문이다.
+    둘 다 사실이라서 가능한 소개다. 어느 쪽에도 없는 말을 지어내지 않는다.
+    그리고 <strong>직원에게 한 약속이 구조로 지켜지므로</strong>(4장 첫 번째 결정),
+    두 소개가 나중에 충돌하지 않는다.
   </p>
+
+  <h3 class="q">오픈소스로 낼 계획이다</h3>
+
+  <p>
+    <strong>사내에서 쓸 만하다고 검증된 뒤</strong> 공개한다.
+    검증되지 않은 걸 내놓아도 아무도 안 쓰고, 우리도 배울 게 없다.
+  </p>
+
+  <p>
+    다만 그 결정이 <strong>지금부터 설계를 제약한다.</strong>
+    나중에 발라내려면 훨씬 비싸기 때문이다.
+  </p>
+
+  <ul>
+    <li><strong>사내 데이터는 코드에 안 들어간다.</strong> 부서명·도구명·인터뷰로 채운 예시 업무는
+        전부 별도 데이터로 분리한다. 7장 0단계에서 우리가 대신 적는 8~12개 부서 기록이 바로 여기 걸린다</li>
+    <li><strong>프라이버시 규칙은 설정으로 빼지 않는다.</strong> 이유는 4장 열 번째 결정에 있다</li>
+    <li><strong>계산 부분은 이미 독립적이다.</strong> 화면이나 서버에 기대지 않고 함수 호출만으로 동작한다.
+        지금 완성된 부분이 그대로 공개 대상이 된다</li>
+  </ul>
 </section>
 
-<!-- ══════════════════════════════════════════════════ -->
 <section id="s7">
   <h2>언제 무엇이 나오나</h2>
-  <p class="kicker">7장</p>
+  <p class="kicker">7장 · 2명, 먼저 한 부서</p>
 
   <h3>먼저 증명할 것은 딱 하나다</h3>
 
   <blockquote>
     <p>
-      개발자가 아닌 사람이 도움 없이 10분 안에 자기 업무 하나를 적고,
-      나온 그림을 <strong>남에게 보여줄 만하다고 판단해서 실제로 공유한다.</strong>
+      자기 업무를 줄글로 못 쓰는 사람이 도움 없이 10분 안에 업무 하나를 꺼내고,
+      나온 판정을 보고 <strong>"이건 넘겨도 되겠다" 싶은 단계를 실제로 한 번 넘긴다.</strong>
     </p>
-    <cite>“공유했다”까지가 가설이다. 만들었다는 것만으로는 아무것도 증명되지 않는다</cite>
+    <cite>"넘겼다"까지가 가설이다. 판정이 나왔다는 것만으로는 아무것도 증명되지 않는다</cite>
   </blockquote>
 
   <div class="tw">
     <table>
       <thead><tr><th style="width:16%">단계</th><th>이때 사용자가 할 수 있게 되는 것</th></tr></thead>
       <tbody>
-        <tr><td>1단계</td><td>붙여넣거나 질문에 답해서 업무를 적고, 그림을 보고, 저장하고, <strong>링크로 공유한다</strong></td></tr>
-        <tr><td>2단계</td><td><strong>인수인계 문서와 휴가 대체자 안내문을 뽑는다.</strong> 직원의 이득이 여기서 처음 손에 잡힌다</td></tr>
-        <tr><td>3단계</td><td>시간·도구 확인 카드, 불편한 곳 표시, 댓글</td></tr>
-        <tr><td>4단계</td><td>요약 카드. <strong>순위표가 아니라 요약이다.</strong> 사람들은 여기서 스스로 병목을 발견한다</td></tr>
-        <tr><td>5단계</td><td>체크리스트로 다시 열기, 부서 간 연결, 어긋난 지점 리포트</td></tr>
+        <tr>
+          <td>1단계</td>
+          <td>질문에 답해서 업무를 꺼내고, 흐름도를 보고, <strong>판정을 받고,
+              가장 쉬운 한 단계를 실제로 넘긴다.</strong> 여기까지가 가설 전체다</td>
+        </tr>
+        <tr>
+          <td>2단계</td>
+          <td><strong>다음에 그 일 할 때 체크리스트로 연다.</strong>
+              열 때마다 판정이 다시 돌아서, 새로 넘길 수 있게 된 단계를 알려 준다.
+              돌아올 이유가 여기서 생긴다</td>
+        </tr>
+        <tr>
+          <td>3단계</td>
+          <td>넘길 수 있는 단계가 늘어난다. 사내 도구 연결을 하나씩 붙이고,
+              결재 규정을 규칙으로 채운다</td>
+        </tr>
+        <tr>
+          <td>4단계</td>
+          <td>인수인계 문서·신입 교육 자료 내보내기. 공유 링크</td>
+        </tr>
+        <tr>
+          <td>5단계</td>
+          <td>부서 단위 요약. <strong>순위표가 아니라 요약이다.</strong>
+              여기서 제거 후보가 나온다</td>
+        </tr>
       </tbody>
     </table>
   </div>
 
   <p>
-    처음에는 이 순서를 <strong>만들기 쉬운 순</strong>으로 짰는데 잘못이었다.
-    직원이 자기 이득을 손에 쥐기 전에는 시간·도구를 채울 이유가 없고,
-    그게 없으면 회사 쪽 분석이 통째로 무의미해진다. 그래서 <strong>쓰게 되는 순</strong>으로 다시 짰다.
-    공유가 1단계로 올라오고, 인수인계 문서가 2단계가 됐다.
+    초안은 이 순서를 <strong>만들기 쉬운 순</strong>으로 짰는데 잘못이었다.
+    판정과 실행이 뒤에 있으면 아무도 1단계를 안 쓴다.
+    그래서 <strong>쓰게 되는 순</strong>으로 다시 짰고, 그 결과
+    <strong>1단계가 가장 무거워졌다.</strong> 그게 맞다. 가설이 거기 있기 때문이다.
   </p>
 
   <div class="callout warn">
-    <span class="lbl">일정에 대해 정직하게</span>
+    <span class="lbl">1단계를 열기 전에 반드시 있어야 하는 것</span>
     <p>
-      처음 잡은 일정은 9.5주였는데, <strong>2명이면 23.5주, 1명이면 45주</strong>가 현실이다.
-      그 반증은 우리 문서 안에 이미 있었다. 화면 부품 16개를 만드는 데만 5주를 잡아 둔
-      문서가 따로 있는데, 처음 계획은 <strong>전체를 3.5주</strong>로 잡고 있었다.
-      같은 자료의 두 문서가 서로를 반박하고 있었던 셈이다.
+      <strong>사내 도구 연결 표와 결재 규정 규칙.</strong>
+      이 둘이 비어 있으면 판정 근거가 일반 상식뿐이고,
+      그러면 5장 두 번째 위험(Claude 래퍼)이 그대로 실현된다.
+      <strong>도구를 만드는 것보다 이 표를 채우는 게 먼저다.</strong>
     </p>
   </div>
 
-  <h3>전사에 한 번에 열지 않는다</h3>
+  <h3>일정에 대해 정직하게</h3>
+
+  <p>
+    <strong>2명 기준 약 6개월</strong>을 잡는다. 1단계만 해도 판정 규칙과 실행 연결이
+    들어가서 초안보다 무겁다. 그리고 우리 문서 안에 반증이 이미 있었다.
+    화면 부품 16개를 만드는 데만 5주를 잡아 둔 문서가 따로 있는데,
+    초안은 <strong>전체를 3.5주</strong>로 잡고 있었다.
+  </p>
+
+  <h3>에이전트를 언제 본격적으로 붙이나</h3>
+
+  <p>
+    <strong>시점을 미리 정하지 않는다.</strong> 대신 착수 신호를 정해 둔다.
+    1단계에서 한 단계씩 넘겨 보는 것까지는 하되, 본격적인 연결은 이 신호가 켜지면 시작한다.
+  </p>
 
   <div class="tw">
     <table>
-      <thead><tr><th style="width:22%">순서</th><th>무엇을 하나</th></tr></thead>
       <tbody>
-        <tr>
-          <td>0 · 우리가 먼저 채운다</td>
-          <td><strong>아무에게도 도구를 주지 않는다.</strong> 우리가 8~12개 부서를 인터뷰해서 대신 적는다.
-              빈 서비스 문제는 직원이 아니라 우리가 푼다</td>
-        </tr>
-        <tr>
-          <td>1 · 인사팀부터</td>
-          <td>감시자로 의심받기 쉬운 부서가 <strong>자기 것을 먼저 공개</strong>하면
-              “감시 도구”라는 틀이 깨진다</td>
-        </tr>
-        <tr>
-          <td>2 · 계기에 얹는다</td>
-          <td>홍보하지 않는다. 이미 벌어지는 일에 붙인다. 인사이동 인수인계, 신입 교육, 감사 대응, 장기 휴가.
-              <em>“이 도구 한번 써 보세요”</em>가 아니라 <em>“이번 인수인계는 여기에 적어 주세요”</em></td>
-        </tr>
-        <tr>
-          <td>3 · 잘 쓰는 사람을 찾는다</td>
-          <td>부서장이 아니라 <strong>질문을 가장 많이 받는 3~7년차 실무자.</strong>
-              임명하지 말고, 기록을 보고 이미 그런 역할을 하고 있는 사람을 찾는다</td>
-        </tr>
+        <tr><td style="width:34%">신호 하나</td><td>"넘길 수 있다" 판정을 받은 단계가 <strong>10건 넘게 쌓였는데 실제로 넘어간 건 2건 이하</strong>일 때. 판정은 되는데 실행이 안 붙고 있다는 뜻이다</td></tr>
+        <tr><td>신호 둘</td><td>사용자가 <em>"이거 그냥 자동으로 해 주면 안 되나요"</em>를 먼저 말할 때. 요구가 우리보다 앞서 있다는 뜻이다</td></tr>
+        <tr><td>신호 셋</td><td>같은 단계를 여러 사람이 반복해서 넘기려 할 때. 한 번 붙이면 여러 명이 쓴다</td></tr>
       </tbody>
     </table>
   </div>
+
+  <p>
+    <strong>왜 시점 대신 신호인가.</strong> 지금은 얼마나 걸릴지 모르고,
+    모르는 걸 날짜로 적으면 그 날짜가 지날 때 계획 전체가 안 믿기게 된다.
+    <strong>신호는 지나가도 계획이 안 무너진다.</strong> 아직 안 켜졌을 뿐이다.
+  </p>
+
+  <h3>어느 부서부터 여나</h3>
+
+  <p>
+    업무 성격이 아니라 <strong>사람으로 고른다. 가장 협조적인 부서</strong>부터 간다.
+    <strong>부서장이 자기 업무를 먼저 적어 줄 부서</strong>여야 한다. 이건 조건이지 선호가 아니다.
+  </p>
+
+  <div class="callout">
+    <p>
+      <strong>대신 이 선택의 대가를 알고 있어야 한다.</strong>
+      협조적인 곳에서 성공한 건 일반화가 안 된다.
+      그래서 <strong>두 번째 부서는 일부러 회의적인 곳</strong>을 고른다.
+      거기서도 되면 진짜다.
+    </p>
+  </div>
+
+  <p>
+    그리고 열기 전에 우리가 먼저 채운다. <strong>8~12개 업무를 우리가 직접 인터뷰해서 대신 적어 둔다.</strong>
+    빈 서비스 문제는 사용자가 아니라 우리가 푼다.
+    그래야 <strong>"비슷한 업무 복제"</strong>가 첫날부터 작동한다.
+  </p>
 </section>
 
-<!-- ══════════════════════════════════════════════════ -->
 <section id="s8">
   <h2>지금 어디까지 왔나</h2>
   <p class="kicker">8장</p>
@@ -1155,6 +1509,7 @@
         <tr><td>계산 부분</td><td>끝났다. 글을 단계로 쪼개고, 그림 배치를 계산하고, 인수인계 문서를 만들고,
             자동화 후보를 점수 매기는 부분. <strong>자동 점검 784가지를 통과한다</strong></td></tr>
         <tr><td>화면</td><td><strong>아직 한 장도 없다.</strong></td></tr>
+        <tr><td>판정</td><td><strong>아직 없다.</strong> 이번 논의로 방향이 정해졌고 설계는 이 문서가 전부다</td></tr>
       </tbody>
     </table>
   </div>
@@ -1201,9 +1556,22 @@
   <div class="tw">
     <table>
       <tbody>
-        <tr><td style="width:26%">제품 이름</td><td><code>Preflow</code>가 유력하다. 도메인·로고·공유 화면 표시가 여기에 달려 있다</td></tr>
-        <tr><td>어디까지 할 것인가</td><td>자동화 후보를 <strong>찾아 주기만</strong> 할지, 아니면 자동화 담당자가 바로 쓸 수 있는
-            <strong>설정 초안까지</strong> 뽑아 줄지. 시범 운영 데이터를 보고 정한다</td></tr>
+        <tr>
+          <td style="width:26%">판정을 무엇으로 돌리나</td>
+          <td>근거 세 가지는 정했다(2장). 그런데 <strong>이걸 실제로 어떻게 계산할지</strong>는
+              아직이다. 사내 도구 연결 표와 결재 규칙을 어떤 형태로 들고 있을지가 핵심인데,
+              여기가 이 프로젝트에서 가장 안 풀린 부분이다</td>
+        </tr>
+        <tr>
+          <td>실행을 어떻게 붙이나</td>
+          <td>"지금 해볼까요"를 눌렀을 때 실제로 무엇이 도는지.
+              에이전트 연결 방식은 후보가 있지만 확정은 1단계 붙여 보고 정한다</td>
+        </tr>
+        <tr>
+          <td>공개 시점</td>
+          <td>사내 검증 후로 정했지만 <strong>"검증됐다"의 기준</strong>이 아직 없다.
+              5장 지표 중 무엇을 넘겨야 공개할지 정해야 한다</td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -1213,16 +1581,16 @@
   <div class="callout brand">
     <p>
       <strong>가장 얇은 한 줄기를 처음부터 끝까지 연결한다.</strong><br>
-      로그인 → 한 줄 입력 → 단계 하나 그려짐 → 공유 링크 → 다른 사람이 휴대폰에서 열람.
+      질문 세 개에 답하기 → 단계 세 개 → 판정 → 그중 하나를 실제로 넘기기.
     </p>
     <p>
-      지금 가장 확인이 안 된 위험은 계산이 맞느냐가 아니라 <strong>부품끼리 붙느냐</strong>다.
-      이건 코드를 더 읽어서는 안 풀리고 실제로 붙여 봐야 안다.
+      지금 가장 확인이 안 된 위험은 계산이 맞느냐가 아니라 <strong>판정이 쓸 만하냐</strong>다.
+      이건 코드를 더 읽어서는 안 풀리고, 실제 업무 하나에 돌려 봐야 안다.
       그리고 위에 적은 그 한 줄기가 7장의 가설과 정확히 같은 경로다.
-      이 한 줄에 프로젝트의 위험이 전부 한 번씩 걸려 있다.
+      <strong>이 한 줄에 프로젝트의 위험이 전부 한 번씩 걸려 있다.</strong>
     </p>
   </div>
-</section>
+</section></section>
 
 <footer class="end">
   <h3>이 문서가 만들어진 방식</h3>
