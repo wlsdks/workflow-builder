@@ -82,7 +82,7 @@ const CLAIMS = [
   // 배포용 기획서(report/기획서.pdf)의 원본. PDF는 `npm run verify`가 열어보지
   // 못하므로 **원본 HTML을 대신 잡는다.** 숫자가 어긋난 채로 PDF가 재생성되면
   // 그건 저장소 밖으로 나가는 문서라 되돌릴 수 없다 — 나가기 전에 여기서 막는다.
-  { file: 'report/plan.html', re: /상세 문서 (\d+)편<\/td>/,              actual: 'docCount',   what: '문서 편수' },
+  { file: 'report/plan.html', re: /기획 문서는 (\d+)편이 있고/,             actual: 'docCount',   what: '문서 편수' },
   { file: 'report/plan.html', re: /상세 문서 (\d+)편과 코드는/,            actual: 'docCount',   what: '문서 편수(맺음말)' },
   { file: 'report/plan.html', re: /자동 점검 ([\d,]+)가지/,               actual: 'totalTests', what: '자동 점검 수' },
   { file: 'report/plan.html', re: /결정 기록 (\d+)건/,                   actual: 'decisions',  what: '결정 건수' },

@@ -11,7 +11,7 @@ let html = readFileSync(HTML, 'utf8');
 
 const strip = (s) => s.replace(/<[^>]+>/g, '').replace(/&[a-z]+;/g, ' ').replace(/\s+/g, ' ').trim();
 
-const sections = [...html.matchAll(/<section id="(s\d+)">\s*<h2>([\s\S]*?)<\/h2>/g)]
+const sections = [...html.matchAll(/<section (?:class="brief" )?id="(\w+)">\s*<h2>([\s\S]*?)<\/h2>/g)]
   .map((m) => [m[1], strip(m[2])]);
 if (!sections.length) throw new Error('절을 하나도 못 찾았다 — 문서 구조가 바뀌었나');
 

@@ -77,6 +77,13 @@
     font-size: 13px; letter-spacing: .04em; color: var(--faint); font-weight: 600;
     margin: 0 0 4px; border: 0; padding: 0 0 12px; border-bottom: 1px solid var(--rule-firm);
   }
+  .toc .pre {
+    display: flex; align-items: baseline; margin: 0; padding: 13px 0 13px 26px;
+    border-bottom: 1px solid var(--rule); font-size: 16px; font-weight: 600;
+    letter-spacing: -0.018em;
+  }
+  .toc .pre a { color: var(--ink); text-decoration: none; }
+  .toc .pre .pg { margin-left: auto; }
   .toc ol { list-style: none; margin: 0; padding: 0; counter-reset: toc; }
   .toc li {
     counter-increment: toc; display: grid; grid-template-columns: 26px 1fr auto;
@@ -86,6 +93,20 @@
   .toc a { color: var(--ink); text-decoration: none; font-size: 16px; font-weight: 600; letter-spacing: -0.018em; }
   .toc .note { display: block; color: var(--sub); font-size: 13.5px; margin-top: 2px; }
   .toc .pg { font-family: var(--mono); font-size: 13px; color: var(--sub); padding-left: 16px; white-space: nowrap; }
+
+  /* ── 한 장 요약 ───────────────────────────────────── */
+  .brief { margin: 48px 0 0; page-break-after: always; }
+  .brief > h2 {
+    font-size: 13px; letter-spacing: .04em; color: var(--faint); font-weight: 600;
+    margin: 0 0 20px; padding: 0 0 12px; border-bottom: 1px solid var(--rule-firm);
+  }
+  .brief .row2 { display: grid; grid-template-columns: 92px 1fr; gap: 18px; padding: 16px 0; border-bottom: 1px solid var(--rule); }
+  .brief .row2:last-of-type { border-bottom: 0; }
+  .brief dt { font-size: 12.5px; font-weight: 600; color: var(--brand); padding-top: 3px; }
+  .brief dd { margin: 0; font-size: 15.5px; line-height: 1.68; }
+  .brief dd b { font-weight: 600; }
+  .brief dd .sub { display: block; margin-top: 6px; font-size: 13.5px; color: var(--sub); }
+  .brief .big { font-size: 18px; font-weight: 600; letter-spacing: -0.022em; line-height: 1.5; }
 
   /* ── 섹션 ─────────────────────────────────────────── */
   section { margin-top: 72px; }
@@ -255,6 +276,14 @@
   .sum .rec p { margin: 0; font-size: 14.5px; line-height: 1.68; }
 
   /* ── 결정 카드 ────────────────────────────────────── */
+  .grp {
+    display: flex; align-items: baseline; gap: 12px;
+    margin: 34px 0 16px; padding-bottom: 8px; border-bottom: 1px solid var(--rule-firm);
+  }
+  .grp b { font-size: 16.5px; font-weight: 600; letter-spacing: -0.018em; }
+  .grp span { font-size: 13px; color: var(--sub); }
+  .grp em { margin-left: auto; font-size: 11.5px; color: var(--faint); font-family: var(--mono); white-space: nowrap; }
+
   .dec {
     margin: 0 0 18px; padding: 22px 24px; background: var(--paper-2);
     border: 1px solid var(--rule); border-left: 3px solid var(--rule-firm); border-radius: 0 12px 12px 0;
@@ -285,17 +314,17 @@
     /* 화면보다 조판을 조인다. 장 끝의 인용문 한 덩어리가 다음 쪽으로 통째로
        밀리면서 90%가 빈 페이지가 생기는 걸 막는다. 인용문을 쪼개는 대신
        앞쪽을 조여서 같은 쪽에 들어가게 한다. */
-    p { margin-bottom: 15px; }
-    .tw { margin: 20px 0; }
-    figure { margin: 16px 0; }
+    p { margin-bottom: 13px; }
+    .tw { margin: 17px 0; }
+    figure { margin: 14px 0; }
     figcaption { margin: 6px 0 16px; }
-    .callout { margin: 18px 0; padding: 14px 18px; }
-    blockquote { margin: 22px 0; }
+    .callout { margin: 16px 0; padding: 13px 17px; }
+    blockquote { margin: 19px 0; }
     blockquote cite { margin-top: 9px; }
     .dec { margin-bottom: 12px; padding: 15px 18px; }
     .dec p { margin-bottom: 8px; }
     .dec .why { margin-top: 9px; padding-top: 9px; }
-    th, td { padding: 10px 14px 10px 0; }
+    th, td { padding: 9px 14px 9px 0; }
     ul, ol { margin-bottom: 16px; }
     li { margin-bottom: 6px; }
     .kinds { gap: 12px; margin: 22px 0; }
@@ -321,6 +350,10 @@
     .dec h4 { font-size: 11pt; margin-bottom: 8px; }
     .dec p { font-size: 9.5pt; line-height: 1.6; }
     .dec .why { font-size: 9pt; line-height: 1.58; }
+    .grp { margin: 22px 0 11px; page-break-after: avoid; }
+    .grp b { font-size: 11.5pt; }
+    .grp span { font-size: 9pt; }
+    .grp em { font-size: 8pt; }
     .kind .chip { font-size: 9.5pt; padding: 5px 11px; margin-bottom: 9px; }
     .kind { padding: 14px; }
     .kind p { font-size: 9pt; line-height: 1.58; }
@@ -353,13 +386,19 @@
     .cover h1 { font-size: 31pt; }
     .cover .thesis { font-size: 13pt; }
     .toc { page-break-after: always; }
+    .brief { margin-top: 0; page-break-before: always; }
+    .brief .row2 { padding: 11px 0; }
+    .brief dd { font-size: 10.5pt; }
+    .brief dd .sub { font-size: 9pt; }
+    .brief .big { font-size: 13pt; }
     .toc li { padding: 9pt 0; }
+    .toc .pre { padding: 9pt 0 9pt 26px; font-size: 11.5pt; }
     .toc a { font-size: 11.5pt; }
 
     section { margin-top: 0; page-break-before: always; }
     section:first-of-type { page-break-before: avoid; }
     section > h2 { font-size: 18.5pt; padding-top: 0; }
-    h3 { font-size: 13.5pt; margin: 20pt 0 8px; page-break-after: avoid; }
+    h3 { font-size: 13.5pt; margin: 16pt 0 7px; page-break-after: avoid; }
     h4 { font-size: 11.5pt; margin-top: 20px; page-break-after: avoid; }
     .lead { font-size: 11.5pt; }
     blockquote { font-size: 12.5pt; }
@@ -395,17 +434,64 @@
 
 <nav class="toc">
   <h2>차례</h2>
+  <p class="pre"><a href="#brief">한 장 요약</a><span class="pg" data-sec="brief">3</span></p>
   <ol>
-    <li><span class="mid"><a href="#s1">무슨 문제인가</a><span class="note">AI에게 넘길 일을 아무도 적어 놓지 않았다</span></span><span class="pg" data-sec="s1">3</span></li>
-    <li><span class="mid"><a href="#s2">그래서 무엇을 하려는가</a><span class="note">AI가 할 부분과 사람이 할 부분을 갈라 준다</span></span><span class="pg" data-sec="s2">6</span></li>
-    <li><span class="mid"><a href="#s3">실제로 어떻게 생겼나</a><span class="note">꺼내기·쪼개기·판정·실행</span></span><span class="pg" data-sec="s3">8</span></li>
-    <li><span class="mid"><a href="#s4">왜 이렇게 만들었나</a><span class="note">결정 열 가지와 그 근거</span></span><span class="pg" data-sec="s4">11</span></li>
-    <li><span class="mid"><a href="#s5">실패한다면 어떻게 실패하나</a></span><span class="pg" data-sec="s5">14</span></li>
-    <li><span class="mid"><a href="#s6">왜 사서 쓰지 않고 만드나</a><span class="note">Notion 템플릿으로 안 되는 것</span></span><span class="pg" data-sec="s6">16</span></li>
-    <li><span class="mid"><a href="#s7">언제 무엇이 나오나</a><span class="note">2명, 먼저 한 부서</span></span><span class="pg" data-sec="s7">18</span></li>
-    <li><span class="mid"><a href="#s8">지금 어디까지 왔나</a></span><span class="pg" data-sec="s8">20</span></li>
+    <li><span class="mid"><a href="#s1">무슨 문제인가</a><span class="note">AI에게 넘길 일을 아무도 적어 놓지 않았다</span></span><span class="pg" data-sec="s1">4</span></li>
+    <li><span class="mid"><a href="#s2">그래서 무엇을 하려는가</a><span class="note">AI가 할 부분과 사람이 할 부분을 갈라 준다</span></span><span class="pg" data-sec="s2">7</span></li>
+    <li><span class="mid"><a href="#s3">실제로 어떻게 생겼나</a><span class="note">꺼내기·쪼개기·판정·실행</span></span><span class="pg" data-sec="s3">9</span></li>
+    <li><span class="mid"><a href="#s4">왜 이렇게 만들었나</a><span class="note">결정 열 가지와 그 근거</span></span><span class="pg" data-sec="s4">13</span></li>
+    <li><span class="mid"><a href="#s5">실패한다면 어떻게 실패하나</a></span><span class="pg" data-sec="s5">17</span></li>
+    <li><span class="mid"><a href="#s6">왜 사서 쓰지 않고 만드나</a><span class="note">Notion 템플릿으로 안 되는 것</span></span><span class="pg" data-sec="s6">19</span></li>
+    <li><span class="mid"><a href="#s7">언제 무엇이 나오나</a><span class="note">2명, 먼저 한 부서</span></span><span class="pg" data-sec="s7">21</span></li>
+    <li><span class="mid"><a href="#s8">지금 어디까지 왔나</a></span><span class="pg" data-sec="s8">23</span></li>
   </ol>
 </nav>
+
+<section class="brief" id="brief">
+  <h2>한 장 요약</h2>
+  <dl>
+    <div class="row2">
+      <dt>문제</dt>
+      <dd class="big">AI에게 일을 넘기려는데, 무엇을 넘길지 아무도 적어 놓지 않았다.
+        <span class="sub">업무 지식은 당사자 기억 속에만 있고, 그걸 적어 둘 이유는 1년에 한두 번만 생긴다.</span></dd>
+    </div>
+    <div class="row2">
+      <dt>하는 일</dt>
+      <dd class="big">업무를 단계로 꺼내서, AI가 대신할 수 있는 단계와 사람이 꼭 해야 하는 단계를 갈라 준다.
+        <span class="sub">기록이 목적이 아니다. 판정이 목적이고 기록은 그 재료다.</span></dd>
+    </div>
+    <div class="row2">
+      <dt>대상</dt>
+      <dd>자기 업무를 <b>줄글로도 못 쓰는 사람.</b>
+        <span class="sub">쓸 수 있는 사람은 이미 Claude에 붙여넣으면 된다. 그건 잘된 일이고, 우리 고객이 아니다.</span></dd>
+    </div>
+    <div class="row2">
+      <dt>차별점</dt>
+      <dd>판정 근거 셋 중 <b>둘은 밖에서 알 수 없다.</b>
+        <span class="sub">사내 도구에 연결이 되는지, 결재 규정상 사람이 필요한지. 일반 상식만 쓰면 Claude 래퍼가 된다.</span></dd>
+    </div>
+    <div class="row2">
+      <dt>안 하는 것</dt>
+      <dd>사람을 <b>줄 세우지 않는다.</b>
+        <span class="sub">부서장은 팀원 문서를 볼 수 있다. 대신 개인별 합계·비율·비교를 아예 만들지 않는다.</span></dd>
+    </div>
+    <div class="row2">
+      <dt>가장 큰 위험</dt>
+      <dd>판정이 틀리는 것.
+        <span class="sub">"넘길 수 있다"고 해서 눌렀는데 안 되면 한 번에 끝이다. 그래서 정확도를 올리기 전에 틀렸을 때의 경로를 먼저 만든다.</span></dd>
+    </div>
+    <div class="row2">
+      <dt>1차 목표</dt>
+      <dd><b>한 부서가 확실히 쓴다.</b> 그 부서에서 실제로 넘어간 단계가 하나라도 나오는 것.
+        <span class="sub">전사 확산은 그다음 문제다.</span></dd>
+    </div>
+    <div class="row2">
+      <dt>지금</dt>
+      <dd>계산 부분만 완성. <b>화면은 아직 한 장도 없다.</b>
+        <span class="sub">만드는 사람 2명. 사내에서 쓰고, 검증되면 오픈소스로 낸다.</span></dd>
+    </div>
+  </dl>
+</section>
 
 <!-- ══════════════════════════════════════════════════ -->
 <section id="s1">
@@ -823,6 +909,25 @@
     <figcaption>도형도, 선도, 메뉴도 없다</figcaption>
   </figure>
 
+  <p>
+    단계는 <strong>세 가지 모양</strong> 중 하나가 된다.
+    타입을 늘리면 배울 게 늘고, 안 늘리면 실제 업무를 못 그린다.
+  </p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th style="width:16%">모양</th><th style="width:34%">무엇인가</th><th>왜 나눠야 하나</th></tr></thead>
+      <tbody>
+        <tr><td>할 일</td><td>내가 직접 하는 일</td><td>대부분이 여기다</td></tr>
+        <tr><td>갈래</td><td>상황에 따라 길이 나뉘는 곳</td>
+            <td><strong>"둘 중 하나"와 "둘 다 동시에"를 구분해야 한다.</strong> 안 하면 숫자가 틀린다</td></tr>
+        <tr><td>기다림</td><td>내가 아무것도 못 하고 기다리는 시간</td>
+            <td>대부분의 업무 도구는 <strong>사람이 손을 움직이는 시간만</strong> 센다.
+                위 예시에서 손이 가는 시간은 20분인데 끝나기까지 <strong>3일</strong>이 걸린다</td></tr>
+      </tbody>
+    </table>
+  </div>
+
   <h3>③ 여기서부터가 이 도구의 값어치다</h3>
 
   <p>
@@ -885,6 +990,29 @@
     </div></div>
     <figcaption>같은 흐름도인데 이제 무엇을 넘길 수 있는지가 보인다</figcaption>
   </figure>
+
+  <div class="callout">
+    <span class="lbl">모양과 판정은 다른 축이다</span>
+    <p>
+      헷갈리기 쉬운데, <strong>단계의 모양</strong>(할 일·갈래·기다림)과
+      <strong>판정</strong>(넘길 수 있다·조건부·사람이 해야)은 서로 다른 질문에 대한 답이다.
+      모양은 <em>"이게 무슨 종류의 일인가"</em>, 판정은 <em>"이걸 AI에게 넘길 수 있나"</em>다.
+    </p>
+    <div class="tw" style="margin:14px 0 0">
+      <table>
+        <thead><tr><th style="width:16%"></th><th>넘길 수 있다</th><th>조건부</th><th>사람이 해야</th></tr></thead>
+        <tbody>
+          <tr><td>할 일</td><td>값을 옮겨 담는 일</td><td>초안 쓰기</td><td>고객에게 사과 전화</td></tr>
+          <tr><td>갈래</td><td>금액으로 갈리는 조건</td><td>애매한 판단이 끼는 조건</td><td>사람이 봐야 아는 조건</td></tr>
+          <tr><td>기다림</td><td>자동 재촉 알림</td><td>기한 넘으면 알림</td><td>팀장 결재 대기</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:14px">
+      위 흐름도의 4단계가 좋은 예다. <strong>모양은 "기다림"이고 판정은 "사람이 해야"</strong>다.
+      기다림이라고 다 못 넘기는 게 아니고, 할 일이라고 다 넘길 수 있는 것도 아니다.
+    </p>
+  </div>
 
   <h3>④ 왜 그렇게 판정했는지 펼쳐 보여준다</h3>
 
@@ -966,6 +1094,8 @@
     그걸 미리 적어 두지 않으면, 우리가 무엇을 가정하고 있는지 스스로도 모르게 된다.
   </p>
 
+  <div class="grp"><b>판정</b><span>이 도구가 죽고 사는 곳</span><em>1 · 2</em></div>
+
   <div class="dec key">
     <h4>하나 · 판정이 틀린다는 전제로 설계한다</h4>
     <p>
@@ -1018,6 +1148,8 @@
     </p>
   </div>
 
+  <div class="grp"><b>꺼내기</b><span>줄글로 못 쓰는 사람을 위해</span><em>3 · 4 · 5</em></div>
+
   <div class="dec">
     <h4>셋 · 들여쓰기로 갈래를 만들게 하지 않는다</h4>
     <p>
@@ -1033,10 +1165,14 @@
   </div>
 
   <div class="dec">
-    <h4>넷 · 단계의 종류는 셋, 나머지는 붙는 정보로</h4>
+    <h4>넷 · 단계의 모양은 셋으로 고정한다</h4>
     <p>
-      할 일 · 갈래 · 기다림. 특히 <strong>갈래에서 "둘 중 하나"와 "둘 다 동시에"를 구분</strong>하는 게
-      중요하다. 이걸 구분하지 않으면 그림만 어긋나는 게 아니라 <strong>숫자가 틀린다.</strong>
+      할 일 · 갈래 · 기다림(3장). 여기서 늘리지 않고,
+      나머지 차이는 각 단계에 붙는 정보로 흡수한다.
+    </p>
+    <p>
+      특히 <strong>갈래에서 "둘 중 하나"와 "둘 다 동시에"를 구분</strong>하는 게 중요하다.
+      구분하지 않으면 그림만 어긋나는 게 아니라 <strong>숫자가 틀린다.</strong>
     </p>
     <p class="why">
       실제로 재 봤다. 같은 그림에서 두 갈래가 <b>동시에</b> 진행되면 총 4시간,
@@ -1059,6 +1195,8 @@
       채워도 나에게 돌아오는 게 없다.
     </p>
   </div>
+
+  <div class="grp"><b>측정</b><span>숫자를 믿을 수 있게</span><em>6 · 7</em></div>
 
   <div class="dec">
     <h4>여섯 · 기억이 틀린다는 걸 전제로 묻는다</h4>
@@ -1087,6 +1225,8 @@
       결재 기준선을 올리는 것만으로 3일이 줄어든다.
     </p>
   </div>
+
+  <div class="grp"><b>신뢰</b><span>오래 쓰이기 위해</span><em>8 · 9 · 10</em></div>
 
   <div class="dec">
     <h4>여덟 · 남에 대한 평가는 수집하지 않는다</h4>
@@ -1502,22 +1642,60 @@
   <h2>지금 어디까지 왔나</h2>
   <p class="kicker">8장</p>
 
+  <p class="lead">
+    솔직하게 먼저 말한다. <strong>지금 브라우저를 열어서 쓸 수 있는 건 아무것도 없다.</strong>
+    3장에서 본 화면들은 이 문서를 위해 그린 것이고, 실제 제품으로는 아직 존재하지 않는다.
+  </p>
+
+  <p>
+    그리고 이번에 방향을 바꿨으므로, <strong>이미 만들어 둔 것 중 무엇이 살아남는지</strong>부터 적는다.
+    이걸 안 적으면 "다 만들어 놨다"는 인상만 남는다.
+  </p>
+
   <div class="tw">
     <table>
+      <thead><tr><th style="width:30%">만들어 둔 것</th><th style="width:16%">새 방향에서</th><th>왜</th></tr></thead>
       <tbody>
-        <tr><td style="width:24%">기획</td><td>끝났다. 이 문서와 그 근거가 되는 상세 문서 26편</td></tr>
-        <tr><td>계산 부분</td><td>끝났다. 글을 단계로 쪼개고, 그림 배치를 계산하고, 인수인계 문서를 만들고,
-            자동화 후보를 점수 매기는 부분. <strong>자동 점검 784가지를 통과한다</strong></td></tr>
-        <tr><td>화면</td><td><strong>아직 한 장도 없다.</strong></td></tr>
-        <tr><td>판정</td><td><strong>아직 없다.</strong> 이번 논의로 방향이 정해졌고 설계는 이 문서가 전부다</td></tr>
+        <tr>
+          <td>글을 단계로 쪼개기</td>
+          <td><span class="st on">그대로 쓴다</span></td>
+          <td>꺼내기의 핵심이다. 오히려 비중이 커졌다</td>
+        </tr>
+        <tr>
+          <td>흐름도 배치 계산</td>
+          <td><span class="st on">그대로 쓴다</span></td>
+          <td>판정을 얹을 캔버스가 필요하다</td>
+        </tr>
+        <tr>
+          <td>인수인계 문서 만들기</td>
+          <td><span class="st on">쓰지만 뒤로</span></td>
+          <td>1단계 이유였다가 <strong>4단계 부산물</strong>이 됐다</td>
+        </tr>
+        <tr>
+          <td>자동화 후보 점수 매기기</td>
+          <td><span class="st off">대체된다</span></td>
+          <td><strong>점수가 아니라 판정</strong>이다. 순위를 매기는 게 아니라
+              단계마다 넘길 수 있는지를 답한다. 반복 횟수·소요시간 계산은 재활용하지만
+              <strong>결과물의 형태가 다르다</strong></td>
+        </tr>
+        <tr>
+          <td>판정</td>
+          <td><span class="st off">아직 없다</span></td>
+          <td>이번 논의로 방향이 정해졌고, <strong>설계는 이 문서가 전부다</strong></td>
+        </tr>
+        <tr>
+          <td>화면</td>
+          <td><span class="st off">아직 없다</span></td>
+          <td>한 장도 없다</td>
+        </tr>
       </tbody>
     </table>
   </div>
 
   <p>
-    솔직하게 말하면 <strong>지금 브라우저를 열어서 쓸 수 있는 건 아무것도 없다.</strong>
-    돌아가는 건 속에서 계산하는 부분뿐이다. 3장에서 본 화면들은 이 문서를 위해 그린 것이고,
-    실제 제품으로는 아직 존재하지 않는다.
+    기획 문서는 26편이 있고, 계산 부분은 <strong>자동 점검 784가지를 통과한다.</strong>
+    다만 위 표대로 <strong>그중 하나는 방향 전환으로 형태가 바뀐다.</strong>
+    만들어 둔 게 헛것이 되지는 않았지만, 다 쓰이는 것도 아니다.
   </p>
 
   <h3>만들어 보니 기획이 틀렸던 것들</h3>
@@ -1543,9 +1721,11 @@
               나머지가 전부 움직였다. 안 하느니만 못했다</td>
         </tr>
         <tr>
-          <td>계산이 안 맞았다</td>
-          <td>예시 데이터의 절감 효과 카드에서 <strong>적어 둔 식과 인쇄된 결과가 달랐다.</strong>
-              식대로 계산하면 378만 원인데 카드에는 270만 원이 찍혀 있었다</td>
+          <td>적어 둔 식과 결과가 달랐다</td>
+          <td>예시 데이터에서 <strong>공식대로 계산하면 378만 원인데 카드에는 270만 원이 찍혀</strong> 있었다.
+              문서만 볼 때는 둘 다 그럴듯해서 아무도 안 잡았다.
+              <strong>판정에도 같은 일이 생길 수 있다.</strong> 근거는 맞는데 결론이 다른 경우다.
+              그래서 3장에서 근거를 항상 펼쳐 보여준다</td>
         </tr>
       </tbody>
     </table>
